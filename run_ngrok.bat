@@ -11,7 +11,7 @@ if errorlevel 1 (
     exit /b 1
 )
 
-start "PCARDB Backend" cmd /k "cd project\backend && ..\..\.venv-win\Scripts\uvicorn.exe main:app --port 8000"
+start "PCARDB Backend" cmd /k "cd project\backend && set ALLOW_SIGNUP=1&& ..\..\.venv-win\Scripts\uvicorn.exe main:app --port 8000"
 start "PCARDB Frontend" cmd /k "cd project\frontend && npm run dev -- --host"
 start "PCARDB ngrok" cmd /k "ngrok http 5173"
 

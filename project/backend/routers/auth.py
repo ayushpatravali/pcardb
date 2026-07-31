@@ -48,11 +48,15 @@ async def login_for_access_token(
     )
     return {"access_token": access_token, "token_type": "bearer", "role": user.role}
 
+def signup_enabled() -> bool:
+    """Self-signup is DISABLED unless explicitly opted in (trusted intranet only).
+    The local run scripts set ALLOW_SIGNUP=1; public demo hosting must not."""
+    return os.environ.get("ALLOW_SIGNUP", "").strip().lower() in ("1", "true", "yes")
+
+
 @router.post("/register", response_model=UserPublic)
 def register_user(user_in: UserCreate, session: Session = Depends(get_session)):
-    # Public self-signup is for trusted intranet deployments only.
-    # On public demo hosting set DISABLE_SIGNUP=1 (accounts come from env-seeded users).
-    if os.environ.get("DISABLE_SIGNUP") == "1":
+    if not signup_enabled():
         raise HTTPException(status_code=403, detail="Signup is disabled on this deployment")
 
     # Check if user exists

@@ -119,6 +119,11 @@ takes ~30s to wake).
 3. Environment variables — set both (do NOT keep defaults on a public URL):
    - `MANAGER_PASSWORD` = something strong
    - `OFFICER_PASSWORD` = something strong
+
+   Self-signup is **disabled by default** on any deployment; the local run
+   scripts enable it via `ALLOW_SIGNUP=1`. Never set that on public hosting.
+   `GET /healthz` shows (as booleans only) whether the env vars reached the
+   container.
 4. Deploy. Share the `https://pcardb-xxxx.onrender.com` URL + the passwords with the client.
 5. Delete the service when the trial is over.
 

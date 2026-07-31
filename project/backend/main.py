@@ -25,6 +25,17 @@ def on_startup():
     from init_db import init_db
     init_db()  # idempotent: seeds default users only if none exist
 
+@app.get("/healthz", include_in_schema=False)
+def healthz():
+    """Presence booleans only — never values. Confirms env delivery on hosts."""
+    from routers.auth import signup_enabled
+    return {
+        "status": "ok",
+        "signup_enabled": signup_enabled(),
+        "custom_manager_password": bool(os.environ.get("MANAGER_PASSWORD")),
+        "custom_officer_password": bool(os.environ.get("OFFICER_PASSWORD")),
+    }
+
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request, exc):
     print("VALIDATION ERROR!")

@@ -16,9 +16,9 @@ FRONTEND  := project/frontend
 
 UNAME := $(shell uname -s)
 ifeq ($(UNAME),Darwin)
-  RUN_ENV := DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib
+  RUN_ENV := DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib ALLOW_SIGNUP=1
 else
-  RUN_ENV :=
+  RUN_ENV := ALLOW_SIGNUP=1
 endif
 
 .PHONY: setup run run-ngrok seed verify
