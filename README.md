@@ -107,7 +107,27 @@ Makefile                           macOS/Linux
 files. The app does not need them to run. They're only reference material for
 building the remaining schemes' templates — move them by USB/AirDrop, never git.
 
-## 7. Troubleshooting
+## 7. Temporary demo hosting (Render free tier)
+
+For letting a client try it without your laptop. **Demo/dummy data only — never
+real applicant names or Aadhaar on public hosting.** The free-tier disk is
+ephemeral: data resets on redeploys, and the app sleeps when idle (first visit
+takes ~30s to wake).
+
+1. https://render.com → New → **Web Service** → connect the `pcardb` GitHub repo.
+2. Runtime: **Docker** (it auto-detects the `Dockerfile`). Instance type: **Free**.
+3. Environment variables — set both (do NOT keep defaults on a public URL):
+   - `MANAGER_PASSWORD` = something strong
+   - `OFFICER_PASSWORD` = something strong
+4. Deploy. Share the `https://pcardb-xxxx.onrender.com` URL + the passwords with the client.
+5. Delete the service when the trial is over.
+
+Local container test: `docker build -t pcardb . && docker run -p 8080:8000 -e MANAGER_PASSWORD=xyz pcardb`
+
+Only the **Tractor** scheme is complete; other schemes respond with a clear
+"scheme template not built yet" message.
+
+## 8. Troubleshooting
 
 | Symptom | Fix |
 |---|---|

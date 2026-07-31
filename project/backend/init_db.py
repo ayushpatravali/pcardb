@@ -1,3 +1,5 @@
+import os
+
 from sqlmodel import Session, select
 from database import engine, create_db_and_tables
 from models import User, Role
@@ -14,7 +16,7 @@ def init_db():
         # Create Manager
         manager = User(
             username="manager",
-            hashed_password=get_password_hash("manager123"),
+            hashed_password=get_password_hash(os.environ.get("MANAGER_PASSWORD", "manager123")),
             full_name="System Manager",
             role=Role.MANAGER
         )
@@ -23,7 +25,7 @@ def init_db():
         # Create Field Officer
         officer = User(
             username="officer",
-            hashed_password=get_password_hash("officer123"),
+            hashed_password=get_password_hash(os.environ.get("OFFICER_PASSWORD", "officer123")),
             full_name="Field Officer 1",
             role=Role.FIELD_OFFICER
         )
