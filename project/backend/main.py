@@ -24,6 +24,11 @@ def on_startup():
     create_db_and_tables()
     from init_db import init_db
     init_db()  # idempotent: seeds default users only if none exist
+    if os.environ.get("DEMO_SEED") == "1":
+        # Demo hosting: always have the sample application available,
+        # even on a fresh (wiped) database. Idempotent.
+        from tools.seed_reference_apps import main as seed_demo
+        seed_demo()
 
 @app.get("/healthz", include_in_schema=False)
 def healthz():
