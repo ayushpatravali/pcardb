@@ -221,6 +221,7 @@ def create_application(
         details.application_id = application.id
         session.add(details)
         session.commit()
+        session.refresh(application)  # re-load: commit expires the instance pre-serialization
 
     return application
 
