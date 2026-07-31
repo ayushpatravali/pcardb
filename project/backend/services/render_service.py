@@ -53,14 +53,32 @@ def plain_number(value):
     return str(int(f)) if f == int(f) else f"{f:g}"
 
 
+# Numeric fields inside the JSON-string columns. The React form submits these
+# as strings ("4.20", ""); templates do arithmetic on them, so coerce to float.
+_NUMERIC_JSON_FIELDS = {"acres", "guntas", "akaar", "annual_income", "sl"}
+
+
+def _to_float(value):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return 0.0
+
+
 def _parse_json_list(raw):
     if not raw:
         return []
     try:
         data = json.loads(raw)
-        return data if isinstance(data, list) else []
     except (ValueError, TypeError):
         return []
+    if not isinstance(data, list):
+        return []
+    for item in data:
+        if isinstance(item, dict):
+            for key in _NUMERIC_JSON_FIELDS & item.keys():
+                item[key] = _to_float(item[key])
+    return data
 
 
 def _fmt_date(value):
