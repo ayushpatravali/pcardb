@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family: "Noto Kannada";
+    src: url("file://{{ font_dir }}/NotoSansKannada-Regular.ttf");
+    font-weight: normal;
+  }
+  @font-face {
+    font-family: "Noto Kannada";
+    src: url("file://{{ font_dir }}/NotoSansKannada-Bold.ttf");
+    font-weight: bold;
+  }
+  {% include "css/base.css" %}
+</style>
+</head>
+<body>
+{% for page in pages %}
+<section class="page {{ 'legal' if page.size == 'LEGAL' }}">
+  {% include "pages/" ~ page.name ~ ".html" %}
+</section>
+{% endfor %}
+</body>
+</html>

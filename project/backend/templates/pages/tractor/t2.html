@@ -1,0 +1,115 @@
+<!-- tractor/t2: reference PDF page 12 — land-holding detail tables (4: development land, irrigation; 5: security land) -->
+<div class="pg-t2">
+<style>
+  .pg-t2 { font-size: 9.6pt; }
+  .pg-t2 table td, .pg-t2 table th { font-size: 9.6pt; }
+  .pg-t2 .lt td { height: 8mm; }
+  .pg-t2 .sec td { height: 8.5mm; }
+</style>
+
+<div>4 &nbsp;ಅಭಿವೃದ್ಧಿಗೆ ಒಳಪಡಿಸುವ ಜಮೀನು : ಹಿಡುವಳಿ ವಿವರ :</div>
+
+<table class="bordered lt" style="margin-top:1mm;">
+  <tr>
+    <th class="center" rowspan="2" style="width:12mm;">ಕ್ರಮ ಸಂಖ್ಯೆ</th>
+    <th class="center" rowspan="2" style="width:22%;">ಸರ್ವೆ ನಂ</th>
+    <th class="center" colspan="3">ಹಿಡುವಳಿ (ಎಕರೆಗಳು)</th>
+    <th class="center" rowspan="2" style="width:14%;">ಒಟ್ಟು</th>
+  </tr>
+  <tr>
+    <th class="center" style="width:16%;">ಖುಷ್ಕಿ</th>
+    <th class="center" style="width:18%;">ನೀರಾವರಿ</th>
+    <th class="center" style="width:16%;">ಬಾಗಾಯ್ತು</th>
+  </tr>
+  {% for p in parsed.land_parcels %}
+  <tr>
+    <td class="center">{{ p.sl }}</td>
+    <td class="center">{{ p.survey_no }}</td>
+    <td></td>
+    <td class="center">{{ "%.2f" | format(p.acres) }}</td>
+    <td></td>
+    <td class="center">{{ "%.2f" | format(p.acres) }}</td>
+  </tr>
+  {% endfor %}
+  {% for _ in range(5 - parsed.land_parcels | length if parsed.land_parcels | length < 5 else 0) %}
+  <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+  {% endfor %}
+  <tr>
+    <td></td><td class="center">ಒಟ್ಟು</td><td></td>
+    <td class="center value">{{ "%.2f" | format(app.total_area_acres) }}</td><td></td>
+    <td class="center value">{{ "%.2f" | format(app.total_area_acres) }}</td>
+  </tr>
+</table>
+
+<!-- irrigation / soil-quality table -->
+<table class="bordered" style="margin-top:0;">
+  <tr>
+    <th class="center" rowspan="2" style="width:34%;">ಅ) ನೀರಾವರಿ</th>
+    <th class="center" rowspan="2" style="width:12%;">ಕ್ಷೇತ್ರ ಎಕರೆ</th>
+    <th class="center" colspan="4">(ಆ) ಹಿಡುವಳಿ ಮಣ್ಣಿನ ಗುಣಧರ್ಮ (ಎಕರೆಗಳು)</th>
+    <th class="center" rowspan="2" style="width:10%;">ಒಟ್ಟು</th>
+  </tr>
+  <tr>
+    <th class="center" style="width:13%;">ವರ್ಗೀಕರಣ</th>
+    <th class="center" style="width:9%;">ಖುಷ್ಕಿ</th>
+    <th class="center" style="width:11%;">ನೀರಾವರಿ</th>
+    <th class="center" style="width:11%;">ಬಾಗಾಯ್ತು</th>
+  </tr>
+  <tr>
+    <td>1. ತೋಡು ಬಾವಿ</td><td class="center"></td>
+    <td class="center">ಕೆಂಪು</td><td></td><td></td><td></td><td></td>
+  </tr>
+  <tr>
+    <td>2. ಕೊರೆ ಬಾವಿ</td><td class="center"></td>
+    <td class="center">ಕಪ್ಪು</td><td></td><td></td><td></td><td></td>
+  </tr>
+  <tr>
+    <td>3. ಕಾಲುವೆ : ಅಚ್ಚುಕಟ್ಟು</td><td class="center"></td>
+    <td class="center">ಮರಳು ಮಿಶ್ರಿತ</td><td></td><td></td><td></td><td></td>
+  </tr>
+  <tr>
+    <td>4. ಇತರ ನೀರಾವರಿ</td><td></td><td></td><td></td><td></td><td></td><td></td>
+  </tr>
+  <tr>
+    <td>5. ಒಟ್ಟು</td><td class="center value">{{ "%.2f" | format(app.total_area_acres) }}</td>
+    <td class="center">ಒಟ್ಟು</td><td></td><td></td><td></td><td></td>
+  </tr>
+</table>
+
+<div style="margin-top:5mm;">5 &nbsp;ಸಾಲಕ್ಕೆ ಆಧಾರ ಪಡಿಸುವ ಜಮೀನುಗಳ ವಿವರ :
+  <span class="value" style="padding-left:14mm;">{{ app.loan_amount | num }}</span></div>
+
+<table class="bordered sec" style="margin-top:1mm;">
+  <tr>
+    <th class="center" rowspan="2" style="width:12mm;">ಕ್ರಮ ಸಂಖ್ಯೆ</th>
+    <th class="center" rowspan="2" style="width:22%;">ಸರ್ವೆ ನಂ.</th>
+    <th class="center" colspan="4">ಹಿಡುವಳಿ (ಎಕರೆಗಳು)</th>
+    <th class="center" rowspan="2" style="width:18%;">ಮೌಲ್ಯ (ರೂ.ಗಳಲ್ಲಿ)</th>
+  </tr>
+  <tr>
+    <th class="center" style="width:12%;">ಖುಷ್ಕಿ</th>
+    <th class="center" style="width:14%;">ನೀರಾವರಿ</th>
+    <th class="center" style="width:14%;">ಬಾಗಾಯ್ತು</th>
+    <th class="center" style="width:12%;">ಒಟ್ಟು</th>
+  </tr>
+  {% for p in parsed.land_parcels %}
+  <tr>
+    <td class="center">{{ p.sl }}</td>
+    <td class="center">{{ p.survey_no }}</td>
+    <td></td>
+    <td class="center">{{ "%.2f" | format(p.acres) }}</td>
+    <td></td>
+    <td class="center">{{ "%.2f" | format(p.acres) }}</td>
+    <td></td>
+  </tr>
+  {% endfor %}
+  {% for _ in range(8 - parsed.land_parcels | length if parsed.land_parcels | length < 8 else 0) %}
+  <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+  {% endfor %}
+  <tr>
+    <td></td><td></td><td></td>
+    <td class="center value">{{ "%.2f" | format(app.total_area_acres) }}</td><td></td>
+    <td class="center value">{{ "%.2f" | format(app.total_area_acres) }}</td><td></td>
+  </tr>
+</table>
+</div>

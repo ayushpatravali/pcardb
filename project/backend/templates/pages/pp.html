@@ -1,0 +1,42 @@
+{# Page 20 — ಸ್ಥಳ ಪರಿಶೀಲನಾ ವರದಿ (Spot inspection report).
+   Transcribed from Vasant Malli reference PDF page 20.
+   The middle of the page is intentionally blank (hand-drawn boundary sketch). #}
+<div class="pg-pp">
+<style>
+  /* keep the dashed underline hugging the text instead of dropping a half-line */
+  .pg-pp .fill { line-height: 1.1; }
+</style>
+
+<div class="bank-header" style="font-size:14pt">
+  ದಿ. ಗೋಕಾಕ ತಾಲೂಕಾ ಪ್ರಾಥಮಿಕ ಸಹಕಾರಿ ಕೃಷಿ ಮತ್ತು ಗ್ರಾಮೀಣ<br>
+  ಅಭಿವೃದ್ಧಿ ಬ್ಯಾಂಕ ನಿಯಮಿತ, ಗೋಕಾಕ
+</div>
+
+<div class="center bold" style="margin-top:6mm"><span style="text-decoration:underline">ಸ್ಥಳ ಪರಿಶೀಲನಾ ವರದಿ</span></div>
+
+<div style="margin-top:6mm">ಸಾಲದ ಅರ್ಜಿ ನಂ. ಬಿ.ಎಲ್.ಎ/ <span class="fill blank" style="min-width:25mm"></span></div>
+
+<div style="margin-top:5mm; text-align:justify">
+  ಅರ್ಜಿದಾರರಾದ ಶ್ರೀ : ಶ್ರೀಮತಿ : <span class="fill" style="min-width:62mm">{{ app.applicant_name_kn }}</span>
+  ಗ್ರಾಮ : <span class="fill" style="min-width:34mm">{{ app.village }}</span> ಇವರ
+  ಜಮೀನವನ್ನು ದಿನಾಂಕ <span class="fill blank" style="min-width:28mm"></span> ರಂದು ಸ್ಥಳ ಪರಿಶೀಲನಾ ಕೈಕೊಂಡಿದ್ದು ಸದರಿ ಜಮೀನಿನ ಚಕ್ಕುಬಂದಿ ವ ಹದ್ದ ನಕಾಶ
+  ಈ ಕೆಳಗಿನಂತೆ ಇರುತ್ತದೆ.
+</div>
+
+{# blank area for the hand-drawn sketch of the land #}
+<div style="height:95mm"></div>
+
+<div class="center bold"><span style="text-decoration:underline">ದೃಢೀಕರಣ</span></div>
+
+<div style="margin-top:3mm; text-align:justify; text-indent:12mm">
+  ಮೇಲ್ಕಂಡ ಜಮೀನವು ಘಟಪ್ರಭಾ ಅಚ್ಚುಕಟ್ಟು ಪ್ರದೇಶದಲ್ಲಿ ಬರುತ್ತದೆ ಹಾಗೂ ಸದರಿ ಜಮೀನದಲ್ಲಿ ಒಂದು
+  <span class="bold">{{ app.irrigation_source }}</span> ಇದ್ದು
+  <span class="fill blank" style="min-width:20mm"></span> ಮತ್ತು
+  <span class="fill blank" style="min-width:20mm"></span> ಯಿಂದ ನೀರಾವರಿಯಾಗುತ್ತದೆ ಅಂತಾ ದೃಢೀಕರಿಸಿದೆ.
+</div>
+
+<div class="right" style="margin-top:12mm">
+  ಮೇಲ್ವಿಚಾರಕರು<br>
+  <span class="bold">ಪಿಕಾರ್ಡ ಬ್ಯಾಂಕ ನಿ {{ bank.place }}</span>
+</div>
+</div>

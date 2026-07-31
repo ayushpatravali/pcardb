@@ -1,0 +1,134 @@
+{# Page B1 — ಸಾಲ ಕೋರಿಕೆ ಅರ್ಜಿ : ಟಿಪ್ಪಣಿ (items 1–10 + ಆಸ್ತಿ table). Reference PDF page 7. #}
+<div class="pg-b1">
+<style>
+  .pg-b1 { font-size: 10pt; line-height: 1.45; }
+  .pg-b1 .note-tbl td { border-top: 1px solid #000; padding: 1mm 2mm; vertical-align: top; }
+  .pg-b1 .note-tbl .n { width: 9mm; }
+  .pg-b1 .note-tbl .lbl { width: 58mm; }
+  .pg-b1 .note-tbl .ct { border-left: 1px solid #000; }
+  .pg-b1 .note-tbl tr:last-child td { border-bottom: 1px solid #000; }
+  .pg-b1 .rline { display: flex; justify-content: space-between; }
+  .pg-b1 .assets th, .pg-b1 .assets td { border: 1px solid #000; height: 6.5mm; font-size: 9.5pt; }
+</style>
+
+<div class="bank-header" style="font-size:11.5pt">{{ bank.state_bank_header }}</div>
+<div class="center" style="margin-top:1mm"><span class="boxed-title" style="border-radius:3mm; padding:0.5mm 6mm">ಸಾಲ ಕೋರಿಕೆ ಅರ್ಜಿ : ಟಿಪ್ಪಣಿ</span></div>
+
+<table class="note-tbl" style="margin-top:2mm">
+  <tr>
+    <td class="n">1)</td>
+    <td class="lbl">ಪ್ರಾ.ಸ.ಕೃ.ಗ್ರಾ.ಬ್ಯಾಂಕ್ ನಿ.,</td>
+    <td class="ct center value">{{ app.branch_name }}</td>
+  </tr>
+  <tr>
+    <td class="n">2)</td>
+    <td class="lbl">ಸಾಲದ ಅರ್ಜಿ ಸಂಖ್ಯೆ</td>
+    <td class="ct">ದಿನಾಂಕ : <span class="fill blank wide"></span></td>
+  </tr>
+  <tr>
+    <td class="n">3)</td>
+    <td class="lbl">ಯೋಜನೆ :</td>
+    <td class="ct center value" style="border:1px solid #000">{{ scheme.name_kn }}</td>
+  </tr>
+  <tr>
+    <td class="n">4)</td>
+    <td class="lbl">ಅರ್ಜಿದಾರರ ಹೆಸರು ಮತ್ತು ವಿಳಾಸ</td>
+    <td class="ct">
+      <div>ಶ್ರೀ /ಶ್ರೀಮತಿ &nbsp;<span class="fill wide">{{ app.applicant_name_kn }}</span></div>
+      <div>ತಂದೆ / ಗಂಡ &nbsp;<span class="fill blank wide"></span></div>
+      <div>ಗ್ರಾಮ &nbsp;<span class="fill wide">{{ app.village }}</span></div>
+      <div>ತಾಲ್ಲೂಕು &nbsp;<span class="fill">{{ app.taluk }}</span></div>
+    </td>
+  </tr>
+  <tr>
+    <td class="n">5)</td>
+    <td class="lbl">ಅರ್ಜಿದಾರರ ಒಟ್ಟು ಹಿಡುವಳಿ (ಎಕರೆ)</td>
+    <td class="ct">
+      <div class="rline"><span>ಖುಷ್ಕಿ <span class="fill blank" style="min-width:35mm"></span></span>
+        <span>ಸದಸ್ಯ ಸಂಖ್ಯೆ &nbsp;<span class="fill">{{ app.total_area_acres | num }}</span></span></div>
+      <div class="rline"><span>ತೋಟ <span class="fill blank" style="min-width:35mm"></span></span>
+        <span>ಒಟ್ಟು ಕ್ಷೇತ್ರ &nbsp;<span class="fill">{{ app.total_area_acres | num }}</span></span></div>
+    </td>
+  </tr>
+  <tr>
+    <td class="n">6)</td>
+    <td class="lbl">ರೈತರ ವರ್ಗೀಕರಣ</td>
+    <td class="ct">
+      <div>ಸಣ್ಣ : <span class="value">{{ computed.farmer_type_kn }}</span></div>
+      <div class="small" style="border-top:1px solid #000; margin:1mm -2mm 0; padding:0.5mm 2mm 0">ಪರಿಶಿಷ್ಟ ಜಾತಿ : ಪಂಗಡ / ಅಲ್ಪ ಸಂಖ್ಯಾತರು / ಮಹಿಳೆಯರು / ಹಿಂದುಳಿದ ವರ್ಗ</div>
+    </td>
+  </tr>
+  <tr>
+    <td class="n">7)</td>
+    <td class="lbl">ಅಭಿವೃದ್ಧಿ ಹೊಂದುವ ಜಮೀನು</td>
+    <td class="ct">
+      <div style="border-bottom:1px dashed #000">ಸರ್ವೆ ನಂ. &nbsp;&nbsp;
+        {% for p in parsed.land_parcels[:2] %}<span class="value" style="margin-right:12mm">{{ p.survey_no }}</span>{% endfor %}</div>
+      <div class="rline"><span>ಕ್ಷೇತ್ರ &nbsp;&nbsp;
+        {% for p in parsed.land_parcels[:2] %}<span class="value" style="margin-right:12mm">{{ '%.2f' | format(p.acres) }}</span>{% endfor %}</span>
+        <span>ಎಕರೆ</span></div>
+    </td>
+  </tr>
+  <tr>
+    <td class="n">8)</td>
+    <td class="lbl">ಯೋಜನೆಯ ಆರ್ಥಿಕ ಕಾರ್ಯಕ್ರಮ</td>
+    <td class="ct">
+      <div class="rline"><span>ಅರ್ಜಿದಾರರ ಬೇಡಿಕೆ ಮೊತ್ತ</span><span>ರೂ. <span class="fill">{{ app.loan_amount | num }}</span></span></div>
+      <div class="rline"><span>ಯೋಜನಾ ವೆಚ್ಚ</span><span>ರೂ. <span class="fill">{{ computed.total_project_cost | num if computed.total_project_cost is defined else '' }}</span></span></div>
+      <div class="rline"><span>ಸ್ವಂತ ಕೊಡುಗೆ</span><span>ರೂ. <span class="fill">{{ computed.margin_money | num if computed.margin_money is defined else '' }}</span></span></div>
+      <div class="rline"><span>ಸಾಲದ ಮೊತ್ತ</span><span>ರೂ. <span class="fill">{{ app.loan_amount | num }}</span></span></div>
+    </td>
+  </tr>
+  <tr>
+    <td class="n">9)</td>
+    <td class="lbl">ಹಿಂದಿನ ಸಾಲಗಳಿದ್ದಲ್ಲಿ<br>(ಸಾಲ ಖಾತೆ ನಕಲು ಲಗತ್ತಿಸಬೇಕು)</td>
+    <td class="ct">
+      <div class="rline"><span style="white-space:nowrap">ಲಗತ್ತಿಸಿದ ಪುಟ ಸಂಖ್ಯೆ</span><span class="fill blank" style="min-width:40mm"></span></div>
+      <div>ಒಟ್ಟು ಸಾಲ ಹೊರಬಾಕಿ &nbsp;&nbsp;&nbsp; ರೂ.</div>
+      <div>ಒಟ್ಟು ಮರುಪಾವತಿ ಕಂತು &nbsp;&nbsp;&nbsp; ರೂ.</div>
+      <div class="small" style="border-top:1px solid #000; margin:1mm -2mm 0; padding:0.5mm 2mm 0">ಹಿಂದಿನ ಸಾಲಗಳ ಸದುಪಯೋಗ ದೃಢೀಕರಣ ಲಗತ್ತಿಸಿದ ಪುಟ ಸಂಖ್ಯೆ<br><span class="fill blank" style="min-width:25mm"></span></div>
+    </td>
+  </tr>
+  <tr>
+    <td class="n">10)</td>
+    <td class="lbl" colspan="2" style="border-left:none">ಆಧಾರಕ್ಕೆ ಆಸ್ತಿಯ ವಿವರಗಳು</td>
+  </tr>
+</table>
+
+<table class="assets" style="margin-top:2mm">
+  <tr class="center">
+    <th style="width:26mm">ಗ್ರಾಮ/ತಾಲ್ಲೂಕು</th>
+    <th style="width:20mm">ಸರ್ವೆ ನಂ.</th>
+    <th style="width:18mm">ತರಹೆ</th>
+    <th style="width:20mm">ವಿಸ್ತೀರ್ಣ</th>
+    <th style="width:18mm">ಮೌಲ್ಯ</th>
+    <th style="width:24mm">ಹಕ್ಕು ಬಂದಿರುವ ಬಗ್ಗೆ</th>
+    <th>ದಾಖಲೆ ಪುಟ ಸಂಖ್ಯೆ</th>
+  </tr>
+  {% for p in parsed.land_parcels[:7] %}
+  <tr class="center">
+    <td class="value" style="text-align:left">{{ p.village }}</td>
+    <td class="value">{{ p.survey_no }}</td>
+    <td></td>
+    <td class="value">{{ '%.2f' | format(p.acres) }}</td>
+    <td class="value">0</td>
+    <td class="value">0</td>
+    <td></td>
+  </tr>
+  {% endfor %}
+  {% for _ in range(7 - parsed.land_parcels[:7] | length) %}
+  <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+  {% endfor %}
+</table>
+
+<div style="display:flex; margin-top:0">
+  <div style="width:46mm"></div>
+  <table style="width:76mm">
+    <tr><td class="right" style="width:38mm; padding:0.5mm 2mm">ಖುಷ್ಕಿ</td><td style="border:1px solid #000; width:20mm; height:6mm"></td><td style="border:1px solid #000; width:18mm"></td></tr>
+    <tr><td class="right" style="padding:0.5mm 2mm">ನೀರಾವರಿ</td><td style="border:1px solid #000"></td><td style="border:1px solid #000"></td></tr>
+    <tr><td class="right" style="padding:0.5mm 2mm">ಬಾಗಾಯತ</td><td style="border:1px solid #000"></td><td style="border:1px solid #000"></td></tr>
+    <tr><td class="right" style="padding:0.5mm 2mm">ಒಟ್ಟು</td><td class="center value" style="border:1px solid #000">{{ app.total_area_acres | num }}</td><td class="center value" style="border:1px solid #000">0</td></tr>
+  </table>
+  <div style="flex:1; align-self:flex-end; text-align:right" class="small">ಮು.ಪು.ನೋ</div>
+</div>
+</div>

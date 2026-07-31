@@ -1,0 +1,142 @@
+<!-- tractor/t1: reference PDF page 11 — ತಪಾಸಣಾ ವರದಿ header page, scheme details 2.1-2.4, ಯೋಜನಾ ವೆಚ್ಚ table -->
+<div class="pg-t1">
+<style>
+  .pg-t1 { font-size: 9.6pt; line-height: 1.4; }
+  .pg-t1 table td { font-size: 9.6pt; }
+  .pg-t1 .fill.short { min-width: 22mm; }
+  .pg-t1 .hd td { border: 1px solid #000; }
+</style>
+
+<div class="bank-header">{{ bank.name_line1 }}</div>
+<div class="center" style="margin-top:1mm;">
+  ತಾಲ್ಲೂಕು <span class="fill short">{{ app.taluk }}</span>
+  &nbsp; ಜಿಲ್ಲಾ <span class="fill short">{{ app.district }}</span>
+</div>
+<div class="center" style="margin-top:1.5mm;"><span class="boxed-title">ತಪಾಸಣಾ ವರದಿ</span></div>
+<div class="center" style="margin-top:1mm;">
+  ಕೃಷಿ ಯಾಂತ್ರೀಕರಣ ಯೋಜನೆಯಲ್ಲಿ ಟ್ರ್ಯಾಕ್ಟರ್ /<br>
+  ಪವರ ಟಿಲ್ಲರ್ ಉದ್ದೇಶಕ್ಕೆ, ಸಾಲ ಮಂಜೂರಾತಿ : (ತಪಾಸಣಾ ವರದಿ)
+</div>
+
+<table class="hd" style="margin-top:1.5mm; border-collapse:collapse;">
+  <tr>
+    <td style="width:6%; border-right:none;"></td>
+    <td style="width:70%; border-left:none;">ಸಾಲದ ಅರ್ಜಿ ಸಂಖ್ಯೆ : <span class="value">{{ app.application_no }}</span></td>
+    <td rowspan="2" style="vertical-align:top;">ವರದಿ ದಿನಾಂಕ</td>
+  </tr>
+  <tr>
+    <td style="border-right:none;"></td>
+    <td style="border-left:none;">ದಿನಾಂಕ :</td>
+  </tr>
+</table>
+
+<table style="margin-top:1mm;">
+  <tr>
+    <td style="width:8mm; vertical-align:top;">1)</td>
+    <td colspan="3" style="border-bottom:1px solid #000;">ಅರ್ಜಿದಾರರ ಹೆಸರು :
+      <span class="value" style="padding-left:8mm;">{{ app.applicant_name_kn }}</span></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td style="border-bottom:1px solid #000;">ಗ್ರಾಮ : <span class="value" style="padding-left:6mm;">{{ app.village }}</span></td>
+    <td colspan="2" style="border-bottom:1px solid #000;">ಅಂಚೆ : <span class="value" style="padding-left:6mm;">{{ app.hobli }}</span></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td style="border-bottom:1px solid #000;">ಒಟ್ಟು ಹಿಡುವಳಿ : <span class="value" style="padding-left:6mm;">{{ app.total_area_acres | num }}</span></td>
+    <td colspan="2" style="border-bottom:1px solid #000;">ಸದಸ್ಯ ಸಂಖ್ಯೆ &nbsp;
+      <span class="value">"{{ computed.farmer_type_kn }}"</span></td>
+  </tr>
+  <tr>
+    <td style="vertical-align:top;">2)</td>
+    <td colspan="3" style="border-bottom:1px solid #000;">ಯೋಜನೆ ವಿವರ :
+      <span class="value" style="padding-left:8mm;">{{ scheme.name_kn }}</span></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td colspan="3">2.1 &nbsp;ಟ್ರ್ಯಾಕ್ಟರ್ : ಪವರ ಟಿಲ್ಲರ್ :</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td style="border-bottom:1px solid #000;">ತಯಾರಿಕೆ ಯಂತ್ರ ವಿವರ</td>
+    <td colspan="2" class="center value" style="border-bottom:1px solid #000;">{{ details.tractor_make }}</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td style="border-bottom:1px solid #000;">ಅಶ್ವ ಶಕ್ತಿ : &nbsp;<span class="value">{{ details.tractor_hp }}</span></td>
+    <td class="center value" style="border-bottom:1px solid #000;">{{ app.loan_amount | num }}</td>
+    <td style="border-bottom:1px solid #000;">ಮಾದರಿ &nbsp;<span class="value small">{{ details.tractor_model }}</span></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td style="border-bottom:1px solid #000;">2.2 &nbsp;ವಿತರಕರು : ತಯಾರಕರ ವಿವರ :</td>
+    <td colspan="2" class="center value" style="border-bottom:1px solid #000;">{{ details.tractor_dealer }}</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td rowspan="2" style="vertical-align:top;">2.3 &nbsp;ಟ್ರೈಲರ್ ವಿವರಗಳು
+      <span class="value" style="padding-left:4mm; border-bottom:1px solid #000;">{{ details.trailer_make }}</span><br>
+      <span style="padding-left:9mm;">(ತಯಾರಿಕೆ)</span>
+      <span class="value" style="border-bottom:1px solid #000;">{{ details.trailer_dealer }}</span></td>
+    <td style="border-bottom:1px solid #000;">ಸಾಮರ್ಥ್ಯ</td>
+    <td class="value" style="border-bottom:1px solid #000;">{{ details.trailer_capacity }}</td>
+  </tr>
+  <tr>
+    <td>(ಟನ್‌ಗಳು)</td>
+    <td><span class="fill blank short">&nbsp;</span></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td colspan="3" style="border-top:1px solid #000;">ತಯಾರಿಕೆ ವಿವರ :</td>
+  </tr>
+</table>
+
+<!-- 2.4 implements -->
+<table class="bordered" style="margin-top:1mm;">
+  <tr>
+    <th style="width:12mm;">2.4</th>
+    <th class="center">ಸಲಕರಣೆಗಳ ವಿವರಗಳು</th>
+    <th class="center" style="width:32%;">ತಯಾರಕರು</th>
+    <th class="center" style="width:20%;">ಮಾದರಿ</th>
+  </tr>
+  <tr><td class="center">1</td><td class="center">ನೇಗಿಲು</td><td class="center">---ಸ್ವಂತ ಹೊಂದಿರುತ್ತಾರೆ---</td><td></td></tr>
+  <tr><td class="center">2</td><td class="center">ಕುಂಟೆ : ರಂಟೆ</td><td class="center">---ಸ್ವಂತ ಹೊಂದಿರುತ್ತಾರೆ---</td><td></td></tr>
+  <tr><td class="center">3</td><td></td><td></td><td></td></tr>
+</table>
+
+<!-- 3 ಯೋಜನಾ ವೆಚ್ಚ -->
+<table style="margin-top:1.5mm;">
+  <tr><td style="width:8mm;">3</td><td>ಯೋಜನಾ ವೆಚ್ಚ : (ದರಪಟ್ಟಿಗಳನ್ವಯ)</td></tr>
+</table>
+<table class="bordered">
+  <tr>
+    <th class="center" style="width:12mm;">ಕ್ರಮ ಸಂಖ್ಯೆ</th>
+    <th class="center">ಯಂತ್ರೋಪಕರಣ ವಿವರ</th>
+    <th class="center" colspan="2" style="width:36%;">ಸಾಮರ್ಥ್ಯ</th>
+    <th class="center" style="width:24%;">ವೆಚ್ಚ (ರೂ. ಗಳಲ್ಲಿ)</th>
+  </tr>
+  <tr>
+    <td class="center">1</td><td>ಟ್ರ್ಯಾಕ್ಟರ್</td>
+    <td>ಅಶ್ವ ಶಕ್ತಿ</td><td class="center value">{{ details.tractor_hp }}</td>
+    <td class="right value">{{ details.tractor_quotation | num }}</td>
+  </tr>
+  <tr>
+    <td class="center" rowspan="2">2</td><td rowspan="2">ಟ್ರೈಲರ್</td>
+    <td>ಟನ್</td><td class="center value">{{ details.trailer_capacity }}</td>
+    <td class="right value" rowspan="2">{{ details.trailer_quotation | num }}</td>
+  </tr>
+  <tr><td>ಮಾದರಿ</td><td></td></tr>
+  <tr><td class="center">3</td><td>ನೇಗಿಲು</td><td>(ಫ್ರೋ)</td><td></td><td></td></tr>
+  <tr><td class="center">4</td><td>ಕಲ್ಟಿವೇಟರ್</td><td>ಟನ್ ಸಂಖ್ಯೆ</td><td></td><td></td></tr>
+  <tr><td class="center">5</td><td>ಕುಂಟೆ : ರಂಟೆ</td><td>ಉದ್ದ</td><td></td><td></td></tr>
+  <tr><td class="center">6</td><td></td><td></td><td></td><td></td></tr>
+</table>
+<table style="width:60%; margin-left:40%;">
+  <tr><td style="border:1px solid #000;">ಒಟ್ಟು ವೆಚ್ಚ</td><td style="border:1px solid #000; width:12mm;">ರೂ.</td>
+    <td class="right value" style="border:1px solid #000;">{{ details.total_quotation | num }}</td></tr>
+  <tr><td style="border:1px solid #000;">(–) ಸ್ವಂತ ಕೊಡುಗೆ</td><td style="border:1px solid #000;">ರೂ.</td>
+    <td class="right value" style="border:1px solid #000;">{{ details.total_down_payment | num }}</td></tr>
+  <tr><td style="border:1px solid #000;">ಸಾಲದ ಅವಶ್ಯಕತೆ</td><td style="border:1px solid #000;">ರೂ.</td>
+    <td class="right value" style="border:1px solid #000;">{{ details.total_loan_amount | num }}</td></tr>
+</table>
+</div>

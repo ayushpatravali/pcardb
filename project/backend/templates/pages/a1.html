@@ -1,0 +1,108 @@
+{# Page A1 — ಸಾಲದ ಅರ್ಜಿ (Loan Application, page 1). Promoted from the proven PoC. #}
+<div class="bank-header">
+  {{ bank.name_line1 }}<br>
+  {{ bank.name_line2 }}
+</div>
+
+<div style="display:flex; align-items:flex-start; margin-top:3mm">
+  <div style="width:62mm"></div>
+  <div style="flex:1; text-align:center; font-size:17pt; font-weight:bold">ಸಾಲದ ಅರ್ಜಿ</div>
+  <div style="border:1.5px solid #000; padding:1.5mm 3mm; font-size:9.5pt; width:62mm; text-align:center">
+    ವಿಶೇಷ /ಸಾಮಾನ್ಯ / ಕೃಷಿಯೇತರ /<br>ಗ್ರಾಮೀಣ / ಗೃಹ ನಿರ್ಮಾಣ ಯೋಜನೆ
+  </div>
+</div>
+
+<div class="small" style="margin-top:2mm">(ಅನ್ವಯಿಸದಿರುವುದನ್ನು ಹೊಡೆದು ಹಾಕುವುದು)</div>
+
+<div style="display:flex; justify-content:space-between; margin-top:1mm">
+  <div style="width:95mm">
+    <div style="border:1px solid #000; padding:1mm 3mm">
+      ಸಾಲದ ಅರ್ಜಿ ಸಂಖ್ಯೆ : <span class="fill">{{ app.application_no or '' }}</span><br>
+      ದಿನಾಂಕ : <span class="fill">{{ computed.application_date }}</span>
+    </div>
+    <div style="border:1px solid #000; padding:2mm 3mm; margin-top:3mm; display:flex">
+      <span>ಯೋಜನೆ :</span>
+      <span style="flex:1; text-align:center; font-weight:bold">{{ scheme.name_kn }}</span>
+    </div>
+    <div style="margin-top:2mm">ಮೊಬೈಲ್<br>ಸಂ &nbsp;&nbsp;&nbsp;<span class="value">{{ app.mobile_no }}</span></div>
+  </div>
+  <div style="width:62mm">
+    <div class="photo-box">ದರಖಾಸ್ತುದಾರರ<br>ಛಾಯಾ ಚಿತ್ರ<br>(ಫೋಟೋ)</div>
+    <table class="bordered" style="margin-top:2mm; font-size:8.5pt">
+      <tr><td class="center">ಸದಸ್ಯತ್ವ ಸಂಖ್ಯೆ</td><td class="center">ಸದಸ್ಯತ್ವ ಶುಲ್ಕ ಪಾವತಿ ಸಂಖ್ಯೆ</td><td class="center">ದಿನಾಂಕ</td></tr>
+      <tr><td style="height:8mm"></td><td></td><td></td></tr>
+    </table>
+  </div>
+</div>
+
+<div style="margin-top:3mm">
+  <table>
+    <tr>
+      <td style="width:45mm">ಗೆ,<br>ಕಾರ್ಯದರ್ಶಿ<br>{{ bank.name_short }},<br>{{ bank.place }}</td>
+      <td class="center bold">
+        {{ app.caste }} &nbsp; "{{ computed.farmer_type_kn }}"<br><br>
+        "{{ computed.borrower_type_kn }}"
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div>ಮಾನ್ಯರೇ,</div>
+<div style="margin-top:3mm; text-align:justify">
+  ನಾನು / ನಾವು ಕೆಳಗೆ ನಮೂದಿಸಿರುವ ಉದ್ದೇಶಕ್ಕೆ
+  <span class="fill">{{ app.loan_amount | num }}</span>
+  ರೂಪಾಯಿಗಳ ಸಾಲವನ್ನು ತಮ್ಮ ಬ್ಯಾಂಕಿನಿಂದ ಅಪೇಕ್ಷಿಸಿ ಕೆಳಗಿನಂತೆ ವಿವರಗಳೊಂದಿಗೆ ಈ ಸಾಲದ ಅರ್ಜಿಯನ್ನು ಸಲ್ಲಿಸಿರುತ್ತೇನೆ/ವೆ.
+</div>
+
+<div class="section">
+  <div class="section-head"><span class="num">1)</span>ಅರ್ಜಿದಾರ ವಿವರ :</div>
+  <table class="bordered grid-rows" style="margin-top:2mm; margin-left:12mm; width:calc(100% - 12mm)">
+    <tr>
+      <td style="width:28mm">ಮುಖ್ಯ ಅರ್ಜಿದಾರ</td>
+      <td style="width:18mm">ಹೆಸರು</td>
+      <td colspan="2" class="value">{{ app.applicant_name_kn }}</td>
+    </tr>
+    {% for co in parsed.co_applicants[:2] %}
+    <tr><td>ಸಹ ಅರ್ಜಿದಾರ</td><td>ಹೆಸರು</td><td colspan="2" class="value">{{ co.name }}</td></tr>
+    {% endfor %}
+    {% for _ in range(2 - parsed.co_applicants[:2] | length) %}
+    <tr><td>ಸಹ ಅರ್ಜಿದಾರ</td><td>ಹೆಸರು</td><td colspan="2"></td></tr>
+    {% endfor %}
+    <tr>
+      <td>ಗ್ರಾಮ</td>
+      <td colspan="2" class="value center">{{ app.village }}</td>
+      <td style="width:32mm">ಅಂಚೆ <span class="value">{{ app.hobli }}</span></td>
+    </tr>
+    <tr>
+      <td>ತಾಲ್ಲೂಕಾ</td>
+      <td colspan="2" class="value center">{{ app.taluk }}</td>
+      <td>ಜಿಲ್ಲೆ <span class="value">{{ app.district }}</span></td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-head"><span class="num">2)</span>ರೈತರ ವರ್ಗೀಕರಣ : &nbsp; "{{ computed.farmer_type_kn }}" &nbsp;&nbsp;&nbsp;&nbsp; ಅ) ಸಣ್ಣ / ದೊಡ್ಡ ರೈತರು</div>
+  <div style="margin-left:60mm">ಆ) ಪರಿಶಿಷ್ಟ ಜಾತಿ/ಪಂಗಡ/ಅಲ್ಪ ಸಂಖ್ಯಾತರು /ಹಿಂದುಳಿದ ವರ್ಗ</div>
+</div>
+
+<div class="section">
+  <div class="section-head"><span class="num">3)</span>ಉದ್ದೇಶಿತ ಯೋಜನೆ ವಿವರ :</div>
+  <table class="bordered grid-rows" style="margin-top:2mm">
+    <tr>
+      <th style="width:16mm">ಕ್ರಮ<br>ಸಂಖ್ಯೆ</th>
+      <th>ಸಾಲದ ಉದ್ದೇಶ</th>
+      <th style="width:32mm">ಯೋಜನಾ ವೆಚ್ಚ</th>
+      <th style="width:38mm">ಅಪೇಕ್ಷಿಸಿರುವ<br>ಸಾಲದ ಮೊತ್ತ</th>
+    </tr>
+    <tr class="center">
+      <td>1</td>
+      <td class="value center">{{ scheme.name_kn }}</td>
+      <td class="value center">{{ computed.total_project_cost | num if computed.total_project_cost is defined else '' }}</td>
+      <td class="value center">{{ app.loan_amount | num }}</td>
+    </tr>
+    <tr><td class="center">2</td><td></td><td></td><td></td></tr>
+    <tr><td class="center">3</td><td></td><td></td><td></td></tr>
+    <tr><td class="center">4</td><td></td><td></td><td></td></tr>
+  </table>
+</div>

@@ -1,0 +1,113 @@
+{# Page B2 — ಟಿಪ್ಪಣಿ continuation (items 11–14) + ಶಾಖಾ ಕಛೇರಿ ಉಪಯೋಗಕ್ಕಾಗಿ legal/technical scrutiny. Reference PDF page 8. #}
+<div class="pg-b2">
+<style>
+  .pg-b2 { font-size: 9.8pt; line-height: 1.4; }
+  .pg-b2 .row { display: flex; margin-top: 1.5mm; align-items: baseline; }
+  .pg-b2 .row .n { width: 9mm; flex: none; }
+  .pg-b2 .row .lbl { width: 62mm; flex: none; }
+  .pg-b2 .fill { min-width: 28mm; }
+  .pg-b2 .yn { width: 24mm; flex: none; }
+  .pg-b2 .box5 td { border: 1px solid #000; padding: 1mm 2mm; vertical-align: top; }
+  .pg-b2 .assets th, .pg-b2 .assets td { border: 1px solid #000; height: 6mm; font-size: 9pt; }
+  .pg-b2 .ynbox { border: 1px solid #000; padding: 0.5mm 5mm; font-weight: bold; }
+</style>
+
+<div class="row"><span class="n">11)</span><span class="lbl">12 ವರ್ಷದ ಪರಭಾರ ದೃಢೀಕರಣ</span>
+  <span>ದಿನಾಂಕ : <span class="fill blank" style="min-width:34mm"></span> ರಿಂದ <span class="fill blank" style="min-width:14mm"></span> ವರೆಗೆ <span class="fill blank" style="min-width:20mm"></span></span></div>
+<div class="row"><span class="n">12)</span><span class="lbl">ಭದ್ರತೆಗೆ ನೀಡಿದ ಆಸ್ತಿ ಋಣಭಾರದಿಂದ<br>ರಹಿತವಾಗಿದೆಯೇ ?</span>
+  <span class="yn">ಹೌದು/ಇಲ್ಲ</span></div>
+<div class="row"><span class="n">13)</span><span class="lbl">ವ್ಯವಹಾರವಿದ್ದಲ್ಲಿ ದಾಖಲೆ ಲಗತ್ತಿಸಿದೆಯೇ ?</span>
+  <span style="margin-left:24mm">ಪುಟ ಸಂಖ್ಯೆ <span class="fill blank" style="min-width:40mm"></span></span></div>
+<div class="row"><span class="n">14)</span><span class="lbl">ಪ್ರಾಥಮಿಕ ಬ್ಯಾಂಕಿನ ಠರಾವಿನ</span>
+  <span>ದಿನಾಂಕ : <span class="fill blank" style="min-width:40mm"></span> ಮೊತ್ತ &nbsp;<span class="fill">{{ app.loan_amount | num }}</span></span></div>
+<div class="right" style="margin-top:2mm">
+  ವ್ಯವಸ್ಥಾಪಕರು (ಹೆಸರು / ಸಹಿ)<br>
+  ಪ್ರಾ.ಸ.ಕೃ.ಗ್ರಾ.ಬ್ಯಾಂಕ್ ನಿ &nbsp;<span class="value">{{ app.branch_name }}</span>
+</div>
+
+<div class="center bold" style="margin-top:3mm">ಶಾಖಾ ಕಛೇರಿ ಉಪಯೋಗಕ್ಕಾಗಿ<br>ದರಖಾಸ್ತಿನ / ಯೋಜನೆಯ ಕಾನೂನು / ತಾಂತ್ರಿಕಾರ್ಥಿಕ ವಿಶ್ಲೇಷಣಾ ವರದಿ</div>
+<div style="display:flex; justify-content:space-between; margin-top:1.5mm">
+  <span>ಕಾನೂನು ಅಂಶಗಳು :</span>
+  <span class="small">(ಅನ್ವಯಿಸದಿರುವುದನ್ನು ಹೊಡೆದು ಹಾಕುವುದು)</span>
+</div>
+
+<div class="row"><span class="n">1</span><span class="lbl">ಸಾಲದ ಅರ್ಜಿ ಸರಿಯಾಗಿ ಭರ್ತಿ ಮಾಡಿದೆಯೇ</span>
+  <span class="yn">ಹೌದು/ಇಲ್ಲ</span><span>ಪುಟ ಸಂಖ್ಯೆ <span class="fill blank" style="min-width:45mm"></span></span></div>
+<div class="row"><span class="n">2</span><span class="lbl">ಭಾವಚಿತ್ರ ಲಗತ್ತಿಸಿದೆಯೇ ?</span>
+  <span class="yn">ಹೌದು/ಇಲ್ಲ</span></div>
+<div class="row"><span class="n">3</span><span class="lbl">ವಂಶವೃಕ್ಷ ಲಗತ್ತಿಸಿದ್ದು-ಸಮರ್ಪಕ ದೃಢೀಕರಣ<br>ಮಾಡಲಾಗಿದೆಯೇ</span>
+  <span class="yn">ಹೌದು/ಇಲ್ಲ</span><span>ಪುಟ ಸಂಖ್ಯೆ <span class="fill blank" style="min-width:45mm"></span></span></div>
+<div class="row"><span class="n">4</span><span class="lbl">ರೈತರ ವರ್ಗೀಕರಣ ಸರಿಯಾಗಿದೆಯೇ ?</span>
+  <span class="yn">ಹೌದು/ಇಲ್ಲ</span><span>ಸಣ್ಣ / ದೊಡ್ಡ ರೈತ</span></div>
+
+<table class="box5" style="margin-top:1.5mm">
+  <tr>
+    <td style="width:8mm; border-right:none" rowspan="4">5</td>
+    <td style="width:64mm">ಭದ್ರತೆಗೆ ನೀಡಿರುವ ಜಮೀನು / ಆಸ್ತಿಯ ಹಕ್ಕು<br>ಬಂದಿರುವ ವಿಧಾನ</td>
+    <td colspan="3">ಕ್ರಯ / ವಿಭಾಗ / ದಾನ / ಪಿತ್ರಾರ್ಜಿತ<br>ಅನುದಾನ / ಮರಣ ಶಾಸನ / ಗುತ್ತಿಗೆ</td>
+  </tr>
+  <tr>
+    <td>ಪಹಣಿ ಪತ್ರಿಕೆಗಳ ಪುಟ ಸಂಖ್ಯೆ :</td>
+    {% for p in parsed.land_parcels[:3] %}<td class="center value" style="width:26mm">{{ p.survey_no }}</td>{% endfor %}
+    {% for _ in range(3 - parsed.land_parcels[:3] | length) %}<td style="width:26mm"></td>{% endfor %}
+  </tr>
+  <tr>
+    <td>ಹಕ್ಕಿನ ಪತ್ರಿಕೆ (ಎಂ.ಆರ್) ಪುಟ ಸಂಖ್ಯೆ :</td>
+    <td class="center value">0</td><td class="center value">0</td><td></td>
+  </tr>
+  <tr>
+    <td>ಮೂಲ ಕ್ರಯ ಪತ್ರಗಳ ಪುಟ ಸಂಖ್ಯೆ :</td>
+    <td class="center value">0</td><td></td><td></td>
+  </tr>
+</table>
+
+<div style="margin-top:1.5mm">6) &nbsp;ಅ) ಆಧಾರಕ್ಕೊಳಪಡುವ ಆಸ್ತಿಯ ವಿವರ :</div>
+<table class="assets" style="margin-top:1mm">
+  <tr class="center">
+    <th style="width:26mm">ಜಮೀನು ಕ್ಷೇತ್ರ</th>
+    <th style="width:26mm">ನಿವೇಶನ ಅಳತೆ</th>
+    <th style="width:26mm">ಮನೆ ಅಳತೆ</th>
+    <th style="width:20mm">ಮೌಲ್ಯ</th>
+    <th style="width:32mm">ದೃಢೀಕರಿಸಿದವರು</th>
+    <th>ಪುಟ ಸಂಖ್ಯೆ</th>
+  </tr>
+  <tr class="center">
+    <td class="value" style="font-style:italic; font-size:11pt">{{ app.total_area_acres | num }}</td>
+    <td></td><td></td>
+    <td class="value">0</td>
+    <td></td><td></td>
+  </tr>
+</table>
+
+<div class="row" style="margin-top:1.5mm"><span class="n"></span>
+  <span style="flex:1">ಆ) ನಿಯಮದಂತೆ – ಉಪನೋಂದಣಾಧಿಕಾರಿಗಳಲ್ಲಿನ ದಾಖಲೆಯನ್ವಯ ಹಾಗೂ<br>ಅಭಿಯಂತರರಿಂದ ದೃಢೀಕರಿಸಲಾಗಿದೆಯೇ ?</span>
+  <span class="yn">ಹೌದು / ಇಲ್ಲ</span><span class="ynbox">ಇಲ್ಲ</span></div>
+
+<div class="row"><span class="n">7</span>
+  <span style="flex:1">ಇತರೆ ಹಕ್ಕುಗಳ ಬಾಧ್ಯತೆ : ಬಾಧಕವಾಗಿಲ್ಲ / ಬಾಧಕವಾಗಿವೆ.</span>
+  <span class="yn">ಹೌದು / ಇಲ್ಲ</span><span class="ynbox">ಇಲ್ಲ</span></div>
+<div style="margin-left:14mm">
+  <div>ಅ) ಪಹಣಿಯಂತೆ ಇರುವ ಋಣಗಳು &nbsp;<span class="fill" style="min-width:20mm">0</span></div>
+  <div>ಆ) ಪರಭಾರೆ ಪತ್ರದಂತೆ ಇರುವ ಋಣಗಳು &nbsp;<span class="fill" style="min-width:20mm">0</span></div>
+  <div>ಇ) ಸಾಲ ಇಲ್ಲದ / ಸುಸ್ತಿ ಇಲ್ಲದ ದೃಢೀಕರಣ ಪತ್ರ : &nbsp;<span class="fill" style="min-width:20mm">0</span></div>
+  <div style="margin-left:8mm">1) ವ್ಯವಸಾಯ ಸೇವಾ ಸಹಕಾರ ಸಂಘ</div>
+  <div style="margin-left:8mm">2) ವಾಣಿಜ್ಯ ಬ್ಯಾಂಕು &nbsp;<span class="fill" style="min-width:20mm">0</span></div>
+  <div style="margin-left:8mm">3) ಗ್ರಾಮೀಣ ಬ್ಯಾಂಕು &nbsp;<span class="fill" style="min-width:20mm">0</span></div>
+  <div style="margin-left:8mm">4) ಇತರೆ ಸಂಘ / ಸಂಸ್ಥೆ &nbsp;<span class="fill" style="min-width:20mm">0</span></div>
+  <div>ಈ) ವ್ಯವಹಾರವೇನಾದರೂ ಇದೆಯೇ ? ವಿವರಿಸಿ</div>
+  <div style="display:flex; justify-content:space-between; border-top:1px solid #000; margin-top:1mm; padding-top:0.5mm">
+    <span>ಉ) ಈ ಬಗ್ಗೆ ಪೂರಕ ದಾಖಲೆಗಳು ಒದಗಿಸಲಾಗಿದೆಯೇ ?</span>
+    <span class="ynbox">ಹೌದು</span>
+  </div>
+  <div class="right" style="border-top:1px solid #000; margin-top:0.5mm; padding-top:0.5mm">ಹೌದು / ಇಲ್ಲ</div>
+</div>
+
+<div class="row" style="border-top:1px solid #000; padding-top:1mm"><span class="n">8</span>
+  <span>ಪ್ರಾ. ಬ್ಯಾಂಕಿನ ನಿರ್ದೇಶಕ ಮಂಡಳ ಠರಾವು &nbsp;<span class="fill" style="min-width:18mm">0</span></span></div>
+<div class="row"><span class="n"></span>
+  <span style="flex:1">ರೂ. &nbsp;<span class="fill">{{ app.loan_amount | num }}</span> <span class="fill blank" style="min-width:22mm"></span></span>
+  <span>ಗಳಿಗೆ ಇದ್ದು ಪುಟ <span class="fill blank" style="min-width:24mm"></span> ರಲ್ಲಿ</span></div>
+<div class="row"><span class="n"></span>
+  <span style="flex:1">ದಾಖಲೆ ಲಗತ್ತಿಸಿ</span>
+  <span class="right">ಹೌದು / ಇಲ್ಲ</span></div>
+</div>

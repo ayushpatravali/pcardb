@@ -1,0 +1,59 @@
+{# Page A3 — ಸಾಲದ ಅರ್ಜಿ ಪುಟ 3: ವಿಭಾಗ 8) 9) 10) + ದೃಢೀಕರಣ. Transcribed from Vasant Malli reference PDF p.3. #}
+<div class="pg-a3">
+
+<div class="section" style="margin-top:0">
+  <div class="section-head"><span class="num">8)</span>ಅರ್ಜಿದಾರರು ಈಗಾಗಲೇ ಉದ್ದಿಮೆ ಹೊಂದಿದ್ದಲ್ಲಿ ವಿವರ &nbsp;:</div>
+  <table class="bordered small" style="margin-top:1.5mm">
+    <tr class="center">
+      <th style="width:32mm">ಉದ್ದಿಮೆ ಹೆಸರು</th>
+      <th style="width:18mm">ಸ್ಥಳ</th>
+      <th style="width:26mm">ಹೂಡಿರುವ<br>ಬಂಡವಾಳ</th>
+      <th style="width:32mm">ವಾರ್ಷಿಕ ಉತ್ಪಾದನಾ<br>ಸಾಮರ್ಥ್ಯ</th>
+      <th style="width:28mm">ವಾರ್ಷಿಕ ನಿವ್ವಳ<br>ಆದಾಯ</th>
+      <th>ಸಾಲ ಪಡೆದಿದ್ದಲ್ಲಿ<br>ಸಂಸ್ಥೆಯ ಹೆಸರು</th>
+    </tr>
+    {% for _ in range(6) %}
+    <tr style="height:6.5mm"><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+<div class="section" style="margin-top:6mm">
+  <div class="section-head"><span class="num">9)</span>ಲಗತ್ತಿಸಿರುವ ದಾಖಲೆಗಳು :</div>
+  <div style="margin-left:12mm; line-height:1.9">
+    <div style="display:flex"><div style="flex:1">1 &nbsp;ವಂಶ ವೃಕ್ಷ</div><div style="flex:1; text-align:right; padding-right:14mm">2 &nbsp;ಹಿಡುವಳಿ ಪ್ರಮಾಣ ಪತ್ರ</div></div>
+    <div style="display:flex"><div style="flex:1">3 &nbsp;ಪಹಣಿ ಪತ್ರಿಕೆಗಳು</div><div style="flex:1; text-align:right; padding-right:14mm">4 &nbsp;ಹಕ್ಕಿನ ಪತ್ರಿಕೆಗಳು</div></div>
+    <div style="display:flex"><div style="flex:1">5 &nbsp;ಋಣಭಾರ ಪ್ರಮಾಣ ಪತ್ರಗಳು (12 ವರ್ಷಗಳಿಗೆ)</div><div style="flex:1; text-align:right; padding-right:14mm">6 &nbsp;ಬೇ ಬಾಕಿ ಪ್ರಮಾಣ ಪತ್ರಗಳು</div></div>
+    <div style="display:flex"><div style="flex:1">7 &nbsp;ನಿವೇಶನ / ಕಟ್ಟಡ ದಾಖಲೆಗಳು</div><div style="flex:1; text-align:right; padding-right:14mm">8 &nbsp;ಮೂಲ ಕ್ರಯ ಪತ್ರಗಳು</div></div>
+    <div>9 &nbsp;ಯೋಜನಾ ವರದಿ / ಸೂಕ್ಷ್ಮ ವರದಿ / ಪರವಾನಗಿ ಪತ್ರ / ವಿದ್ಯುತ್ ಮಂಜೂರಿ ಪತ್ರ</div>
+    <div>10 ನಿರಾಪೇಕ್ಷಣಾ ಪತ್ರ / ಒಪ್ಪಂದ / ಕರಾರು ಪತ್ರ, ನಕ್ಷೆ ಅಂದಾಜು ಪತ್ರಿಕೆಗಳು</div>
+    <div>11 ಇತರೆ ಪೂರಕ ದಾಖಲೆಗಳು</div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:6mm">
+  <div style="display:flex">
+    <div class="section-head" style="width:60mm"><span class="num">10)</span>ದೃಢೀಕರಣ :</div>
+    <div class="value" style="flex:1; text-align:center">{{ app.loan_amount | num }}</div>
+    <div style="width:40mm"></div>
+  </div>
+  <ol style="margin:1.5mm 0 0 12mm; padding-left:5mm; text-align:justify; line-height:1.7">
+    <li>ನಾನು / ನಾವು ಬ್ಯಾಂಕಿನ ಜಾರಿಯಲ್ಲಿರುವ ಕಾನೂನು ಮತ್ತು ಉಪನಿಯಮಗಳು ಅಲ್ಲದೆ ಮುಂದೆ ಜಾರಿಗೆ ಬರಬಹುದಾದ ನಿಯಮ / ಷರತ್ತುಗಳಿಗೆ ಬದ್ಧನಾಗಿದ್ದೇನೆ/ವೆ.</li>
+    <li>ಈ ಸಾಲದ ಅರ್ಜಿಯಲ್ಲಿ ನಾನು / ನಾವು ನೀಡಿರುವ ವಿವರಗಳು ನನಗೆ ತಿಳಿದ ಮಟ್ಟಿಗೆ ನಿಜವಾಗಿರುತ್ತವೆ. ಎಂದು ಖಚಿತಪಡಿಸುತ್ತೇನೆ/ವೆ</li>
+    <li>ನಾನು / ನಾವು ಬ್ಯಾಂಕಿನಿಂದ ಪಡೆಯುವ ಸಾಲಕ್ಕೆ ವೈಯಕ್ತಿಕ / ಜಂಟಿಯಾಗಿ ಜವಾಬ್ದಾರರಾಗಿದ್ದು ಪಡೆದ ಉದ್ದೇಶಕ್ಕೆನೆ ಉಪಯೋಗಿಸುತ್ತೇನೆ/ವೆ ತಪ್ಪಿದಲ್ಲಿ ಕಾನೂನು ಕ್ರಮ ಜರುಗಿಸಲು ಒಪ್ಪಿರುತ್ತೇನೆ/ವೆ</li>
+    <li>ಆಧಾರಕ್ಕೊಳಪಡಲಿರುವ ಆಸ್ತಿಗೆ ನಾನು / ನಾವು ಸ್ವಂತ ಹಕ್ಕು ಹೊಂದಿದ್ದು, ಯಾವುದೇ ರೀತಿ ಕಾನೂನು ತೊಡಕಿಗೆ ನಾನು / ನಾವು ಜವಾಬ್ದಾರರಾಗಿರುತ್ತೇನೆ/ವೆ</li>
+    <li>ನಾನು / ನಾವು ಭದ್ರತೆಗೆ ನೀಡುತ್ತಿರುವ ಜಮೀನಿಗೆ / ಆಸ್ತಿಗೆ ಸಂಬಂಧಪಟ್ಟಂತೆ ನ್ಯಾಯಾಲಯದಲ್ಲಿ ಯಾವುದೇ ರೀತಿಯ ವ್ಯಾಜ್ಯವಿರುವುದಿಲ್ಲವೆಂದು ಪ್ರಮಾಣೀಕರಿಸುತ್ತೇನೆ. ಹಾಗೂ ನಾನು / ನಾವು ನೀಡಿರುವ ಮಾಹಿತಿ ಸುಳ್ಳೆಂದಾದರೆ ನನ್ನ / ನಮ್ಮ ಮೇಲೆ ಕ್ರಿಮಿನಲ್ ಹಾಗೂ ಸಿವಿಲ್ ಮೊಕದ್ದಮೆಯನ್ನು ಹೂಡಲು ಬ್ಯಾಂಕು ಅಧಿಕಾರ ಹೊಂದಿರುತ್ತದೆ, ಮತ್ತು ಈ ಕುರಿತು ಆಗುವ ನಷ್ಟಗಳಿಗೆ ನಾನೇ ಜವಾಬ್ದಾರರಾಗಿರುತ್ತೇನೆಂದೂ ಈ ಮೂಲಕ ಪ್ರಮಾಣೀಕರಿಸುತ್ತೇನೆ/ವೆ</li>
+  </ol>
+</div>
+
+<div style="margin-top:8mm">
+  <div>ಸ್ಥಳ : &nbsp;&nbsp;&nbsp;&nbsp; <span class="value">{{ app.branch_name }}</span></div>
+  <div style="display:flex; margin-top:2mm">
+    <div style="flex:1">ದಿನಾಂಕ : &nbsp; <span class="value small">{{ computed.application_date }}</span></div>
+    <div style="flex:1; text-align:right">ಅರ್ಜಿದಾರನ / ಳ ರುಜು/ ಹೆಬ್ಬೆಟ್ಟಿನ ಗುರುತು</div>
+  </div>
+</div>
+
+<div class="right" style="margin-top:22mm">ಸಹ ಅರ್ಜಿದಾರನ / ಳ ರುಜು/ ಹೆಬ್ಬೆಟ್ಟಿನ ಗುರುತು</div>
+
+</div>

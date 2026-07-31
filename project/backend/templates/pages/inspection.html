@@ -1,0 +1,92 @@
+{# Page 19 — ಅನುಬಂಧ – 2 : ಜಮೀನಿನ ಮೌಲ್ಯಮಾಪನ (ಭದ್ರತೆ) ಕುರಿತು ಪ್ರಮಾಣ ಪತ್ರ
+   (Annexure-2: land valuation / security certificate).
+   Transcribed from Vasant Malli reference PDF page 19.
+   Valuation figures (per-acre rate, land value) are hand-entered → blank slots. #}
+<div class="pg-insp">
+<style>
+  /* keep the dashed underline hugging the text instead of dropping a half-line */
+  .pg-insp .fill { line-height: 1.1; }
+</style>
+
+<div class="bank-header" style="font-size:14pt">
+  ದಿ. ಗೋಕಾಕ ತಾಲೂಕಾ ಪ್ರಾಥಮಿಕ ಸಹಕಾರಿ ಕೃಷಿ ಮತ್ತು ಗ್ರಾಮೀಣ<br>
+  ಅಭಿವೃದ್ಧಿ ಬ್ಯಾಂಕ ನಿಯಮಿತ, ಗೋಕಾಕ
+</div>
+
+<div class="right" style="margin-top:1mm">ಅನುಬಂಧ – 2</div>
+
+<div class="center" style="margin-top:2mm">ಜಮೀನಿನ ಮೌಲ್ಯಮಾಪನ (ಭದ್ರತೆ) ಕುರಿತು ಪ್ರಮಾಣ ಪತ್ರ</div>
+
+<div style="margin-top:4mm">ಸಾಲದ ಅರ್ಜಿ ನಂ. ಬಿ.ಎಲ್.ಎ/ <span class="fill blank" style="min-width:25mm"></span></div>
+
+<div style="margin-top:4mm; text-align:justify">
+  ಅರ್ಜಿದಾರರಾದ ಶ್ರೀ : ಶ್ರೀಮತಿ : <span class="fill wide">{{ app.applicant_name_kn }}</span><br>
+  ಗ್ರಾಮ : <span class="fill">{{ app.village }}</span>
+  &nbsp;ಅಂಚೆ&nbsp; <span class="fill">{{ app.hobli }}</span>
+  &nbsp;ಹೋಬಳಿ&nbsp; <span class="fill" style="min-width:28mm">&nbsp;</span><br>
+  ತಾಲ್ಲೂಕ : <span class="fill">{{ app.taluk }}</span> ರವರ ಸಾಲಕ್ಕೆ ಕೆಳಕಂಡಂತೆ ಜಮೀನು ಆಧಾರಕ್ಕೆ ಒದಗಿಸಿದ್ದು, ಇವುಗಳ ಮೌಲ್ಯ<br>
+  ರೂ. <span class="fill" style="min-width:30mm">&nbsp;</span> ಗಳಷ್ಟಾಗಲಿದೆ.
+</div>
+
+<table class="bordered" style="margin-top:3mm">
+  <tr class="center">
+    <th rowspan="2" style="width:12mm">ಕ್ರ.ಸಂ</th>
+    <th rowspan="2" style="width:42mm">ಗ್ರಾಮ</th>
+    <th rowspan="2" style="width:22mm">ಸರ್ವೆ<br>ನಂಬರ</th>
+    <th colspan="2">ಕ್ಷೇತ್ರ</th>
+    <th rowspan="2" style="width:22mm">ನೀರಾವರಿ</th>
+    <th rowspan="2" style="width:22mm">ಬೆಳೆಗಳ<br>ವಿವರ</th>
+    <th rowspan="2">ಜಮೀನಿನ ಮೌಲ್ಯ</th>
+  </tr>
+  <tr class="center">
+    <th style="width:16mm">ಎಕರೆ</th>
+    <th style="width:14mm">ಗುಂಟೆ</th>
+  </tr>
+  {% for p in parsed.land_parcels[:8] %}
+  <tr style="height:7mm">
+    <td>{{ loop.index }})</td>
+    <td class="center bold">{{ p.village }}</td>
+    <td class="center bold">{{ p.survey_no }}</td>
+    <td class="center bold">{{ '%.2f' | format(p.acres) if p.acres is not none else '' }}</td>
+    <td class="center bold">{{ p.guntas or '' }}</td>
+    <td class="center small">{% if loop.first %}{{ app.irrigation_source }}{% endif %}</td>
+    <td class="center bold">{% if loop.first and parsed.crops %}{{ parsed.crops[0].crop_name }}{% endif %}</td>
+    <td></td>
+  </tr>
+  {% endfor %}
+  {% for i in range(8 - parsed.land_parcels[:8] | length) %}
+  <tr style="height:7mm">
+    <td>{{ parsed.land_parcels[:8] | length + loop.index }})</td>
+    <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+  </tr>
+  {% endfor %}
+  <tr style="height:7mm">
+    <td colspan="3" class="center">ಒಟ್ಟು</td>
+    <td class="center bold">{{ '%.2f' | format(app.total_area_acres) if app.total_area_acres is not none else '' }}</td>
+    <td class="center bold">{{ app.total_guntas or '' }}</td>
+    <td></td><td></td><td></td>
+  </tr>
+</table>
+
+<div style="margin-top:3mm; text-align:justify; text-indent:10mm">
+  ಮೇಲ್ಕಂಡ ಆಸ್ತಿಗಳ ಮೌಲ್ಯವನ್ನು ಸ್ಥಳ ಪರಿಶೀಲನೆ, ಮತ್ತು ವಿವರಣೆಯಿಂದ
+  <span class="fill blank" style="min-width:25mm"></span> ಖಚಿತ ಪಡಿಸಿಕೊಂಡಿದ್ದು
+  ಪ್ರಮಾಣಿಕವಾಗಿರುವುದೆಂದು ದೃಢೀಕರಿಸುತ್ತೇನೆ. ಹಾಗೂ ಸದರಿ ಮೌಲ್ಯವು ಮೇ:ಉಪನೋಂದಣಾಧಿಕಾರಿಗಳ ಮೌಲ್ಯ
+  ದೃಢೀಕರಣ ಪಟ್ಟಿಯಂತೆ ಪ್ರತಿ ಎಕರೆಗೆ <span class="fill" style="min-width:25mm">&nbsp;</span> ರಂತೆ
+  ಒಟ್ಟು ಮೌಲ್ಯವು <span class="fill" style="min-width:25mm">&nbsp;</span> ರೂ ಆಗುತ್ತದೆ ಅಂತಾ ದೃಢೀಕರಿಸಿದೆ.
+</div>
+
+<div style="display:flex; justify-content:space-between; margin-top:14mm">
+  <div>
+    ಹೆಸರು <span class="fill blank" style="min-width:45mm"></span> (ಸಹಿ)<br>
+    <div style="margin-left:12mm">(ವಲಯ ಮೇಲ್ವಿಚಾರಕರು)</div>
+  </div>
+  <div>
+    ಹೆಸರು <span class="fill blank" style="min-width:45mm"></span> (ಸಹಿ)<br>
+    <div style="margin-left:12mm">(ವಲಯ ಮೇಲ್ವಿಚಾರಕರು)<br>
+    <div style="margin-left:14mm">(ಮೊಹರು)</div></div>
+  </div>
+</div>
+
+<div class="center" style="margin-top:10mm">ಪ್ರಾ.ಸ.ಕೃ ಮತ್ತು ಗ್ರಾ.ಅ.ಬ್ಯಾಂಕ ನಿ., {{ bank.place }}</div>
+</div>

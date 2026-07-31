@@ -1,0 +1,139 @@
+{# Page A2 — ಸಾಲದ ಅರ್ಜಿ ಪುಟ 2: ವಿಭಾಗ 4) 5) 6) 7). Transcribed from Vasant Malli reference PDF p.2. #}
+<style>
+  .pg-a2 { line-height: 1.35; }
+  .pg-a2 td, .pg-a2 th { padding: 1px 4px; }
+  .pg-a2 .section { margin-top: 2mm; }
+</style>
+<div class="pg-a2">
+
+<div class="section" style="margin-top:0">
+  <div class="section-head"><span class="num">4)</span>ಅರ್ಜಿದಾರರ ಹಿಡುವಳಿ ಗ್ರಾಮ : &nbsp;&nbsp; <span class="value">{{ app.village }}</span></div>
+  <table class="bordered" style="margin-top:1mm">
+    <tr>
+      <td style="border-bottom:none; padding-top:2mm">
+        ಖುಷ್ಕಿ : <span class="fill" style="min-width:32mm">&nbsp;</span> ಎಕರೆ, &nbsp;
+        ನೀರಾವರಿ <span class="fill" style="min-width:26mm">{{ '%.2f' | format(app.total_area_acres) }}</span> ಎಕರೆ, &nbsp;
+        ತೋಟ <span class="fill" style="min-width:32mm">&nbsp;</span> ಎಕರೆ
+      </td>
+    </tr>
+    <tr>
+      <td style="border-top:none; padding-bottom:2mm" class="center">
+        ಒಟ್ಟು <span class="fill" style="min-width:26mm">{{ '%.2f' | format(app.total_area_acres) }}</span> ಎಕರೆ
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-head"><span class="num">5)</span>ಆಧಾರಕ್ಕೊಳಪಡುವ ಆಸ್ತಿಯ ವಿವರ :</div>
+  <div style="margin-left:12mm">ಅ) ಜಮೀನು</div>
+  <table class="bordered small" style="margin-top:1mm">
+    <tr class="center">
+      <th style="width:13mm">ಕ್ರಮ<br>ಸಂಖ್ಯೆ</th>
+      <th>ಗ್ರಾಮ</th>
+      <th style="width:28mm">ಸರ್ವೆ<br>ನಂಬರು</th>
+      <th style="width:28mm">ವಿಸ್ತೀರ್ಣ<br>ಎಕರೆ / ಗುಂಟೆ</th>
+      <th style="width:26mm">ಖುಷ್ಕಿ / ತೋಟ<br>ನೀರಾವರಿ</th>
+      <th style="width:24mm">ಹಕ್ಕುದಾರಿಕೆ</th>
+    </tr>
+    {% for p in parsed.land_parcels[:6] %}
+    <tr class="center" style="height:6mm">
+      <td class="value">{{ loop.index }}</td>
+      <td class="value">{{ p.village }}</td>
+      <td class="value">{{ p.survey_no }}</td>
+      <td class="value">{{ '%.2f' | format(p.acres) }}</td>
+      <td></td>
+      <td></td>
+    </tr>
+    {% endfor %}
+    {% for _ in range(6 - parsed.land_parcels[:6] | length) %}
+    <tr style="height:6mm"><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    {% endfor %}
+    <tr class="center" style="height:6mm">
+      <td></td>
+      <td class="bold">ಒಟ್ಟು</td>
+      <td></td>
+      <td class="value">{{ '%.2f' | format(app.total_area_acres) }}</td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <div style="margin-left:12mm">ಆ) ನಿವೇಶನ :</div>
+  <table class="bordered small" style="margin-top:1mm">
+    <tr class="center">
+      <th style="width:22mm">ಗ್ರಾಮ</th>
+      <th style="width:28mm">ಖಾನೇಷುಮಾರಿ<br>ಸಂಖ್ಯೆ</th>
+      <th style="width:24mm">ಅಳತೆ</th>
+      <th style="width:22mm">ಗ್ರಾಮ</th>
+      <th style="width:28mm">ಖಾನೇಷುಮಾರಿ<br>ಸಂಖ್ಯೆ</th>
+      <th>ಅಳತೆ/ತರಹ</th>
+    </tr>
+    {% for _ in range(4) %}
+    <tr style="height:6mm"><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-head"><span class="num">6)</span>ಬ್ಯಾಂಕಿನ ಸಾಲದಿಂದ ಅಭಿವೃದ್ಧಿ ಹೊಂದಲಿರುವ ಆಸ್ತಿಯ ವಿವರ :</div>
+  <table class="bordered small" style="margin-top:1mm">
+    <tr class="center">
+      <th style="width:13mm">ಕ್ರಮ<br>ಸಂಖ್ಯೆ</th>
+      <th style="width:42mm">ಗ್ರಾಮ</th>
+      <th style="width:28mm">ಸರ್ವೆ ನಂಬರು</th>
+      <th style="width:26mm">ವಿಸ್ತೀರ್ಣ<br>ಎಕರೆ / ಗುಂಟೆ</th>
+      <th rowspan="7" style="vertical-align:top; padding:2mm 3mm">
+        <div class="center" style="font-weight:bold">ಕೈಗಾರಿಕೆ ಸ್ಥಾಪಿಸುವ / ಮನೆ ನಿರ್ಮಿಸುವ<br>ಸ್ಥಳದ ವಿವರ</div>
+        <div style="margin-top:3mm; text-align:right">ಗ್ರಾಮ : <span class="fill" style="min-width:26mm">&nbsp;</span></div>
+        <div style="margin-top:2mm; text-align:right">ಸರ್ವೆ ನಂಬರು : <span class="fill" style="min-width:26mm">&nbsp;</span></div>
+        <div style="margin-top:2mm; text-align:right">ಖಾನೇಷುಮಾರಿ ಸಂಖ್ಯೆ : <span class="fill" style="min-width:26mm">&nbsp;</span></div>
+      </th>
+    </tr>
+    {% for p in parsed.land_parcels[:5] %}
+    <tr class="center" style="height:6mm">
+      <td class="value">{{ loop.index }}</td>
+      <td class="value">{{ p.village }}</td>
+      <td class="value">{{ p.survey_no }}</td>
+      <td class="value">{{ '%.2f' | format(p.acres) }}</td>
+    </tr>
+    {% endfor %}
+    {% for _ in range(5 - parsed.land_parcels[:5] | length) %}
+    <tr style="height:6mm"><td></td><td></td><td></td><td></td></tr>
+    {% endfor %}
+    <tr class="center" style="height:6mm">
+      <td></td>
+      <td class="bold">ಒಟ್ಟು</td>
+      <td></td>
+      <td class="value">{{ '%.2f' | format(app.total_area_acres) }}</td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-head"><span class="num">7)</span>ಅರ್ಜಿದಾರರು ಪ್ರಾಥಮಿಕ ಬ್ಯಾಂಕು / ಹಣಕಾಸು ಸಂಸ್ಥೆಗಳಲ್ಲಿ ಪಡೆದಿರುವ ಸಾಲಗಳ ವಿವರ :</div>
+  <table class="bordered small" style="margin-top:1.5mm">
+    <tr class="center">
+      <th style="width:13mm">ಕ್ರಮ<br>ಸಂಖ್ಯೆ</th>
+      <th style="width:32mm">ಸಂಸ್ಥೆಯ ಹೆಸರು</th>
+      <th style="width:22mm">ಉದ್ದೇಶ</th>
+      <th style="width:22mm">ಸಾಲದ ಮೊತ್ತ</th>
+      <th style="width:24mm">ಸಾಲ ಬಾಕಿ ಮೊತ್ತ</th>
+      <th style="width:16mm">ಕಂತಿನ<br>ಮೊತ್ತ</th>
+      <th>ಸುಸ್ತಿಯಾಗಿದೆಯೆ</th>
+    </tr>
+    <tr style="height:6mm"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr>
+      <td colspan="7" class="center" style="padding:1.5mm 4mm">
+        ಸದರಿ ಅರ್ಜಿದಾರರಿಗೆ ಹಾಗೂ ಆಧಾರಕ್ಕೊಳಪಡುವ ಜಮೀನಿನ ಗ್ರಾಮಕ್ಕೆ ಸಂಬಂಧಿಸಿದ ಸೊಸಾಯಿಟಿ ಮತ್ತು<br>
+        ಬ್ಯಾಂಕುಗಳಿಂದ ದೃಢೀಕರಣ ಪತ್ರ ಪಡೆದು ಲಗತ್ತಿಸಿದೆ.
+      </td>
+    </tr>
+    <tr style="height:6mm"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr style="height:6mm"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+  </table>
+</div>
+
+</div>

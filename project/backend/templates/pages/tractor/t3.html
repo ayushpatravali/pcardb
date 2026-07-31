@@ -1,0 +1,76 @@
+<div class="pg-t3">
+<style>
+  .pg-t3 table.aya { table-layout: fixed; }
+  .pg-t3 table.aya th, .pg-t3 table.aya td { font-size: 9.5pt; text-align: center; }
+  .pg-t3 .c1 { width: 8mm; }  .pg-t3 .c2 { width: 13mm; }
+  .pg-t3 .c3 { width: 30mm; } .pg-t3 .c4 { width: 24mm; }
+  .pg-t3 .c5 { width: 20mm; } .pg-t3 .c6 { width: 17mm; }
+  .pg-t3 .c7 { width: 20mm; }
+  .pg-t3 .lefttext { text-align: left !important; }
+  .pg-t3 .notes { font-size: 9.5pt; margin-top: 3mm; }
+  .pg-t3 .notes td { vertical-align: top; padding: 0 4px; }
+</style>
+
+<div class="bold" style="margin-bottom:2mm;"><span style="display:inline-block;width:10mm;">6</span>ಕ್ಷೇತ್ರ ಆಯವ್ಯ ತಖ್ತೆ :</div>
+
+<table class="bordered aya">
+  <tr>
+    <th class="c1">ಕ್ರಮ ಸಂಖ್ಯೆ</th>
+    <th class="c2">ಸರ್ವೆ ನಂ.</th>
+    <th class="c3">ಖುಷ್ಕಿ : ನೀರಾವರಿ :<br>ತರಿ :</th>
+    <th class="c4">ಋತು :<br>ಮುಂಗಾರು :<br>ಹಿಂಗಾರು :<br>ಬೇಸಿಗೆ :</th>
+    <th class="c5">ಬೆಳೆಯ ಹೆಸರು</th>
+    <th class="c6">ಕ್ಷೇತ್ರ<br>ಎ.&nbsp;&nbsp;ಗು</th>
+    <th class="c7">ಪ್ರತಿ ಎಕರೆ ನಿವ್ವಳ ಆದಾಯ</th>
+    <th>ಒಟ್ಟು ನಿವ್ವಳ ಆದಾಯ<br>(ರೂ. ಗಳಲ್ಲಿ)<br>(6x7)</th>
+  </tr>
+  <tr>
+    <td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td>
+  </tr>
+  {% for c in parsed.crops %}
+  <tr>
+    <td></td><td></td><td></td><td></td>
+    <td class="value">{{ c.crop_name }}</td>
+    <td class="value">{{ c.acres | num }}</td>
+    <td class="value">{% if c.acres %}{{ ((c.annual_income or 0) / ((c.acres or 0) + (c.guntas or 0) / 40)) | round | int | num }}{% endif %}</td>
+    <td class="value">{{ c.annual_income | num }}</td>
+  </tr>
+  {% endfor %}
+  <tr>
+    <td style="height:12mm;"></td><td></td><td></td><td></td><td></td>
+    <td class="value bold" style="vertical-align:bottom; border-bottom:1.5px solid #000;">{{ app.total_area_acres | num }}</td>
+    <td></td><td></td>
+  </tr>
+  <tr>
+    <td colspan="5" class="lefttext" style="height:88mm; vertical-align:top; padding:4mm 5mm;">
+      <div class="center bold" style="margin-bottom:4mm;">ದೃಢೀಕರಣ</div>
+      <div style="line-height:2.1; text-align:justify;">
+        ಸದರಿ ಅರ್ಜಿದಾರರ ಜಮೀನವನ್ನು ದಿನಾಂಕ <span class="fill" style="min-width:26mm;"></span>
+        ರಂದು ಸ್ಥಳ ಪರಿಶೀಲನೆ ಮಾಡಲಾಗಿ ಸದರಿ ಜಮೀನವು ಘಟಪ್ರಭಾ ಅಚ್ಚುಕಟ್ಟು
+        ಪ್ರದೇಶದಲ್ಲಿ ಬರುತ್ತದೆ. ಹಾಗೂ ಸದರಿ ಜಮೀನದಲ್ಲಿ ನೀರಾವರಿ
+        <span class="value">{{ app.irrigation_source or "" }}</span> ಇದ್ದು,
+        ಇವುಗಳಿಂದ ನೀರಾವರಿಯಾಗುತ್ತದೆ ಅಂತಾ ದೃಢೀಕರಿಸಿದೆ.
+      </div>
+    </td>
+    <td></td><td></td><td></td>
+  </tr>
+  <tr>
+    <td style="height:10mm;"></td><td></td><td></td><td></td><td></td>
+    <td class="value">{{ app.total_area_acres | num }}</td>
+    <td>ಒಟ್ಟು</td>
+    <td class="value bold" style="border:1.5px solid #000;">{{ computed.annual_income | num }}</td>
+  </tr>
+</table>
+
+<table class="notes">
+  <tr>
+    <td class="bold" style="width:24mm; white-space:nowrap;">ವಿಶೇಷ ಸೂಚನೆ :</td>
+    <td>
+      (1) ನೀರಾವರಿ ಲಭ್ಯತೆ ಅವಲಂಬಿಸಿ ಖುಷ್ಕಿ : ತರಿ : ನೀರಾವರಿ ಕ್ಷೇತ್ರ ನಮೂದಿಸುವುದು.<br>
+      (2) ಅಭಿವೃದ್ಧಿಗೊಳಪಡಿಸುವ ಭೂ ಹಿಡುವಳಿ ವಿವರಗಳನ್ನು ಮಾತ್ರ ನಮೂದಿಸುವುದು. (ಕಾಲಂ 2)<br>
+      (3) ಪಹಣಿಯಲ್ಲಿಯ : ನೈಜವಾಗಿ ಬೆಳೆಯುತ್ತಿರುವ ಬೆಳೆಗಳ ವ್ಯತ್ಯಾಸವಿದ್ದಲ್ಲಿ – ಸ್ಥಳ ಪರಿಶೀಲನೆಯಲ್ಲಿ
+      ಕಂಡುಬಂದಂತೆ ವಿವರಗಳನ್ನು ನಮೂದಿಸುವುದು.
+    </td>
+  </tr>
+</table>
+</div>

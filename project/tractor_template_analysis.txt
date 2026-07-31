@@ -1,0 +1,49 @@
+=== Tractor Template Analysis ===
+Sheets: PLDMagic, A1, A2, A3, A4, SSM, SSM2, B1, B2, B3, B4, SR, SR1, SR2, SR3, SR4, SR5, T1, T2, T3, T4, T5, T6, T7, TV, Val, spot., Memb
+
+PLDMagic sheet (first 20 rows, cols A-H):
+Row  1: A:                       | B:                       | C:                       | D:                       | E:                       | F:                       | G:                       | H:
+Row  2: A:Mobile/whats app No    | B:                       | C:9008001035             | D:                       | E:                       | F:                       | G:                       | H:d«ÄÃ¤£À «ªÀgÀ
+Row  3: A:¸Á®zÀ Cfð ¸ÀASÉå :     | B:                       | C:                       | D:                       | E:                       | F:                       | G:                       | H:PÀæ.¸ÀA.
+Row  4: A:¢£ÁAPÀ :               | B:                       | C:19/09/2025             | D:                       | E:                       | F:                       | G:                       | H:1
+Row  5: A:AiÉÆÃd£É :             | B:                       | C:mÁæöåPÀÖgÀ mÉæÃ®gÀ A... | D:                       | E:                       | F:                       | G:                       | H:2
+Row  6: A:AiÉÆÃd£Á ªÉZÀÑ         | B:                       | C:1300000                | D:                       | E:                       | F:                       | G:                       | H:3
+Row  7: A:¸Á®zÀ gÀPÀA            | B:                       | C:1130000                | D:                       | E:                       | F:                       | G:                       | H:
+Row  8: A:ªÀÄÄRå CfðzÁgÀ         | B:                       | C:ಶ್ರೀ ವಸಂತ ಹಣಮಂತ ಮಳ್ಳ... | D:                       | E:                       | F:                       | G:                       | H:
+Row  9: A:¸ÀºÀ CfðzÁgÀ           | B:                       | C:                       | D:                       | E:                       | F:                       | G:                       | H:
+Row 10: A:¸ÀºÀ CfðzÁgÀ           | B:                       | C:                       | D:                       | E:                       | F:                       | G:                       | H:
+Row 11: A:                       | B:                       | C:                       | D:                       | E:                       | F:                       | G:                       | H:
+Row 12: A:                       | B:                       | C:                       | D:                       | E:                       | F:                       | G:                       | H:MlÄÖ
+Row 13: A:ºÉÆÃ§½                 | B:                       | C:CgÀ¨ÁA«                | D:                       | E:                       | F:                       | G:                       | H:
+Row 14: A:UÁæªÀÄ                 | B:                       | C:ಗುಲಗೊಂಜಿಕೊಪ್ಪ          | D:                       | E:                       | F:                       | G:                       | H:1000
+Row 15: A:CAZÉ                   | B:                       | C:ಗುಲಗೊಂಜಿಕೊಪ್ಪ          | D:                       | E:                       | F:                       | G:                       | H:100
+Row 16: A:vÁ®ÆèPÁ                | B:                       | C:ªÀÄÆqÀ®V               | D:                       | E:                       | F:                       | G:                       | H:=C7*1%
+Row 17: A:f¯Éè                   | B:                       | C:¨É¼ÀUÁA«               | D:                       | E:                       | F:                       | G:                       | H:500
+Row 18: A:C) ¸ÀtÚ / zÉÆqÀØ gÉÊ... | B:                       | C:"zÉÆqÀØ gÉÊvÀgÀÄ"      | D:                       | E:                       | F:                       | G:                       | H:300
+Row 19: A:ºÉÆ¸À/ºÀ¼ÉÃ ¸Á®UÁgÀg... | B:                       | C:"ºÉÆ¸À ¸Á®UÁgÀgÀÄ"     | D:                       | E:                       | F:                       | G:                       | H:=SUM((H15+H16+H18)*1...
+Row 20: A:eÁw                    | B:                       | C:EvÀgÉ ¸ÁªÀiÁ£Àå        | D:                       | E:                       | F:                       | G:                       | H:=SUM(H14:H19)
+
+
+=== Key Position Analysis (based on generator.py LAYOUTS) ===
+Current values in template at key positions:
+mobile       (2,3): '9008001035'
+date         (4,3): '19/09/2025'
+name         (8,3): 'ಶ್ರೀ ವಸಂತ ಹಣಮಂತ ಮಳ್ಳಿ'
+hobli        (13,3): 'CgÀ¨ÁA«'
+village      (14,3): 'ಗುಲಗೊಂಜಿಕೊಪ್ಪ'
+taluk        (16,3): 'ªÀÄÆqÀ®V'
+district     (17,3): '¨É¼ÀUÁA«'
+aadhaar      (31,3): '(empty)'
+dob          (33,3): '(empty)'
+bank_ac      (25,1): '¥ÀA¥À¸ÉÃmïÖ ¸ÁªÀÄxÀåðÀ'
+bank_name    (26,1): 'PÀA¥À¤'
+
+Financial cells (from fill_tractor_details function):
+F54 - Tractor Cost        (54,6): 1002384
+F55 - Trailer Cost        (55,6): 240000
+F56 - Implement Cost      (56,6): (empty)
+H54 - Tractor Bank Loan   (54,8): 950000
+H55 - Trailer Bank Loan   (55,8): 170000
+F61 - Total Project Cost  (61,6): =SUM(F54:F59)
+F62 - Margin Money        (62,6): =SUM(G54:G59)
+F63 - Loan Required       (63,6): 1120000

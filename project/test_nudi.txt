@@ -1,0 +1,2 @@
+Test 1 - "kannada": 'ಕನ್ನದ'
+Test 2 - "bangalore": 'ಬನ್ಗಲೊರೆ'

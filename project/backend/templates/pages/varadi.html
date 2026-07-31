@@ -1,0 +1,94 @@
+{# Page 21 — ಬ್ಯಾಂಕಿನ ಸದಸ್ಯರಾಗಲು ಮಾಡುವ ಅರ್ಜಿಯು (application for bank membership).
+   Transcribed from Vasant Malli reference PDF page 21.
+   Note: the reference table numbers its rows 1–8 and then restarts at 6 for the
+   last four rows — reproduced as printed. Fee amounts are standard typed values. #}
+<div class="pg-var">
+<style>
+  .pg-var .mem-table td { border: 1px solid #000; padding: 2mm 3mm; }
+</style>
+
+<div class="bank-header" style="font-size:12.5pt">
+  ದಿ. ಗೋಕಾಕ ತಾಲೂಕಾ ಪ್ರಾಥಮಿಕ ಸಹಕಾರಿ ಕೃಷಿ ಮತ್ತು ಗ್ರಾಮೀಣ<br>
+  ಅಭಿವೃದ್ಧಿ ಬ್ಯಾಂಕ ನಿಯಮಿತ, ಗೋಕಾಕ<br>
+  ಬ್ಯಾಂಕಿನ ಸದಸ್ಯರಾಗಲು ಮಾಡುವ ಅರ್ಜಿಯು
+</div>
+
+<div class="bold" style="margin-top:2mm">ಮೇ: ಅಧ್ಯಕ್ಷರು</div>
+<div>ದಿ.ಗೋಕಾಕ ತಾಲೂಕಾ ಪ್ರಾಥಮಿಕ ಸಹಕಾರಿ ಕೃಷಿ ಮತ್ತು ಗ್ರಾಮೀಣ ಅಭಿವೃದ್ಧಿ ಬ್ಯಾಂಕ ನಿ, ಗೋಕಾಕ ಇವರಿಗೆ–</div>
+
+<div style="margin-top:2mm; margin-left:12mm; text-align:justify">
+  ನಾನು ಮೇಲ್ಕಾಣಿಸಿದ ಬ್ಯಾಂಕಿನ ಸಾಲ ಬೇಡುವ ಸದಸ್ಯರಾಗಲು ಇಚ್ಛಿಸುತ್ತೇನೆ. ಕಾರಣ ನನ್ನನ್ನು ಸದಸ್ಯರನ್ನಾಗಿ
+  ಮಾಡಿಕೊಳ್ಳಬೇಕಾಗಿ ವಿನಂತಿ ಇದೆ. ಈ ಅರ್ಜಿಯ ಜೊತೆಗೆ ಕೆಳಗೆ ಕಾಣಿಸಿದ ಪ್ರಕಾರ ಹಣವನ್ನು ಪ್ರಮಾಣ ಮಾಡಿ ಪಾವತಿ
+  ಪಡೆದಿರುತ್ತೇನೆ. <span style="margin-left:20mm">ರೂ</span>
+</div>
+
+<table style="width:auto; margin-left:45mm; margin-top:1mm">
+  <tr><td>ಅ. ಶೇರು ಒಂದಕ್ಕೆ 100/– ರೂ. ಗಳಂತೆ</td><td class="bold" style="padding-left:20mm">1000</td></tr>
+  <tr><td>ಬ. ಪ್ರವೇಶ ಧನ</td><td class="bold" style="padding-left:20mm">15</td></tr>
+  <tr><td>ಕ. ಶೇರು ಫೀ</td><td class="bold" style="padding-left:20mm">25</td></tr>
+</table>
+
+<div style="margin-left:12mm; margin-top:1mm; text-align:justify">
+  2) ಈ ಬ್ಯಾಂಕಿನ ಅಂಗೀಕೃತವಾಗಿರುವ ಈಗ ಜಾರಿಯಲ್ಲಿರುವ ಉಪನಿಯಮ ಹಾಗೂ ಇತರ ಎಲ್ಲ ನಿಯಮಗಳಿಗೆ
+  ಅನುಸರಿಸಿ ನಡೆದುಕೊಳ್ಳಲು ನಾನು ಒಪ್ಪಿರುತ್ತೇನೆ<br>
+  3) ನನ್ನ ವಿಚಾರವಾಗಿ ಕೆಳಗೆ ಕೊಟ್ಟಿರುವ ತಪಶೀಲುಗಳಿಗೆ ನಿಜವಾಗಿ ಹೇಳುತ್ತೇನೆ.
+</div>
+
+<table class="mem-table" style="margin-top:2mm">
+  <tr>
+    <td style="width:50%">1) ಪೂರ್ಣ ಹೆಸರು</td>
+    <td colspan="2" class="center bold">{{ app.applicant_name_kn }}</td>
+  </tr>
+  <tr>
+    <td>2) ಜಾತಿ</td>
+    <td colspan="2" class="center bold">{{ app.caste }}</td>
+  </tr>
+  <tr>
+    <td>3) ಜನ್ಮ ದಿನಾಂಕ</td>
+    <td class="center bold" style="width:25%">{{ computed.dob or '' }}</td>
+    <td class="center bold" style="width:25%">{{ app.age }} Years</td>
+  </tr>
+  <tr>
+    <td>4) ವಾಸಸ್ಥಳ ಮತ್ತು ವಿಳಾಸ</td>
+    <td colspan="2" class="center bold">{{ app.village }}</td>
+  </tr>
+  <tr>
+    <td>5) ಮೋಬೈಲ್ ನಂಬರ</td>
+    <td colspan="2" class="center bold">{{ app.mobile_no }}</td>
+  </tr>
+  <tr>
+    <td>6) ಆಧಾರ ನಂಬರ ಹಾಗೂ ಎಫ್.ವಿ.ಡಿ. ನಂಬರ</td>
+    <td colspan="2" class="center bold">{{ app.aadhaar_no }}</td>
+  </tr>
+  <tr>
+    <td>7) ಬ್ಯಾಂಕ ಖಾತೆ ಸಂಖ್ಯೆ</td>
+    <td colspan="2" class="center bold">{{ app.account_no or '' }}</td>
+  </tr>
+  <tr>
+    <td>8) ಐ.ಎಫ್.ಎಸ್.ಸಿ ಸಂಖ್ಯೆ</td>
+    <td colspan="2" class="center bold">{{ app.ifsc_code or '' }}</td>
+  </tr>
+  <tr>
+    <td>6) ಉದ್ಯೋಗ</td>
+    <td colspan="2" class="center bold">ಒಕ್ಕಲುತನ</td>
+  </tr>
+  <tr>
+    <td>7) ಒಟ್ಟು ಹಿಡುವಳಿ (ಕ್ಷೇತ್ರ)</td>
+    <td colspan="2" class="center bold">{{ app.total_area_acres }}</td>
+  </tr>
+  <tr>
+    <td style="height:16mm">8) ಬೇರೆ ಯಾವುದಾದರೂ ಸಹಕಾರಿ ಸಂಘದ ಅಥವಾ ಮೆಂಬರ<br><br>
+      &nbsp;&nbsp;&nbsp;ಆಗಿದ್ದ ಪಕ್ಷದಲ್ಲಿ ಸಂಘದ ಹೆಸರು.</td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td style="height:10mm">9) ನಾಮಿನಿಯ ಹೆಸರು ಬಾಂಧವ್ಯ ಮತ್ತು ವಿಳಾಸ</td>
+    <td colspan="2"></td>
+  </tr>
+</table>
+
+<div style="display:flex; justify-content:space-between; margin-top:12mm" class="small">
+  <div>ದಿನಾಂಕ :</div>
+  <div>ಅರ್ಜಿದಾರರ ಸಹಿ</div>
+</div>
+</div>

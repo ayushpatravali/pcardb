@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+sqlmodel
+python-multipart
+python-jose[cryptography]
+passlib[bcrypt]
+argon2-cffi
+pypdf
+python-dotenv
+
+# Document generation (HTML/CSS -> PDF)
+jinja2
+weasyprint
+# Note (macOS dev): WeasyPrint needs pango — `brew install pango`,
+# then run the backend with DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib
+# Note (Windows deploy): WeasyPrint needs the GTK3/Pango runtime (MSYS2)

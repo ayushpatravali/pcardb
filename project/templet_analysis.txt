@@ -1,0 +1,252 @@
+=== Reading Tractor_Template.xlsx ===
+Sheet names: PLDMagic, A1, A2, A3, A4, SSM, SSM2, B1, B2, B3, B4, SR, SR1, SR2, SR3, SR4, SR5, T1, T2, T3, T4, T5, T6, T7, TV, Val, spot., Memb
+
+PLDMagic sheet contents (first 30 rows, columns A-H):
+Row  1: A: | B: | C: | D: | E: | F: | G: | H:
+Row  2: A:Mobile/whats app No | B: | C:9008001035 | D: | E: | F: | G: | H:d«ÄÃ¤£À «ªÀgÀ
+Row  3: A:¸Á®zÀ Cfð ¸ÀASÉå : | B: | C: | D: | E: | F: | G: | H:PÀæ.¸ÀA.
+Row  4: A:¢£ÁAPÀ : | B: | C:19/09/2025 | D: | E: | F: | G: | H:1
+Row  5: A:AiÉÆÃd£É : | B: | C:mÁæöåPÀÖgÀ mÉæÃ®gÀ A... | D: | E: | F: | G: | H:2
+Row  6: A:AiÉÆÃd£Á ªÉZÀÑ | B: | C:1300000 | D: | E: | F: | G: | H:3
+Row  7: A:¸Á®zÀ gÀPÀA | B: | C:1130000 | D: | E: | F: | G: | H:
+Row  8: A:ªÀÄÄRå CfðzÁgÀ | B: | C:ಶ್ರೀ ವಸಂತ ಹಣಮಂತ ಮಳ್ಳ... | D: | E: | F: | G: | H:
+Row  9: A:¸ÀºÀ CfðzÁgÀ | B: | C: | D: | E: | F: | G: | H:
+Row 10: A:¸ÀºÀ CfðzÁgÀ | B: | C: | D: | E: | F: | G: | H:
+Row 11: A: | B: | C: | D: | E: | F: | G: | H:
+Row 12: A: | B: | C: | D: | E: | F: | G: | H:MlÄÖ
+Row 13: A:ºÉÆÃ§½ | B: | C:CgÀ¨ÁA« | D: | E: | F: | G: | H:
+Row 14: A:UÁæªÀÄ | B: | C:ಗುಲಗೊಂಜಿಕೊಪ್ಪ | D: | E: | F: | G: | H:1000
+Row 15: A:CAZÉ | B: | C:ಗುಲಗೊಂಜಿಕೊಪ್ಪ | D: | E: | F: | G: | H:100
+Row 16: A:vÁ®ÆèPÁ | B: | C:ªÀÄÆqÀ®V | D: | E: | F: | G: | H:=C7*1%
+Row 17: A:f¯Éè | B: | C:¨É¼ÀUÁA« | D: | E: | F: | G: | H:500
+Row 18: A:C) ¸ÀtÚ / zÉÆqÀØ gÉÊ... | B: | C:"zÉÆqÀØ gÉÊvÀgÀÄ" | D: | E: | F: | G: | H:300
+Row 19: A:ºÉÆ¸À/ºÀ¼ÉÃ ¸Á®UÁgÀg... | B: | C:"ºÉÆ¸À ¸Á®UÁgÀgÀÄ" | D: | E: | F: | G: | H:=SUM((H15+H16+H18)*1...
+Row 20: A:eÁw | B: | C:EvÀgÉ ¸ÁªÀiÁ£Àå | D: | E: | F: | G: | H:=SUM(H14:H19)
+Row 21: A: | B: | C: | D: | E: | F: | G: | H:=CEILING(H20+200, 10...
+Row 22: A: | B: | C: | D: | E: | F: | G: | H:
+Row 23: A:ºÁ° ¨É¼ÉAiÀÄÄwÛgÀÄªÀ... | B: | C: | D:PÀ§Äâ | E: | F: | G: | H:
+Row 24: A:¤ÃgÁªÀj ¸Ë®¨sÀå (¨ÁA... | B: | C: | D:PÉÆ¼ÀªÉ ¨ÁA« | E: | F: | G: | H:
+Row 25: A:¥ÀA¥À¸ÉÃmïÖ ¸ÁªÀÄxÀå... | B: | C: | D:7.5 JZï ¦ (2) | E: | F: | G: | H:
+Row 26: A:PÀA¥À¤ | B: | C: | D:mÉÃPÀìªÉÆÃ | E: | F: | G: | H:
+Row 27: A:¨ÁA«, PÉÆ ¨ÁA« D¼À | B: | C: | D:425 & 380 ¥ÀÆ (2) | E: | F: | G: | H:
+Row 28: A:d«ÄÃ¤¤AzÀ §gÀÄwÛgÀÄª... | B: | C: | D:=83000/40 * N12 | E: | F: | G: | H:
+Row 29: A:AiÉÆÃd£É C£ÀÄµÁ×£À¢A... | B: | C: | D:='T5'!I15 | E: | F: | G: | H:
+Row 30: A:¸ÀÜ¼À ¥Àj²Ã®£É ¢£ÁAP... | B: | C: | D:2025-12-09 00:00:00 | E: | F: | G: | H:
+
+==================================================
+SPECIFIC CELL CHECKS FROM LAYOUTS:
+==================================================
+
+Tractor Layout Mapping:
+mobile       (2,3): '9008001035'
+date         (4,3): '19/09/2025'
+name         (8,3): 'ಶ್ರೀ ವಸಂತ ಹಣಮಂತ ಮಳ್ಳಿ'
+hobli        (13,3): 'CgÀ¨ÁA«'
+village      (14,3): 'ಗುಲಗೊಂಜಿಕೊಪ್ಪ'
+taluk        (16,3): 'ªÀÄÆqÀ®V'
+district     (17,3): '¨É¼ÀUÁA«'
+aadhaar      (31,3): ''
+dob          (33,3): ''
+bank_ac      (25,1): '¥ÀA¥À¸ÉÃmïÖ ¸ÁªÀÄxÀåðÀ'
+bank_name    (26,1): 'PÀA¥À¤'
+
+Financial Cells Check:
+F54 - Tractor Cost        (54,6): 1002384
+F55 - Trailer Cost        (55,6): 240000
+F56 - Implement Cost      (56,6): 
+H54 - Tractor Bank Loan   (54,8): 950000
+H55 - Trailer Bank Loan   (55,8): 170000
+F61 - Total Project Cost  (61,6): =SUM(F54:F59)
+F62 - Margin Money        (62,6): =SUM(G54:G59)
+F63 - Loan Required       (63,6): 1120000
+
+==================================================
+OTHER SHEETS THAT MIGHT CONTAIN MAPPING:
+==================================================
+
+Sheet 'A1' (first 10 rows, A-D):
+  Row  1: A:¢ UÉÆÃPÁPÀ vÁ®ÆPÁ ¥Á | B: | C: | D:
+  Row  2: A:¸Á®zÀ Cfð | B: | C: | D:
+  Row  3: A: | B: | C: | D:
+  Row  4: A:(C£Àé¬Ä¸À¢gÀÄªÀÅzÀ£À | B: | C: | D:
+  Row  5: A:¸Á®zÀ Cfð ¸ÀASÉå : | B: | C:=PLDMagic!C3 | D:
+  Row  6: A:¢£ÁAPÀ : | B:=PLDMagic!C4 | C: | D:
+  Row  7: A: | B: | C: | D:
+  Row  8: A:AiÉÆÃd£É : | B:=PLDMagic!C5 | C: | D:
+  Row  9: A: | B: | C: | D:
+  Row 10: A: | B: | C: | D:
+
+Sheet 'A2' (first 10 rows, A-D):
+  Row  1: A:4) | B:CfðzÁgÀgÀ »qÀÄªÀ½ UÁ | C: | D:
+  Row  2: A:RÄ¶× : | B: | C: | D:JPÀgÉ, ¤ÃgÁªÀj
+  Row  3: A: | B: | C: | D:MlÄÖ
+  Row  4: A: | B: | C: | D:
+  Row  5: A:5) | B:DzÁgÀPÉÆÌ¼À¥ÀqÀÄªÀ D | C: | D:
+  Row  6: A: | B:C) d«ÄÃ£ÀÄ | C: | D:
+  Row  7: A: | B: | C: | D:
+  Row  8: A:PÀæªÀÄ 
+¸ÀASÉå | B:UÁæªÀÄ | C: | D:¸ÀªÉð 
+£ÀA§gÀÄ
+  Row  9: A:=PLDMagic!H4 | B:=PLDMagic!I4 | C: | D:=PLDMagic!J4
+  Row 10: A:=PLDMagic!H5 | B:=PLDMagic!I5 | C: | D:=PLDMagic!J5
+
+Sheet 'A3' (first 10 rows, A-D):
+  Row  1: A:8) CfðzÁgÀgÀÄ FUÁUÀ¯ | B: | C: | D:
+  Row  2: A:G¢ÝªÉÄ ºÉ¸ÀgÀÄ | B: | C:¸ÀÜ¼À | D:ºÀÆrgÀÄªÀ 
+§AqÀªÁ¼À
+  Row  3: A: | B: | C: | D:
+  Row  4: A: | B: | C: | D:
+  Row  5: A: | B: | C: | D:
+  Row  6: A: | B: | C: | D:
+  Row  7: A: | B: | C: | D:
+  Row  8: A: | B: | C: | D:
+  Row  9: A: | B: | C: | D:
+  Row 10: A:9) ®UÀwÛ¹gÀÄªÀ zÁR¯É | B: | C: | D:
+
+Sheet 'A4' (first 10 rows, A-D):
+  Row  1: A:CfðzÁgÀgÀÄ  ¸Á®zÀ  C | B: | C: | D:
+  Row  2: A:¸ÀÆPÀÛªÁVgÀÄªÀÅzÀ£ÀÄ | B: | C: | D:
+  Row  3: A: | B: | C: | D:
+  Row  4: A: | B: | C: | D:
+  Row  5: A: | B: | C: | D:
+  Row  6: A: | B: | C: | D:
+  Row  7: A:¢£ÁAPÀ : | B:=PLDMagic!C4 | C: | D:
+  Row  8: A: | B: | C: | D:
+  Row  9: A: | B: | C: | D:
+  Row 10: A: | B: | C: | D:
+
+Sheet 'B1' (first 10 rows, A-D):
+  Row  1: A:PÀ£ÁðlPÀ gÁdå ¸ÀºÀPÁ | B: | C: | D:
+  Row  2: A:¸Á® PÉÆÃjPÉ Cfð : n¥ | B: | C: | D:
+  Row  3: A: | B: | C: | D:
+  Row  4: A:1) | B:¥Áæ.¸À.PÀÈ.UÁæ.C.¨Áå | C: | D:
+  Row  5: A:2) | B:¸Á®zÀ Cfð ¸ÀASÉå  | C: | D:=PLDMagic!C3
+  Row  6: A:3) | B:AiÉÆÃd£É :  | C: | D:
+  Row  7: A:4) | B:CfðzÁgÀgÀ ºÉ¸ÀgÀÄ ªÀ | C: | D:
+  Row  8: A: | B: | C: | D:
+  Row  9: A: | B: | C: | D:
+  Row 10: A: | B: | C: | D:
+
+Sheet 'B2' (first 10 rows, A-D):
+  Row  1: A:11) | B:12 ªÀµÀðzÀ ¥ÀgÀ¨sÁgÀ | C: | D:
+  Row  2: A: | B: | C: | D:
+  Row  3: A:12) | B:¨sÀzÀævÉUÉ ¤ÃrzÀ D¹Û | C: | D:
+  Row  4: A:13) | B:ªÀåªÀºÁgÀ«zÀÝ°è zÁR¯ | C: | D:
+  Row  5: A: | B: | C: | D:
+  Row  6: A:14) | B:¥ÁæxÀ«ÄPÀ ¨ÁåAQ£À oÀ | C: | D:
+  Row  7: A: | B: | C: | D:
+  Row  8: A: | B: | C: | D:
+  Row  9: A: | B: | C: | D:
+  Row 10: A: | B: | C: | D:
+
+Sheet 'B3' (first 10 rows, A-D):
+  Row  1: A:9) | B:»A¢£À ¸Á®UÁgÀgÉ ? ºË | C: | D:
+  Row  2: A: | B:ºËzÀÄ JAzÁzÀ°è : AiÉ | C: | D:
+  Row  3: A: | B: | C: | D:
+  Row  4: A:C) | B:¸Á®UÀ¼À SÁvÉ £ÀPÀ®ÄU | C: | D:
+  Row  5: A:D) | B:D¹Û CqÀªÀiÁ£À ¥ÀÄ¸ÀÛ | C: | D:
+  Row  6: A:E) | B:¥ÀqÉ¢gÀÄªÀ MlÄÖ ¸Á®z | C: | D:
+  Row  7: A:F) | B:ºÁ° EgÀÄªÀ ¸Á® ºÉÆgÀ | C: | D:
+  Row  8: A:G) | B:MlÄÖ ªÁ¶ðPÀ PÀAw£À ª | C: | D:
+  Row  9: A:H) | B:ZÁ°ÛAiÀÄªÀgÉUÉ ªÀÄgÀ | C: | D:
+  Row 10: A:IÄ) | B:J¯Áè ¸Á®UÀ¼À G¥ÀAiÀÄ | C: | D:
+
+Sheet 'B4' (first 10 rows, A-D):
+  Row  1: A:8) | B:AiÉÆÃd£ÉUÉ ¤UÀ¢ ¥Àr¹ | C: | D:
+  Row  2: A: | B: | C: | D:
+  Row  3: A: | B: | C: | D:
+  Row  4: A:9) | B:vÁAwæPÁ¢üðPÀ CA±ÀUÀ¼ | C: | D:
+  Row  5: A: | B:¸ÀªÀÄ¥ÀðPÀªÁV ¨sÀwð  | C: | D:
+  Row  6: A:10) | B:PÉëÃvÀæ CAiÀÄªÀåAiÀÄ | C: | D:
+  Row  7: A: | B:¥Àj²Ã°¹ ¸ÀÆPÀÛvÉ §UÉ | C: | D:
+  Row  8: A:11) | B:C) C©üªÀÈ¢Þ ¥ÀÆªÀðzÀ | C: | D:
+  Row  9: A: | B:D) C©üªÀÈ¢Þ £ÀAvÀgÀz | C: | D:
+  Row 10: A: | B:E) ºÉZÀÄÑªÀj ¤ªÀé¼À  | C: | D:
+
+Sheet 'T1' (first 10 rows, A-D):
+  Row  1: A:¥ÁæxÀ«ÄPÀ ¸ÀºÀPÁgÀ P | B: | C: | D:
+  Row  2: A: | B: | C: | D:vÁ®ÆèPÀÄ
+  Row  3: A:vÀ¥À¸ÀuÁ ªÀgÀ¢ | B: | C: | D:
+  Row  4: A:PÀÈ¶ AiÀiÁAwæÃPÀgÀt  | B: | C: | D:
+  Row  5: A:¥ÀªÀgï n°ègï GzÉÝÃ±À | B: | C: | D:
+  Row  6: A: | B:¸Á®zÀ Cfð ¸ÀASÉå :  | C: | D:=PLDMagic!C3
+  Row  7: A: | B:¢£ÁAPÀ : | C: | D:=PLDMagic!C4
+  Row  8: A:1) | B:CfðzÁgÀgÀ ºÉ¸ÀgÀÄ : | C: | D:=PLDMagic!C8
+  Row  9: A: | B: | C: | D:
+  Row 10: A: | B:UÁæªÀÄ : | C:=PLDMagic!C14 | D:
+
+Sheet 'T2' (first 10 rows, A-D):
+  Row  1: A:4 | B:C©üªÀÈ¢ÞUÉ M¼À¥Àr¸ÀÄ | C: | D:
+  Row  2: A:   PÀæªÀÄ ¸ÀASÉå | B: | C:¸ÀªÉð £ÀA | D:
+  Row  3: A: | B: | C: | D:
+  Row  4: A: | B: | C:=PLDMagic!J4 | D:
+  Row  5: A: | B: | C:=PLDMagic!J5 | D:
+  Row  6: A: | B: | C:=PLDMagic!J6 | D:
+  Row  7: A: | B: | C:=PLDMagic!J7 | D:
+  Row  8: A: | B: | C:=PLDMagic!J8 | D:
+  Row  9: A: | B: | C:MlÄÖ | D:
+  Row 10: A:C) ¤ÃgÁªÀj  | B: | C: | D:
+
+Sheet 'T3' (first 10 rows, A-D):
+  Row  1: A:6 | B:PÉëÃvÀæ DAiÀÄªÀå vÀB | C: | D:
+  Row  2: A:PÀæªÀÄ
+¸ÀASÉå | B:¸ÀªÉð 
+£ÀA. | C:RÄ¶Ì : ¤ÃgÁªÀj :
+vÀj | D:
+  Row  3: A:1 | B:2 | C:3 | D:
+  Row  4: A: | B: | C: | D:
+  Row  5: A: | B: | C: | D:
+  Row  6: A: | B: | C: | D:
+  Row  7: A: | B: | C: | D:
+  Row  8: A: | B: | C: | D:
+  Row  9: A: | B: | C: | D:
+  Row 10: A: | B: | C: | D:
+
+Sheet 'T4' (first 10 rows, A-D):
+  Row  1: A:7 | B:mÁæöåPÀÖgÀ : ¥ÀªÀgï  | C: | D:
+  Row  2: A: | B:(C)  (1) ¸ÀéAvÀ G¥ÀA | C: | D:
+  Row  3: A:PÀæªÀÄ
+¸ÀASÉå | B:¨É¼ÉUÀ¼ÀÄ  | C: | D:ªÀÄÄAUÁgÀÄ 
+  Row  4: A: | B:ºÀwÛ | C: | D:
+  Row  5: A: | B:UÉÆ.eÉÆÃ¼À | C: | D:
+  Row  6: A: | B:PÀ§Äâ | C: | D:
+  Row  7: A: | B:PÁ¬Ä¥À¯ÉèUÀ¼ÀÄ | C: | D:
+  Row  8: A: | B:EvÀgÉ | C: | D:
+  Row  9: A:(2) ¥Á®£É ªÉZÀÑ (MlÄ | B: | C: | D:
+  Row 10: A:(D) ¨ÁrUÉUÉ G¥ÀAiÉÆÃ | B: | C: | D:
+
+Sheet 'T5' (first 10 rows, A-D):
+  Row  1: A:8 | B:DyðPÀ ¸ÀPÀëªÀÄvÉ : | C: | D:
+  Row  2: A: | B:8.1 | C:ºÉZÀÄÑªÀj ¤ªÀé¼À DzÁ | D:
+  Row  3: A: | B: | C: | D:
+  Row  4: A: | B:8.2 | C:C©üªÀÈ¢Þ £ÀAvÀgÀ DzÁ | D:
+  Row  5: A: | B: | C: | D:
+  Row  6: A: | B:8.3 | C:ªÀiË®å ªÀiÁ¥À£À (CA± | D:
+  Row  7: A: | B: | C: | D:
+  Row  8: A: | B:8.4 | C:¸Á®zÀ CºÀðvÉ (CA±À 8 | D:
+  Row  9: A: | B:8.5 | C:CfðzÁgÀgÀ »A¢£À ¸Á®U | D:
+  Row 10: A: | B: | C:¸Á® ¨ÁQ ªÉÆvÀÛ (Omï  | D:
+
+Sheet 'T6' (first 10 rows, A-D):
+  Row  1: A:10 | B:¥ÀÆgÀPÀ ¸Ë®¨sÀåUÀ¼ÀÄ | C: | D:
+  Row  2: A:10.1 | B:CfðzÁgÀgÀ UÁæªÀÄzÀ°è | C: | D:
+  Row  3: A:10.2 | B:¸ÀÜ¼ÀzÀ°è ¨ÁrUÉUÉ ¨É | C: | D:
+  Row  4: A:10.3 | B:PÀÈ¶ AiÀÄAvÉÆæÃ¥ÀPÀg | C: | D:
+  Row  5: A: | B:¸ÀA¸ÉÜUÀ½zÀÝgÉ «ªÀgÀ | C: | D:
+  Row  6: A:10.4 | B:¸ÀAUÉÆÃ¥À£ÉUÉ ¸ÉÃªÁ  | C: | D:
+  Row  7: A:10.5 | B:EAzsÀ£À zÉÆgÉAiÀÄÄªÀ | C: | D:
+  Row  8: A: | B: | C: | D:
+  Row  9: A:10.6 | B:CfðzÁgÀgÀ ªÁ¸ÀÛªÀå¢A | C: | D:
+  Row 10: A: | B:zÀÆgÀ (Q.«ÄÃ) | C: | D:
+
+Sheet 'T7' (first 10 rows, A-D):
+  Row  1: A:¥ÁæxÀ«ÄPÀ ¨ÁåAQ£À zÀ | B: | C: | D:
+  Row  2: A:1) | B:CfðzÁgÀjUÉ     AiÉÆÃ | C: | D:
+  Row  3: A: | B:¸ÀA¥ÀÆtð ªÀiÁUÀðzÀ±À | C: | D:
+  Row  4: A:2) | B:AiÉÆÃd£ÉAiÀÄ     PÉë | C: | D:
+  Row  5: A: | B:vÀAiÀiÁj¹ ¸À°è¸À¯ÁVz | C: | D:
+  Row  6: A:3) | B:d«ÄÃ¤£À    ªÀiË®åªÀ£ | C: | D:
+  Row  7: A: | B:£ÀªÀÄÆ¢¸À¯ÁVzÉ. | C: | D:
+  Row  8: A:4) | B:¸Á® ªÀÄgÀÄ¥ÁªÀw ªÁ¶ð | C: | D:
+  Row  9: A: | B:±ÉÃRqÁ 92 QÌAvÀ PÀrª | C: | D:
+  Row 10: A:5) | B:CfðzÁgÀjAzÀ    -     | C: | D:

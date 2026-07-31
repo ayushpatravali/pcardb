@@ -1,0 +1,120 @@
+{% set inc = (computed.annual_income or 0) | int %}
+{% set inc30 = (inc * 0.3) | round | int %}
+{% set inc82 = inc + inc30 %}
+{% set val83 = inc82 * 8 %}
+{% set elig = (val83 / 2) | round | int %}
+{% set r75 = (inc30 * 0.75) | round | int %}
+{% set kantu = (((details.total_loan_amount or 0) / 7) | round | int) if details else 0 %}
+<div class="pg-t5">
+<style>
+  .pg-t5 table.fin { table-layout: fixed; }
+  .pg-t5 table.fin td { font-size: 9.5pt; vertical-align: top; padding: 1.2mm 4px; }
+  .pg-t5 table.fin tr.rule td { border-top: 1px solid #000; }
+  .pg-t5 .n  { width: 11mm; }
+  .pg-t5 .v  { width: 30mm; text-align: right; }
+  .pg-t5 .m  { width: 52mm; }
+  .pg-t5 .dash { border-bottom: 1px dashed #000; display: inline-block; min-width: 34mm; text-align: center; font-weight: bold; }
+  .pg-t5 table.loans th, .pg-t5 table.loans td { font-size: 9pt; text-align: center; }
+</style>
+
+<div class="bold" style="margin-bottom:1mm;"><span style="display:inline-block;width:10mm;">8</span>ಆರ್ಥಿಕ ಸಕ್ಷಮತೆ :</div>
+
+<table class="fin">
+  <tr class="rule">
+    <td class="n">8.1</td>
+    <td>ಹೆಚ್ಚುವರಿ ನಿವ್ವಳ ಆದಾಯ ಅಂಶ</td>
+    <td class="m">(6) ಒಟ್ಟು ಆದಾಯದ ರೂ :<br>ಶೇ : 30 ರಷ್ಟು</td>
+    <td class="v"><span class="value">{{ inc | num }}</span><br><span class="value">{{ inc30 | num }}</span></td>
+  </tr>
+  <tr class="rule">
+    <td class="n">8.2</td>
+    <td>ಅಭಿವೃದ್ಧಿ ನಂತರ ಆದಾಯ ಅಂಶ</td>
+    <td class="m">(6) ಒಟ್ಟು ಆದಾಯ + ಅಂಶ<br>(8.1) ರೂ.</td>
+    <td class="v"><span class="value">{{ inc82 | num }}</span></td>
+  </tr>
+  <tr class="rule">
+    <td class="n">8.3</td>
+    <td>ಮೌಲ್ಯ ಮಾಪನ (ಅಂಶ 8:2x8)</td>
+    <td class="m"><span class="dash">{{ inc82 | num }} x 8</span> &nbsp;ರೂ.</td>
+    <td class="v"><span class="value">{{ val83 | num }}</span></td>
+  </tr>
+  <tr class="rule">
+    <td class="n">8.4</td>
+    <td>ಸಾಲದ ಅರ್ಹತೆ (ಅಂಶ 8:3 ರ ಶೇ. 50 ರಷ್ಟು)</td>
+    <td class="m right">ರೂ.</td>
+    <td class="v"><span class="value">{{ elig | num }}</span></td>
+  </tr>
+  <tr class="rule">
+    <td class="n">8.5</td>
+    <td>ಅರ್ಜಿದಾರರ ಹೊಂದಿದ ಸಾಲಗಳು<br>ಸಾಲ ಬಾಕಿ ಮೊತ್ತ (ಔಟ್ ಸ್ಟ್ಯಾಂಡಿಂಗ್)</td>
+    <td class="m right">ರೂ.</td>
+    <td class="v"><span class="dash" style="min-width:26mm;"></span></td>
+  </tr>
+  <tr class="rule">
+    <td class="n">8.6</td>
+    <td>ನಿವ್ವಳ ಸಾಲದ ಅರ್ಹತೆ (ಅಂಶ : 8 : 4 – 8 : 5)</td>
+    <td class="m"></td>
+    <td class="v"><span class="value">{{ elig | num }}</span></td>
+  </tr>
+  <tr class="rule">
+    <td class="n">8.7</td>
+    <td>ಸಾಲದ ಮರುಪಾವತಿ<br>(ಅಂಶ 8:1 ರ ಶೇ. 75 + ಅಂಶ 7:ಇ(7))</td>
+    <td class="m"><span class="dash">{{ r75 | num }} +</span></td>
+    <td class="v"><span class="dash" style="min-width:26mm;"></span></td>
+  </tr>
+  <tr class="rule">
+    <td class="n">8.8</td>
+    <td>ಟ್ರ್ಯಾಕ್ಟರ್ : ಪವರ್ ಟಿಲ್ಲರ್ ಸಾಲ ರೂ.</td>
+    <td class="m right">ರೂ.</td>
+    <td class="v"><span class="value">{{ details.total_loan_amount | num if details else "" }}</span></td>
+  </tr>
+  <tr class="rule">
+    <td class="n">8.9</td>
+    <td>ಮರುಪಾವತಿ – ಕಂತು (ವಾರ್ಷಿಕ) ರೂ.</td>
+    <td class="m"><span class="dash">{{ kantu | num }} + ಬಡ್ಡಿ</span></td>
+    <td class="v"></td>
+  </tr>
+  <tr class="rule">
+    <td class="n">8.10</td>
+    <td>(1) ಮರುಪಾವತಿ ಅವಧಿ (ವರ್ಷಗಳು)<br>(2) ಬಡ್ಡಿ ದರ (ಶೇ)</td>
+    <td class="m"><span class="dash" style="min-width:24mm;">7</span><br><span class="dash" style="min-width:24mm;">12.50</span></td>
+    <td class="v"></td>
+  </tr>
+</table>
+
+<div class="bold" style="margin-top:2.5mm;"><span style="display:inline-block;width:10mm;">9</span>ರೈತರು ಹಾಲಿ ಹೊಂದಿರುವ ಸಾಲಗಳ ವಿವರ</div>
+<div style="margin:0.5mm 0 1mm 0;"><span style="display:inline-block;width:10mm;">9.1</span>ಪ್ರಾಥಮಿಕ ಬ್ಯಾಂಕಿನಲ್ಲಿ ಚಾಲ್ತಿ ಸಾಲಗಳ ವಿವರ</div>
+
+<table class="bordered loans">
+  <tr>
+    <th style="width:11mm;">ಕ್ರಮ ಸಂಖ್ಯೆ</th>
+    <th style="width:34mm;">ಯೋಜನೆ</th>
+    <th style="width:20mm;">ಸಾಲದ ಒಟ್ಟು ಮೊತ್ತ</th>
+    <th style="width:18mm;">ಸಾಲ ಬಾಕಿ</th>
+    <th style="width:18mm;">ಕಂತಿನ ಮೊತ್ತ</th>
+    <th>ಸಾಲ ಮರುಪಾವತಿ : ಕ್ರಮಬದ್ಧತೆ ಸಾಲ ಉಪಯುಕ್ತತೆ</th>
+    <th style="width:20mm;">ಷರಾ</th>
+  </tr>
+  <tr>
+    <td style="height:34mm;"></td>
+    <td colspan="3" style="vertical-align:middle;" class="value">ಯಾವದೇ ಸಾಲ ಪಡೆದಿರುವದಿಲ್ಲ</td>
+    <td></td><td></td><td></td>
+  </tr>
+</table>
+
+<div style="margin:2.5mm 0 1mm 0;"><span style="display:inline-block;width:10mm;">9.2</span>ಇತರೇ ಸಂಘ ಸಂಸ್ಥೆಗಳಲ್ಲಿ ಸಾಲ ಪಡೆದಿದ್ದಲ್ಲಿ – ವಿವರಗಳು :</div>
+
+<table class="bordered loans">
+  <tr>
+    <th style="width:26mm;">ಸಂಸ್ಥೆ</th>
+    <th style="width:42mm;">ಉದ್ದೇಶ</th>
+    <th style="width:26mm;">ಮೊತ್ತ</th>
+    <th>ಚಾಲ್ತಿಯಲ್ಲಿರುವ ಬಗ್ಗೆ ದೃಢೀಕರಣ</th>
+  </tr>
+  <tr>
+    <td style="height:30mm;"></td>
+    <td style="vertical-align:middle;" class="value">ದೃಢೀಕರಣ ಲಗತ್ತಿಸಿದೆ</td>
+    <td></td><td></td>
+  </tr>
+</table>
+</div>
