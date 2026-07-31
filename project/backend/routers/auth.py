@@ -1,5 +1,6 @@
+import os
 from datetime import timedelta
-from typing import Annotated
+from typing import Annotated, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session, select
@@ -21,6 +22,14 @@ class UserCreate(BaseModel):
     full_name: str
     role: Role = Role.FIELD_OFFICER # Default to Field Officer
 
+
+class UserPublic(BaseModel):
+    """User response without the password hash."""
+    id: Optional[int] = None
+    username: str
+    full_name: Optional[str] = None
+    role: Role
+
 @router.post("/token", response_model=Token)
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
@@ -39,8 +48,13 @@ async def login_for_access_token(
     )
     return {"access_token": access_token, "token_type": "bearer", "role": user.role}
 
-@router.post("/register", response_model=User)
+@router.post("/register", response_model=UserPublic)
 def register_user(user_in: UserCreate, session: Session = Depends(get_session)):
+    # Public self-signup is for trusted intranet deployments only.
+    # On public demo hosting set DISABLE_SIGNUP=1 (accounts come from env-seeded users).
+    if os.environ.get("DISABLE_SIGNUP") == "1":
+        raise HTTPException(status_code=403, detail="Signup is disabled on this deployment")
+
     # Check if user exists
     existing_user = session.exec(select(User).where(User.username == user_in.username)).first()
     if existing_user:
@@ -58,6 +72,6 @@ def register_user(user_in: UserCreate, session: Session = Depends(get_session)):
     session.refresh(user)
     return user
 
-@router.get("/users/me", response_model=User)
+@router.get("/users/me", response_model=UserPublic)
 async def read_users_me(current_user: Annotated[User, Depends(get_current_user)]):
     return current_user
