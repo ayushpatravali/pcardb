@@ -156,6 +156,7 @@ class ApplicationCreate(BaseModel):
     land_parcels: Optional[str] = None  # JSON string
     total_area_acres: Optional[float] = None
     total_guntas: Optional[float] = None
+    land_valuation_per_acre: Optional[float] = None
 
     # Bank Details
     account_no: str

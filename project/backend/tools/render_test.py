@@ -47,6 +47,7 @@ FIXTURE_APP = Application(
     irrigation_source="ಕೊಳವೆ ಬಾವಿ",
     total_area_acres=8.22,
     total_guntas=0,
+    land_valuation_per_acre=750000,
 )
 
 FIXTURE_DETAILS = TractorDetails(

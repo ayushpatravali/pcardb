@@ -25,7 +25,7 @@
   &nbsp;ಅಂಚೆ&nbsp; <span class="fill">{{ app.hobli }}</span>
   &nbsp;ಹೋಬಳಿ&nbsp; <span class="fill" style="min-width:28mm">&nbsp;</span><br>
   ತಾಲ್ಲೂಕ : <span class="fill">{{ app.taluk }}</span> ರವರ ಸಾಲಕ್ಕೆ ಕೆಳಕಂಡಂತೆ ಜಮೀನು ಆಧಾರಕ್ಕೆ ಒದಗಿಸಿದ್ದು, ಇವುಗಳ ಮೌಲ್ಯ<br>
-  ರೂ. <span class="fill" style="min-width:30mm">&nbsp;</span> ಗಳಷ್ಟಾಗಲಿದೆ.
+  ರೂ. <span class="fill" style="min-width:30mm">{{ computed.land_valuation_total | num }}</span> ಗಳಷ್ಟಾಗಲಿದೆ.
 </div>
 
 <table class="bordered" style="margin-top:3mm">
@@ -51,7 +51,7 @@
     <td class="center bold">{{ p.guntas or '' }}</td>
     <td class="center small">{% if loop.first %}{{ app.irrigation_source }}{% endif %}</td>
     <td class="center bold">{% if loop.first and parsed.crops %}{{ parsed.crops[0].crop_name }}{% endif %}</td>
-    <td></td>
+    <td class="center bold">{{ p.valuation | num if p.valuation else '' }}</td>
   </tr>
   {% endfor %}
   {% for i in range(8 - parsed.land_parcels[:8] | length) %}
@@ -64,7 +64,8 @@
     <td colspan="3" class="center">ಒಟ್ಟು</td>
     <td class="center bold">{{ '%.2f' | format(app.total_area_acres) if app.total_area_acres is not none else '' }}</td>
     <td class="center bold">{{ app.total_guntas or '' }}</td>
-    <td></td><td></td><td></td>
+    <td></td><td></td>
+    <td class="center bold">{{ computed.land_valuation_total | num }}</td>
   </tr>
 </table>
 
@@ -72,8 +73,8 @@
   ಮೇಲ್ಕಂಡ ಆಸ್ತಿಗಳ ಮೌಲ್ಯವನ್ನು ಸ್ಥಳ ಪರಿಶೀಲನೆ, ಮತ್ತು ವಿವರಣೆಯಿಂದ
   <span class="fill blank" style="min-width:25mm"></span> ಖಚಿತ ಪಡಿಸಿಕೊಂಡಿದ್ದು
   ಪ್ರಮಾಣಿಕವಾಗಿರುವುದೆಂದು ದೃಢೀಕರಿಸುತ್ತೇನೆ. ಹಾಗೂ ಸದರಿ ಮೌಲ್ಯವು ಮೇ:ಉಪನೋಂದಣಾಧಿಕಾರಿಗಳ ಮೌಲ್ಯ
-  ದೃಢೀಕರಣ ಪಟ್ಟಿಯಂತೆ ಪ್ರತಿ ಎಕರೆಗೆ <span class="fill" style="min-width:25mm">&nbsp;</span> ರಂತೆ
-  ಒಟ್ಟು ಮೌಲ್ಯವು <span class="fill" style="min-width:25mm">&nbsp;</span> ರೂ ಆಗುತ್ತದೆ ಅಂತಾ ದೃಢೀಕರಿಸಿದೆ.
+  ದೃಢೀಕರಣ ಪಟ್ಟಿಯಂತೆ ಪ್ರತಿ ಎಕರೆಗೆ <span class="fill" style="min-width:25mm">{{ app.land_valuation_per_acre | num }}</span> ರಂತೆ
+  ಒಟ್ಟು ಮೌಲ್ಯವು <span class="fill" style="min-width:25mm">{{ computed.land_valuation_total | num }}</span> ರೂ ಆಗುತ್ತದೆ ಅಂತಾ ದೃಢೀಕರಿಸಿದೆ.
 </div>
 
 <div style="display:flex; justify-content:space-between; margin-top:14mm">

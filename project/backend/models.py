@@ -90,9 +90,10 @@ class Application(SQLModel, table=True):
     annual_income: Optional[float] = None  # derived server-side: sum of current_crop annual_income
 
     # Land details stored as JSON string (array of parcels)
-    land_parcels: Optional[str] = None  # JSON: [{sl, village, survey_no, acres, guntas, akaar}]
+    land_parcels: Optional[str] = None  # JSON: [{sl, village, survey_no, acres, guntas, akaar, valuation}]
     total_area_acres: Optional[float] = None
     total_guntas: Optional[float] = None
+    land_valuation_per_acre: Optional[float] = None  # TRACTOR: per-acre rate; parcel valuation = rate x extent
 
     # Loan / Scheme Meta
     loan_amount: Optional[float] = None

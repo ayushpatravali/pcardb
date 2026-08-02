@@ -245,6 +245,7 @@ const NewApplication = () => {
     const bu_cart    = watch('cart_cost');
     const bu_loan    = watch('bullock_loan_amount');
     const landParcels = watch('land_parcels', []);
+    const landValuationRate = watch('land_valuation_per_acre');
     const cropsData = watch('crops', []);
     const irrigationSource = watch('irrigation_source');
 
@@ -261,7 +262,7 @@ const NewApplication = () => {
         });
     }, [setValue]);
 
-    const calculateLandTotals = React.useCallback((rows = []) => {
+    const calculateLandTotals = React.useCallback((rows = [], valuationRate) => {
         if (!Array.isArray(rows)) return;
         const totalAcres = rows.reduce((sum, row) => sum + (parseFloat(row?.acres) || 0), 0);
         const totalGuntas = rows.reduce((sum, row) => sum + (parseFloat(row?.guntas) || 0), 0);
@@ -273,6 +274,17 @@ const NewApplication = () => {
         setValue('total_area_acres', finalAcres.toFixed(2));
         setValue('total_guntas', finalGuntas);
         setValue('total_akaar', totalAkaar.toFixed(2));
+
+        // Per-parcel land valuation (TRACTOR): per-acre rate x parcel extent. Locked field.
+        const rate = parseFloat(valuationRate) || 0;
+        let valuationTotal = 0;
+        rows.forEach((row, index) => {
+            const extent = (parseFloat(row?.acres) || 0) + ((parseFloat(row?.guntas) || 0) / 40);
+            const valuation = rate > 0 && extent > 0 ? Math.round(rate * extent) : '';
+            if (valuation !== '') valuationTotal += valuation;
+            setValue(`land_parcels.${index}.valuation`, valuation);
+        });
+        setValue('total_land_valuation', valuationTotal > 0 ? valuationTotal : '');
     }, [setValue]);
 
     // Auto-calculate totals
@@ -325,8 +337,8 @@ const NewApplication = () => {
 
     // Auto-calculate total land area
     React.useEffect(() => {
-        calculateLandTotals(landParcels);
-    }, [landParcels, calculateLandTotals]);
+        calculateLandTotals(landParcels, landValuationRate);
+    }, [landParcels, landValuationRate, calculateLandTotals]);
 
     // Auto-calculate age from dob
     const dob = watch('dob');
@@ -454,7 +466,7 @@ const NewApplication = () => {
             'annual_income', 'loan_amount', 'borrower_type',
             'account_no', 'ifsc_code', 'bank_name', 'branch_name',
             'village', 'hobli', 'taluk', 'district', 'scheme_type',
-            'total_area_acres', 'total_guntas',
+            'total_area_acres', 'total_guntas', 'land_valuation_per_acre',
         ];
 
         const irrigationSources = Array.isArray(data.irrigation_source)
@@ -699,6 +711,20 @@ const NewApplication = () => {
                 <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
                     <SectionHeader title="ಭೂ ವಿವರ — Land Details" icon={<Sprout size={18} />} color="green" />
 
+                    {schemeType === 'TRACTOR' && (
+                        <div className="mb-4 max-w-sm">
+                            <label className="block text-xs font-bold text-green-800 mb-1">
+                                ಜಮೀನಿನ ಮೌಲ್ಯ (ಪ್ರತಿ ಎಕರೆಗೆ) — Land Valuation per Acre (₹)
+                            </label>
+                            <input
+                                type="number" step="1"
+                                {...register('land_valuation_per_acre')}
+                                placeholder="ಉದಾ: 500000"
+                                className="w-full px-3 py-2 text-sm border border-green-200 rounded-lg outline-none focus:border-green-400 focus:bg-green-50"
+                            />
+                        </div>
+                    )}
+
                     {/* Land Table */}
                     <div className="overflow-x-auto mb-4">
                         <table className="w-full text-sm border-collapse">
@@ -710,6 +736,9 @@ const NewApplication = () => {
                                     <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800">ಎಕರೆ — Acres</th>
                                     <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800">ಗುಂಟೆ — Guntas</th>
                                     <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800">ಆಕಾರ — Akaar</th>
+                                    {schemeType === 'TRACTOR' && (
+                                        <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800">ಜಮೀನಿನ ಮೌಲ್ಯ — Land Value</th>
+                                    )}
                                     <th className="border border-green-200 px-2 py-2 w-10"></th>
                                 </tr>
                             </thead>
@@ -757,6 +786,15 @@ const NewApplication = () => {
                                                 className="w-full px-2 py-1.5 text-sm outline-none bg-transparent focus:bg-blue-50 rounded"
                                             />
                                         </td>
+                                        {schemeType === 'TRACTOR' && (
+                                            <td className="border border-gray-200 px-1 py-1 bg-gray-50">
+                                                <input
+                                                    readOnly tabIndex={-1}
+                                                    {...register(`land_parcels.${index}.valuation`)}
+                                                    className="w-full px-2 py-1.5 text-sm outline-none bg-transparent text-gray-700 font-semibold cursor-not-allowed"
+                                                />
+                                            </td>
+                                        )}
                                         <td className="border border-gray-200 px-2 py-1 text-center">
                                             {landFields.length > 1 && (
                                                 <button type="button" onClick={() => landRemove(index)}
@@ -786,6 +824,12 @@ const NewApplication = () => {
                                         <input readOnly {...register('total_akaar')}
                                             className="w-full text-center bg-transparent font-bold text-green-900 outline-none text-xs" />
                                     </td>
+                                    {schemeType === 'TRACTOR' && (
+                                        <td className="border border-green-300 px-2 py-2 text-center text-xs text-green-900">
+                                            <input readOnly tabIndex={-1} {...register('total_land_valuation')}
+                                                className="w-full text-center bg-transparent font-bold text-green-900 outline-none text-xs" />
+                                        </td>
+                                    )}
                                     <td className="border border-green-300 px-2 py-2"></td>
                                 </tr>
                             </tfoot>

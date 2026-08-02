@@ -55,7 +55,7 @@ def plain_number(value):
 
 # Numeric fields inside the JSON-string columns. The React form submits these
 # as strings ("4.20", ""); templates do arithmetic on them, so coerce to float.
-_NUMERIC_JSON_FIELDS = {"acres", "guntas", "akaar", "annual_income", "sl"}
+_NUMERIC_JSON_FIELDS = {"acres", "guntas", "akaar", "annual_income", "sl", "valuation"}
 
 
 def _to_float(value):
@@ -99,6 +99,18 @@ def build_context(app: Application, details, spec) -> dict:
         "crops": _parse_json_list(app.current_crop),
     }
 
+    # Land valuation (TRACTOR): parcel value = per-acre rate x extent. The form
+    # stores it per parcel; recompute here so API-created rows behave the same.
+    rate = app.land_valuation_per_acre or 0
+    valuation_total = 0.0
+    for p in parsed["land_parcels"]:
+        if not isinstance(p, dict):
+            continue
+        if not p.get("valuation") and rate:
+            extent = float(p.get("acres") or 0) + float(p.get("guntas") or 0) / 40
+            p["valuation"] = round(rate * extent) if extent else None
+        valuation_total += float(p.get("valuation") or 0)
+
     total_akaar = sum(
         float(p.get("akaar") or 0) for p in parsed["land_parcels"] if isinstance(p, dict)
     )
@@ -115,6 +127,7 @@ def build_context(app: Application, details, spec) -> dict:
         "borrower_type_kn": BORROWER_TYPE_KN.get(app.borrower_type, app.borrower_type or ""),
         "annual_income": annual_income,
         "total_akaar": round(total_akaar, 2) if total_akaar else None,
+        "land_valuation_total": round(valuation_total) if valuation_total else None,
         "loan_amount_words": amount_in_words_kn(app.loan_amount),
     }
 
