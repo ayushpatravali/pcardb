@@ -29,10 +29,15 @@ FARMER_TYPE_KN = {
     "Marginal": "ಅತಿ ಸಣ್ಣ ರೈತರು",
     "Big": "ದೊಡ್ಡ ರೈತರು",
 }
-BORROWER_TYPE_KN = {
-    "New": "ಹೊಸ ಸಾಲಗಾರರು",
-    "Old": "ಹಳೇ ಸಾಲಗಾರರು",
-}
+def borrower_type_kn(value):
+    """Form stores 'New / ಹೊಸ' or 'Old / ಹಿಂದಿನ' — match by substring."""
+    if not value:
+        return ""
+    if "Old" in value:
+        return "ಹಳೇ ಸಾಲಗಾರರು"
+    if "New" in value:
+        return "ಹೊಸ ಸಾಲಗಾರರು"
+    return value
 
 
 class MissingFieldsError(Exception):
@@ -93,10 +98,23 @@ def _fmt_date(value):
 
 
 def build_context(app: Application, details, spec) -> dict:
+    _PREV_LOAN_KEYS = (
+        "purpose", "total_loan", "outstanding", "annual_installment",
+        "repaid_status", "utility_report_pages", "loan_account_pages", "mortgage_book_pages",
+    )
+    try:
+        prev_raw = json.loads(app.previous_loans) if app.previous_loans else {}
+        if not isinstance(prev_raw, dict):
+            prev_raw = {}
+    except (ValueError, TypeError):
+        prev_raw = {}
+    previous_loans = {k: prev_raw.get(k) or "" for k in _PREV_LOAN_KEYS}
+
     parsed = {
         "co_applicants": _parse_json_list(app.co_applicants),
         "land_parcels": _parse_json_list(app.land_parcels),
         "crops": _parse_json_list(app.current_crop),
+        "previous_loans": previous_loans,
     }
 
     # Land valuation (TRACTOR): parcel value = per-acre rate x extent. The form
@@ -125,7 +143,7 @@ def build_context(app: Application, details, spec) -> dict:
         "application_date": _fmt_date(app.application_date or app.created_at),
         "dob": _fmt_date(app.dob),
         "farmer_type_kn": FARMER_TYPE_KN.get(app.farmer_type, app.farmer_type or ""),
-        "borrower_type_kn": BORROWER_TYPE_KN.get(app.borrower_type, app.borrower_type or ""),
+        "borrower_type_kn": borrower_type_kn(app.borrower_type),
         "annual_income": annual_income,
         "total_akaar": round(total_akaar, 2) if total_akaar else None,
         "land_valuation_total": round(valuation_total) if valuation_total else None,

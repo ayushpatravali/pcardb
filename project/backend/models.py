@@ -73,6 +73,10 @@ class Application(SQLModel, table=True):
     # Co-applicants: JSON array of {name, relation}
     co_applicants: Optional[str] = None
 
+    # Previous-loan block (old borrowers), JSON: {purpose, total_loan, outstanding,
+    # annual_installment, repaid_status, utility_report_pages, loan_account_pages, mortgage_book_pages}
+    previous_loans: Optional[str] = None
+
     # Bank Details
     account_no: str
     ifsc_code: str

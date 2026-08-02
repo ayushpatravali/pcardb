@@ -19,37 +19,38 @@
     <div class="row"><span class="lab">ಹಿಂದಿನ ಸಾಲಗಾರರೇ ? ಹೌದು / ಅಲ್ಲ</span>
       <span class="fill short">{{ computed.borrower_type_kn }}</span></div>
     <div class="row"><span class="lab">ಹೌದು ಎಂದಾದಲ್ಲಿ : ಯೋಜನೆ / ಉದ್ದೇಶ</span>
-      <span class="fill blank wide">&nbsp;</span></div>
+      <span class="fill blank wide">{{ parsed.previous_loans.purpose }}</span></div>
   </div>
 </div>
 <div class="rule"></div>
+{# Item order per bank instruction (2026-08): amounts first, attachment items last #}
 <div class="item"><span class="num-col">&nbsp;&nbsp;ಅ)</span>
-  <div class="body row"><span class="lab">ಸಾಲಗಳ ಖಾತೆ ನಕಲುಗಳನ್ನು ಲಗತ್ತಿಸಿದೆ</span>
-    <span>ಹಾಳೆ ಸಂಖ್ಯೆ : <span class="fill blank short">&nbsp;</span></span></div>
+  <div class="body row"><span class="lab">ಪಡೆದಿರುವ ಒಟ್ಟು ಸಾಲದ ಮೊತ್ತ</span>
+    <span>ರೂ. <span class="fill blank short">{{ parsed.previous_loans.total_loan | num }}</span></span></div>
 </div>
 <div class="item"><span class="num-col">&nbsp;&nbsp;ಆ)</span>
-  <div class="body row"><span class="lab">ಆಸ್ತಿ ಅಡಮಾನ ಪುಸ್ತಕದ ನಕಲು ಲಗತ್ತಿಸಿದೆ</span>
-    <span>ಹಾಳೆ ಸಂಖ್ಯೆ : <span class="fill blank short">&nbsp;</span></span></div>
+  <div class="body row"><span class="lab">ಹಾಲಿ ಇರುವ ಸಾಲ ಹೊರೆ ಬಾಕಿ ಮೊತ್ತ</span>
+    <span>ರೂ. <span class="fill blank short">{{ parsed.previous_loans.outstanding | num }}</span></span></div>
 </div>
 <div class="item"><span class="num-col">&nbsp;&nbsp;ಇ)</span>
-  <div class="body row"><span class="lab">ಪಡೆದಿರುವ ಒಟ್ಟು ಸಾಲದ ಮೊತ್ತ</span>
-    <span>ರೂ. <span class="fill blank short">&nbsp;</span></span></div>
+  <div class="body row"><span class="lab">ಒಟ್ಟು ವಾರ್ಷಿಕ ಕಂತಿನ ಮೊತ್ತ</span>
+    <span>ರೂ. <span class="fill blank short">{{ parsed.previous_loans.annual_installment | num }}</span></span></div>
 </div>
 <div class="item"><span class="num-col">&nbsp;&nbsp;ಈ)</span>
-  <div class="body row"><span class="lab">ಹಾಲಿ ಇರುವ ಸಾಲ ಹೊರೆ ಬಾಕಿ ಮೊತ್ತ</span>
-    <span>ರೂ. <span class="fill blank short">&nbsp;</span></span></div>
+  <div class="body row"><span class="lab">ಚಾಲ್ತಿಯವರೆಗೆ ಮರುಪಾವತಿ ಮಾಡಲಾಗಿದೆಯೇ ?</span>
+    <span class="fill blank short">{{ parsed.previous_loans.repaid_status }}</span></div>
 </div>
 <div class="item"><span class="num-col">&nbsp;&nbsp;ಉ)</span>
-  <div class="body row"><span class="lab">ಒಟ್ಟು ವಾರ್ಷಿಕ ಕಂತಿನ ಮೊತ್ತ</span>
-    <span>ರೂ. <span class="fill blank short">&nbsp;</span></span></div>
+  <div class="body row"><span class="lab">ಎಲ್ಲಾ ಸಾಲಗಳ ಉಪಯುಕ್ತತೆ ವರದಿ ಲಗತ್ತಿಸಿದ ಹಾಳೆ ಸಂಖ್ಯೆ</span>
+    <span class="fill blank">{{ parsed.previous_loans.utility_report_pages }}</span></div>
 </div>
 <div class="item"><span class="num-col">&nbsp;&nbsp;ಊ)</span>
-  <div class="body row"><span class="lab">ಚಾಲ್ತಿಯವರೆಗೆ ಮರುಪಾವತಿ ಮಾಡಲಾಗಿದೆಯೇ ?</span>
-    <span class="fill blank short">&nbsp;</span></div>
+  <div class="body row"><span class="lab">ಸಾಲಗಳ ಖಾತೆ ನಕಲುಗಳನ್ನು ಲಗತ್ತಿಸಿರಿ</span>
+    <span>ಹಾಳೆ ಸಂಖ್ಯೆ : <span class="fill blank short">{{ parsed.previous_loans.loan_account_pages }}</span></span></div>
 </div>
 <div class="item"><span class="num-col">&nbsp;&nbsp;ಋ)</span>
-  <div class="body row"><span class="lab">ಎಲ್ಲಾ ಸಾಲಗಳ ಉಪಯುಕ್ತತೆ ವರದಿ ಲಗತ್ತಿಸಿದ ಹಾಳೆ ಸಂಖ್ಯೆ</span>
-    <span class="fill blank">&nbsp;</span></div>
+  <div class="body row"><span class="lab">ಆಸ್ತಿ ಅಡಮಾನ ಪುಸ್ತಕದ ನಕಲು ಲಗತ್ತಿಸಿರಿ</span>
+    <span>ಹಾಳೆ ಸಂಖ್ಯೆ : <span class="fill blank short">{{ parsed.previous_loans.mortgage_book_pages }}</span></span></div>
 </div>
 <div class="rule"></div>
 

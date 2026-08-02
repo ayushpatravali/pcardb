@@ -246,6 +246,8 @@ const NewApplication = () => {
     const bu_loan    = watch('bullock_loan_amount');
     const landParcels = watch('land_parcels', []);
     const landValuationRate = watch('land_valuation_per_acre');
+    const borrowerTypeSel = watch('borrower_type');
+    const isOldBorrower = typeof borrowerTypeSel === 'string' && borrowerTypeSel.includes('Old');
     const cropsData = watch('crops', []);
     const irrigationSource = watch('irrigation_source');
 
@@ -367,9 +369,20 @@ const NewApplication = () => {
 
                 // Split stored full name back into parts
                 const nameParts = (app.applicant_name_kn || '').split(' ');
+                const prevLoans = (() => {
+                    try { return JSON.parse(app.previous_loans || '{}') || {}; } catch { return {}; }
+                })();
                 const formData = {
                     ...app,
                     application_date: typeof app.application_date === 'string' ? app.application_date.slice(0, 10) : '',
+                    prev_purpose: prevLoans.purpose || '',
+                    prev_total_loan: prevLoans.total_loan || '',
+                    prev_outstanding: prevLoans.outstanding || '',
+                    prev_annual_installment: prevLoans.annual_installment || '',
+                    prev_repaid_status: prevLoans.repaid_status || '',
+                    prev_utility_report_pages: prevLoans.utility_report_pages || '',
+                    prev_loan_account_pages: prevLoans.loan_account_pages || '',
+                    prev_mortgage_book_pages: prevLoans.mortgage_book_pages || '',
                     name_first:  nameParts[0] || '',
                     name_middle: nameParts.length > 2 ? nameParts[1] : '',
                     name_last:   nameParts.length > 2 ? nameParts[2] : (nameParts[1] || ''),
@@ -480,6 +493,16 @@ const NewApplication = () => {
         const payload = {
             scheme_type: currentScheme,
             applicant_name_kn: fullName,
+            previous_loans: JSON.stringify({
+                purpose: data.prev_purpose || '',
+                total_loan: data.prev_total_loan || '',
+                outstanding: data.prev_outstanding || '',
+                annual_installment: data.prev_annual_installment || '',
+                repaid_status: data.prev_repaid_status || '',
+                utility_report_pages: data.prev_utility_report_pages || '',
+                loan_account_pages: data.prev_loan_account_pages || '',
+                mortgage_book_pages: data.prev_mortgage_book_pages || '',
+            }),
             co_applicants: JSON.stringify(data.co_applicants || []),
             land_parcels: JSON.stringify(data.land_parcels || []),
             current_crop: JSON.stringify(data.crops || []),
@@ -661,6 +684,35 @@ const NewApplication = () => {
                                 register={register('borrower_type')}
                                 options={['New / ಹೊಸ', 'Old / ಹಿಂದಿನ']} />
                         </div>
+
+                        {/* Previous-loan details: only for old borrowers; prints on PDF page 9 section 9) */}
+                        {isOldBorrower && (
+                            <div className="md:col-span-2 mt-2 p-4 border border-orange-200 bg-orange-50/50 rounded-xl">
+                                <p className="text-xs font-bold text-orange-700 uppercase tracking-wider mb-3">
+                                    ಹಿಂದಿನ ಸಾಲದ ವಿವರ — Previous Loan Details (ಹಳೇ ಸಾಲಗಾರರಿಗೆ)
+                                </p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                                    <div className="md:col-span-2">
+                                        <InputField label="ಯೋಜನೆ / ಉದ್ದೇಶ — Previous Loan Purpose"
+                                            register={register('prev_purpose')} placeholder="ಉದಾ: ಪಂಪಸೆಟ್ ಸಾಲ" />
+                                    </div>
+                                    <InputField label="1) ಪಡೆದಿರುವ ಒಟ್ಟು ಸಾಲದ ಮೊತ್ತ (ರೂ.)" type="number"
+                                        register={register('prev_total_loan')} />
+                                    <InputField label="2) ಹಾಲಿ ಇರುವ ಸಾಲ ಹೊರೆ ಬಾಕಿ ಮೊತ್ತ (ರೂ.)" type="number"
+                                        register={register('prev_outstanding')} />
+                                    <InputField label="3) ಒಟ್ಟು ವಾರ್ಷಿಕ ಕಂತಿನ ಮೊತ್ತ (ರೂ.)" type="number"
+                                        register={register('prev_annual_installment')} />
+                                    <InputField label="4) ಚಾಲ್ತಿಯವರೆಗೆ ಮರುಪಾವತಿ ಮಾಡಲಾಗಿದೆಯೇ ?"
+                                        register={register('prev_repaid_status')} placeholder="ಹೌದು / ಇಲ್ಲ" />
+                                    <InputField label="5) ಎಲ್ಲಾ ಸಾಲಗಳ ಉಪಯುಕ್ತತೆ ವರದಿ ಲಗತ್ತಿಸಿದ ಹಾಳೆ ಸಂಖ್ಯೆ"
+                                        register={register('prev_utility_report_pages')} />
+                                    <InputField label="6) ಸಾಲಗಳ ಖಾತೆ ನಕಲುಗಳನ್ನು ಲಗತ್ತಿಸಿರಿ — ಹಾಳೆ ಸಂಖ್ಯೆ"
+                                        register={register('prev_loan_account_pages')} />
+                                    <InputField label="7) ಆಸ್ತಿ ಅಡಮಾನ ಪುಸ್ತಕದ ನಕಲು ಲಗತ್ತಿಸಿರಿ — ಹಾಳೆ ಸಂಖ್ಯೆ"
+                                        register={register('prev_mortgage_book_pages')} />
+                                </div>
+                            </div>
+                        )}
 
                         {/* Dynamic Co-Applicants */}
                         <div className="md:col-span-2 mt-4">
