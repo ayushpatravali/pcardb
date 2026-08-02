@@ -369,6 +369,7 @@ const NewApplication = () => {
                 const nameParts = (app.applicant_name_kn || '').split(' ');
                 const formData = {
                     ...app,
+                    application_date: typeof app.application_date === 'string' ? app.application_date.slice(0, 10) : '',
                     name_first:  nameParts[0] || '',
                     name_middle: nameParts.length > 2 ? nameParts[1] : '',
                     name_last:   nameParts.length > 2 ? nameParts[2] : (nameParts[1] || ''),
@@ -467,6 +468,7 @@ const NewApplication = () => {
             'account_no', 'ifsc_code', 'bank_name', 'branch_name',
             'village', 'hobli', 'taluk', 'district', 'scheme_type',
             'total_area_acres', 'total_guntas', 'land_valuation_per_acre',
+            'application_date',
         ];
 
         const irrigationSources = Array.isArray(data.irrigation_source)
@@ -598,6 +600,14 @@ const NewApplication = () => {
                 {/* ── 1. APPLICANT DETAILS ── */}
                 <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
                     <SectionHeader title="ಅರ್ಜಿದಾರ ವಿವರ — Applicant Details" color="blue" />
+
+                    <div className="mb-6 max-w-xs">
+                        <InputField label="ಅರ್ಜಿ ದಿನಾಂಕ — Application Date" type="date"
+                            register={register('application_date')} />
+                        <p className="text-xs text-gray-400 mt-1">
+                            ಖಾಲಿ ಬಿಟ್ಟರೆ ಇಂದಿನ ದಿನಾಂಕ — leave blank to use today's date on the printed form
+                        </p>
+                    </div>
 
                     {/* Name split into 3 */}
                     <div className="mb-6">
@@ -907,6 +917,10 @@ const NewApplication = () => {
                         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
                             ನೀರಾವರಿ ಮೂಲ — Irrigation Source (Select Multiple)
                         </label>
+                        <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-3">
+                            ಸೂಚನೆ: ಅಗತ್ಯವಿರುವ ನೀರಾವರಿ ಮೂಲಗಳಿಗೆ ಮಾತ್ರ HP ನಮೂದಿಸಿ — Enter HP only for the resources that require it
+                            (e.g. borewell/pumpset). Sources without a motor can be left blank.
+                        </p>
                         <div className="grid gap-3 mb-3">
                             {IRRIGATION_OPTIONS.map((opt) => {
                                 const key = sanitizeIrrigationKey(opt);
@@ -920,13 +934,15 @@ const NewApplication = () => {
                                         {selected && (
                                             <div className="flex items-center gap-2 mt-2 sm:mt-0">
                                                 <span className="text-xs text-gray-500">HP</span>
-                                                <input
-                                                    type="number"
-                                                    step="0.1"
+                                                <select
                                                     {...register(`irrigation_hp.${key}`)}
-                                                    placeholder="5"
-                                                    className="w-24 px-2 py-1 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-400"
-                                                />
+                                                    className="w-24 px-2 py-1 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-white"
+                                                >
+                                                    <option value=""></option>
+                                                    {Array.from({ length: 39 }, (_, i) => 1 + i * 0.5).map((hp) => (
+                                                        <option key={hp} value={hp}>{hp}</option>
+                                                    ))}
+                                                </select>
                                             </div>
                                         )}
                                     </label>

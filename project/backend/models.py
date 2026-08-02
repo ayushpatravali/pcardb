@@ -49,6 +49,7 @@ class Application(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     application_no: Optional[str] = Field(default=None, index=True)  # e.g. "123/2025-26"
     created_at: datetime = Field(default_factory=datetime.utcnow)
+    application_date: Optional[datetime] = None  # user-chosen date printed on the forms; falls back to created_at
     status: ApplicationStatus = Field(
         default=ApplicationStatus.DRAFT,
         sa_column=Column(SAEnum(ApplicationStatus, values_callable=_enum_values), nullable=False),

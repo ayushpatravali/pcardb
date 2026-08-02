@@ -1,10 +1,16 @@
 {# Page A1 — ಸಾಲದ ಅರ್ಜಿ (Loan Application, page 1). Promoted from the proven PoC. #}
+<div class="pg-a1">
+<style>
+  /* compensate the taller passport photo box (45mm) so A1 stays one page */
+  .pg-a1 .section { margin-top: 2mm; }
+  .pg-a1 .grid-rows td { height: 6.5mm; }
+</style>
 <div class="bank-header">
   {{ bank.name_line1 }}<br>
   {{ bank.name_line2 }}
 </div>
 
-<div style="display:flex; align-items:flex-start; margin-top:3mm">
+<div style="display:flex; align-items:flex-start; margin-top:1mm">
   <div style="width:62mm"></div>
   <div style="flex:1; text-align:center; font-size:17pt; font-weight:bold">ಸಾಲದ ಅರ್ಜಿ</div>
   <div style="border:1.5px solid #000; padding:1.5mm 3mm; font-size:9.5pt; width:62mm; text-align:center">
@@ -27,10 +33,11 @@
     <div style="margin-top:2mm">ಮೊಬೈಲ್<br>ಸಂ &nbsp;&nbsp;&nbsp;<span class="value">{{ app.mobile_no }}</span></div>
   </div>
   <div style="width:62mm">
-    <div class="photo-box">ದರಖಾಸ್ತುದಾರರ<br>ಛಾಯಾ ಚಿತ್ರ<br>(ಫೋಟೋ)</div>
+    {# passport-photo size: 35mm x 45mm, centred in the column #}
+    <div class="photo-box" style="width:35mm; height:45mm; margin:0 auto; font-size:8.5pt">ಅರ್ಜಿದಾರರ<br>ಭಾವಚಿತ್ರ</div>
     <table class="bordered" style="margin-top:2mm; font-size:8.5pt">
       <tr><td class="center">ಸದಸ್ಯತ್ವ ಸಂಖ್ಯೆ</td><td class="center">ಸದಸ್ಯತ್ವ ಶುಲ್ಕ ಪಾವತಿ ಸಂಖ್ಯೆ</td><td class="center">ದಿನಾಂಕ</td></tr>
-      <tr><td style="height:8mm"></td><td></td><td></td></tr>
+      <tr><td style="height:6mm"></td><td></td><td></td></tr>
     </table>
   </div>
 </div>
@@ -105,4 +112,5 @@
     <tr><td class="center">3</td><td></td><td></td><td></td></tr>
     <tr><td class="center">4</td><td></td><td></td><td></td></tr>
   </table>
+</div>
 </div>

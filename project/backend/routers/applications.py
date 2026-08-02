@@ -145,6 +145,7 @@ class ApplicationCreate(BaseModel):
 
     occupation: Optional[str] = "Agriculture"
     dob: Optional[datetime] = None
+    application_date: Optional[datetime] = None
     current_crop: Optional[str] = None
     irrigation_source: Optional[str] = None
     annual_income: Optional[float] = None

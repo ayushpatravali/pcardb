@@ -109,6 +109,7 @@ def build_context(app: Application, details, spec) -> dict:
         if not p.get("valuation") and rate:
             extent = float(p.get("acres") or 0) + float(p.get("guntas") or 0) / 40
             p["valuation"] = round(rate * extent) if extent else None
+        p.setdefault("valuation", None)  # key must exist: templates use StrictUndefined
         valuation_total += float(p.get("valuation") or 0)
 
     total_akaar = sum(
@@ -121,7 +122,7 @@ def build_context(app: Application, details, spec) -> dict:
         )
 
     computed = {
-        "application_date": _fmt_date(app.created_at),
+        "application_date": _fmt_date(app.application_date or app.created_at),
         "dob": _fmt_date(app.dob),
         "farmer_type_kn": FARMER_TYPE_KN.get(app.farmer_type, app.farmer_type or ""),
         "borrower_type_kn": BORROWER_TYPE_KN.get(app.borrower_type, app.borrower_type or ""),
