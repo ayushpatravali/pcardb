@@ -1,287 +1,123 @@
-# PCARDB Loan Automation System - Claude Code Guide
+# PCARDB Loan Automation — Project Guide for Claude Code
 
-This document provides guidance for using Claude Code effectively with the PCARDB Loan Automation System project.
+> **Keep this file current.** After every significant change (feature, schema,
+> template, deployment), update the **Changelog** and any affected section
+> below. This file is the context bridge between sessions.
 
-## Project Overview
+## What this is
 
-PCARDB is a full-stack web application that digitizes the loan application lifecycle for the Gokak Taluka PCARD Bank. It replaces manual paper-based forms with a modern web application that:
+Digitizes loan applications for Gokak Taluka PCARD Bank (Karnataka). Operator
+fills a React form → FastAPI + SQLite stores it → the system generates the
+bank's standard **21-page Kannada print packet** as a PDF. **Tractor scheme is
+fully built**; the other 5 schemes (LAND_DEV, BULLOCK, SHEEP_40/20/10) are
+gated on bank sign-off of the Tractor pilot and will replicate its pattern.
 
-- Provides digital form entry with auto-calculated fields
-- Supports 6 loan schemes (Tractor, Land Development, Sheep Rearing variants, Bullock & Cart)
-- Automatically generates Excel workbooks and PDFs using legacy bank templates
-- Provides role-based access (Bank Managers and Field Officers)
-- Produces print-ready output matching the bank's existing printed format
+**Repo:** https://github.com/ayushpatravali/pcardb (owner's personal GitHub;
+a fork on a second account feeds the Railway demo — "Sync fork" after pushes).
 
-## Technology Stack
-
-- **Frontend**: React 18 + Vite, Tailwind CSS, React Hook Form, React Router v6
-- **Backend**: FastAPI (Python), SQLModel ORM, SQLite database
-- **Authentication**: JWT (python-jose) with Argon2 password hashing
-- **Document Generation**: openpyxl (Excel), Win32COM (Excel to PDF conversion)
-- **Deployment**: Can run as local intranet server or standalone desktop executable
-
-## Project Structure
+## Architecture (current — the old Excel/win32com engine is GONE)
 
 ```
-project/
-├── run_app.py                  # One-click launcher (Backend + Frontend + Ngrok)
-├── run_backend.bat             # Windows shortcut: start backend only
-├── run_frontend.bat            # Windows shortcut: start frontend only
-├── install_fonts.bat           # Install Kannada Unicode fonts
-├── README.md                   # Main project documentation
-│
-├── backend/                    # FastAPI backend
-│   ├── main.py                 # FastAPI app entry point
-│   ├── auth.py                 # JWT logic and password hashing
-│   ├── database.py             # SQLite engine and session management
-│   ├── models.py               # SQLModel/Pydantic models
-│   ├── routers/                # API routers
-│   │   ├── applications.py     # Application CRUD endpoints
-│   │   ├── auth.py             # Authentication endpoints
-│   │   ├── pdf.py              # PDF generation endpoints
-│   │   └── excel.py            # Excel download endpoints
-│   ├── services/               # Business logic services
-│   │   ├── generator.py        # PRIMARY: Excel generation + PDF conversion
-│   │   ├── excel_service.py    # Legacy Excel generation
-│   │   └── pdf_service.py      # Legacy ReportLab PDF generation
-│   ├── utils/                  # Utility functions
-│   │   └── nudi_converter.py   # Nudi ↔ Unicode Kannada converter
-│   ├── assets/                 # Static assets
-│   │   ├── templates/          # Bank Excel templates (one per scheme)
-│   │   ├── fonts/              # Kannada Unicode fonts
-│   │   └── generated/          # Output folder for generated files
-│   └── config/                 # Configuration files
-│       └── tractor_coordinates.json  # PDF overlay coordinates for Tractor scheme
-│
-└── frontend/                   # React frontend
-    ├── vite.config.js          # Dev server + proxy config
-    ├── package.json
-    └── src/
-        ├── App.jsx             # Route definitions
-        ├── main.jsx            # React entry point
-        ├── pages/              # Page components
-        │   ├── Login.jsx
-        │   ├── SignUp.jsx
-        │   ├── Home.jsx
-        │   ├── SelectScheme.jsx
-        │   ├── NewApplication.jsx  # MAIN FORM (create + edit)
-        │   ├── ApplicationsList.jsx
-        │   └── PrintApplication.jsx
-        ├── components/         # Reusable UI components
-        │   ├── Layout.jsx
-        │   ├── ProtectedRoute.jsx
-        │   ├── PDFOverlay/     # Pixel-perfect PDF overlay (Tractor)
-        │   └── forms/          # Scheme-specific form sub-components
-        ├── services/           # API service layer
-        │   └── api.js          # Axios instance and API helpers
-        ├── context/            # React context providers
-        │   ├── AuthContext.jsx
-        │   └── LanguageContext.jsx
-        ├── config/             # Configuration files
-        │   └── tractor_map.js  # PDF overlay coordinates
-        └── utils/              # Utility functions
-            └── translations.js # Kannada ↔ English label mappings
+React form (frontend/src/pages/NewApplication.jsx)
+  → POST/PUT /applications (routers/applications.py, exact SchemeType routing)
+  → SQLite row (models.py; JSON-string columns for arrays)
+  → GET /pdf/download/{id} or POST /applications/{id}/generate
+  → services/render_service.py: build_context() fills 21 Jinja2 HTML pages
+  → WeasyPrint → PDF (~1s). Missing required fields → 422 with field list.
 ```
 
-## Key Features & Implementation Details
+- **Templates:** `backend/templates/pages/*.html` (+ `pages/tractor/t1–t7`),
+  assembled by `templates/packet.html` in the order defined in
+  `backend/schemas/tractor.py` `PAGES`. CSS in `templates/css/base.css`.
+  Labels are Unicode Kannada transcribed from the bank's reference PDFs
+  (`legacy_assets/pdfss/`, NOT in git — contains real customer PII).
+- **Field specs:** `backend/schemas/` — tier per field: `collected` (form) /
+  `computed` (server-derived) / `constant` / `handwritten` (prints blank).
+- **Computed server-side:** annual_income = Σ crop incomes from `current_crop`
+  JSON; per-parcel land valuation = `land_valuation_per_acre` × extent;
+  totals; Kannada amount-in-words (`utils/kannada_numbers.py`).
+- **JSON-string columns on Application:** `co_applicants`, `land_parcels`
+  (incl. per-parcel `valuation`), `current_crop`, `previous_loans`.
+  Numeric fields inside them are coerced to float at render (form sends strings).
+- **Auth:** JWT; roles manager/field_officer; enums stored by VALUE
+  (lowercase); signup is DISABLED unless `ALLOW_SIGNUP=1` (local scripts set it).
 
-### 1. Document Generation System (Critical Component)
+## Run
 
-The system uses a template-based approach to generate bank-standard documents:
+| Task | macOS/Linux | Windows |
+|---|---|---|
+| one-time setup | `make setup` | `setup.bat` |
+| localhost | `make run` | `run.bat` |
+| + ngrok tunnel | `make run-ngrok` | `run_ngrok.bat` |
 
-- **Templates**: Each loan scheme has a specific Excel template in `backend/assets/templates/`
-- **Generation Process**:
-  1. Copy the appropriate template
-  2. Fill data using coordinate mapping (`LAYOUTS` dictionary in `generator.py`)
-  3. Use `openpyxl` to write data to the `PLDMagic` sheet
-  4. Use Win32COM to open Excel, calculate formulas, and export to PDF
-  5. Fallback to returning Excel file if PDF conversion fails
+Default logins `manager/manager123`, `officer/officer123` (env-overridable:
+`MANAGER_PASSWORD`, `OFFICER_PASSWORD`). macOS needs
+`DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib` (brew pango) — scripts set it.
+Never run WeasyPrint through `nohup`/`env` on macOS (SIP strips DYLD vars).
 
-**Important Notes**:
-- PDF generation requires Windows with Microsoft Excel installed (uses `win32com.client`)
-- The printable sheets in legacy Excel files use Nudi 01 e ASCII font
-- Dynamic user input (like applicant names) must be entered using Nudi keyboard layout
-- Hardcoded values (like scheme names) use predefined Nudi ASCII strings
+**Demo hosting (Railway, free):** Dockerfile at repo root; single container
+serves API + built frontend (`/api/*` routes + SPA fallback in `main.py`).
+Env vars on the service: `MANAGER_PASSWORD`, `OFFICER_PASSWORD`, `DEMO_SEED=1`
+(auto-seeds the editable Vasant Malli sample each boot). Disk is ephemeral —
+data resets on redeploy. `GET /healthz` shows env delivery as booleans.
+Final deployment target: fully local on the bank manager's machine, bank LAN only.
 
-### 2. Form Handling & Data Flow
+## Testing
 
-**Frontend (NewApplication.jsx)**:
-- Uses React Hook Form for state management
-- Implements real-time auto-calculations for fields like Total Cost and Margin Money
-- Uses individual `watch()` calls for performance
-- Handles both Create and Edit modes
-- Serializes complex arrays (land_parcels, co_applicants) as JSON strings
-- Normalizes crop names for consistent lookups
+From `backend/` with venv `/Users/ayush/project/.venv-mac`:
+- `python tools/render_test.py [--pages a1,b3]` — render fixture packet; must print `pages: 21 OK`
+- `python tools/render_highlight.py <id>` — packet with UI-input values highlighted yellow (bank review)
+- `python tools/compare_pdfs.py <pdf>` — page-count + side-by-side images vs reference
+- `python tools/seed_reference_apps.py` — seed Vasant Malli sample
+- e2e pattern: `with TestClient(main.app) as c:` (context manager, or startup/seeding won't run)
 
-**Backend (applications.py)**:
-- Validates and sanitizes input (mobile/aadhaar length checks)
-- Maps form data to SQLModel entities
-- Handles relationship between Application and scheme-specific detail tables
-- Implements role-based access control (Manager vs Field Officer)
-- Provides document generation endpoint (`/applications/{id}/generate`)
+## Hard rules
 
-### 3. Authentication & Security
+1. **PII never in git**: `legacy_assets/`, `*.xlsx`, `*.pdf`, `*.db` are
+   gitignored. Real applicant data moves by USB/AirDrop only.
+2. **Form ↔ backend contract**: backend adapts to what the form sends; field
+   names in `ApplicationCreate` mirror the form payload exactly.
+3. **Kannada input must be Unicode.** Nudi legacy (ASCII) input is detected
+   and rejected server-side (`reject_nudi_ascii`). Bank machines: Nudi 6 in
+   Unicode mode.
+4. **Templates use StrictUndefined** — every referenced key must exist in the
+   context (see `p.setdefault("valuation", None)` pattern).
+5. **Local schema changes**: `ALTER TABLE` the dev `database.db` in place
+   (see git history for one-liners); Railway recreates its DB on redeploy.
+6. **Page-count fidelity**: any page edit must keep `render_test.py` at 21
+   pages — fixed-height pages, tighten spacing if content grows.
+7. Git identity/remote is repo-local only; never touch global git config
+   (owner has separate org GitHub in other VS Code windows).
 
-- JWT-based authentication with 8-hour expiration (configurable)
-- Passwords hashed with Argon2 via passlib
-- Role-based access: Managers can approve applications, Officers can only see their own
-- Token passed in Authorization header as Bearer token
-- Vite proxy configured to forward `/api` requests to backend
+## Changelog
 
-## Common Development Tasks
+- **2026-07-31** — Engine rebuild: retired generator.py/excel_service/
+  pdf_service/win32com + excel router + nudi_converter. New schemas package,
+  render_service (Jinja2+WeasyPrint), 21 Tractor page templates transcribed
+  from reference PDFs, models cleanup (enum values, exact scheme routing,
+  dropped duplicate columns), verification tools, Makefile, README.
+  Cross-checked labels via knconverter; 6 spelling fixes.
+- **2026-07-31** — Demo hosting: Dockerfile (node build + python/pango),
+  /api route aliases + SPA serving, env-seeded users, signup off by default
+  (`ALLOW_SIGNUP` opt-in), `/healthz`, `DEMO_SEED` auto-sample. Railway live
+  at pcardbbank-gokak.up.railway.app (via fork on second account).
+- **2026-07-31** — Fixes found by e2e: create-response losing id (ORM refresh),
+  form's string-typed numbers crashing PDF arithmetic (float coercion).
+- **2026-08-02** — Land valuation (Tractor): `land_valuation_per_acre` input,
+  locked per-parcel value column + total in form; page 19 (ಅನುಬಂಧ–2) value
+  column/total/per-acre certification line filled.
+- **2026-08-02** — Application date override (blank = today), irrigation HP
+  dropdown 1–20 step 0.5 + "HP only for motorised sources" note, page-1 photo
+  box → passport 35×45mm labeled ಅರ್ಜಿದಾರರ ಭಾವಚಿತ್ರ.
+- **2026-08-02** — Previous-loan block (borrower type = Old): 8 inputs stored
+  as `previous_loans` JSON; PDF page 9 section 9) reordered (amounts first,
+  attachment items last), ಲಗತ್ತಿಸಿದೆ → ಲಗತ್ತಿಸಿರಿ, values bound.
 
-### Starting the Development Environment
+## Next / pending
 
-**One-command startup** (recommended for development):
-```bash
-# From project root
-python run_app.py
-```
-This starts:
-- Backend at http://localhost:8000
-- Frontend at http://localhost:5173
-- Ngrok tunnel (if ngrok.exe is present)
-
-**Manual startup**:
-```bash
-# Terminal 1: Backend
-cd project/backend
-venv\Scripts\activate
-python -m uvicorn main:app --reload --port 8000
-
-# Terminal 2: Frontend
-cd project/frontend
-npm run dev
-```
-
-### First-Time Setup
-
-```bash
-# Backend setup
-cd project/backend
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-python init_db.py  # Creates default users
-
-# Frontend setup
-cd project/frontend
-npm install
-```
-
-### Default Credentials
-- Manager: `manager` / `manager123`
-- Field Officer: `officer` / `officer123`
-
-### Running Tests
-Currently, the project does not have automated tests. Manual testing involves:
-1. Creating applications for each loan scheme
-2. Verifying auto-calculations work correctly
-3. Testing PDF/Excel generation
-4. Verifying role-based access controls
-5. Checking data persistence across sessions
-
-### Common Issues & Troubleshooting
-
-1. **PDF Generation Failures**:
-   - Requires Windows with Microsoft Excel installed
-   - Ensure `pywin32` is installed in the virtual environment
-   - Check that Excel templates exist in `backend/assets/templates/`
-
-2. **Database Path Issues**:
-   - SQLite database path is relative
-   - Always start the backend from the `project/` directory
-   - Or set absolute path in `database.py`
-
-3. **Font Display Issues**:
-   - Kannada text requires Nudi Unicode fonts
-   - Run `install_fonts.bat` to install required fonts
-   - For dynamic text, users must input via Nudi keyboard layout
-
-4. **CORS/Proxy Issues**:
-   - Frontend uses Vite proxy to forward `/api` to backend:8000
-   - In production, ensure proper proxy configuration
-   - Backend has permissive CORS settings for development
-
-## Claude Code Usage Guidelines
-
-### When working on this project:
-
-1. **Read the Architecture Documentation First**:
-   - Start with `README.md` for overall understanding
-   - Refer to `BACKEND_ARCHITECTURE.md` for backend details
-   - Refer to `FRONTEND_ARCHITECTURE.md` for frontend details
-
-2. **Focus Areas for Improvement**:
-   - Document generation is the most complex part - pay attention to `generator.py`
-   - Form validation and serialization in `NewApplication.jsx`
-   - Authentication flows in `auth.py` and `AuthContext.jsx`
-   - Database relationships in `models.py`
-
-3. **Common Claude Code Commands for This Project**:
-   - Use `/read` to examine key files
-   - Use `/edit` to modify existing files
-   - Use `/write` to create new files (following existing patterns)
-   - Use `/bash` to run development commands
-   - Use `/agent` for complex multi-file operations
-
-4. **When Modifying Document Generation**:
-   - Always test with actual Excel templates
-   - Verify coordinate mappings in `LAYOUTS` dictionary
-   - Test both Excel and PDF output
-   - Remember the Nudi font constraint for PDF output
-
-5. **When Modifying Forms**:
-   - Test both create and edit modes
-   - Verify auto-calculations work correctly
-   - Check JSON stringification for complex fields
-   - Validate against backend Pydantic models
-
-6. **When Modifying Backend Endpoints**:
-   - Follow existing Pydantic model patterns
-   - Maintain role-based access controls
-   - Ensure proper error handling and validation
-   - Test database relationships and cascades
-
-## Recent Changes (as of 2026-07-18)
-
-See `UPDATES-2026-07-18.md` for recent improvements:
-- Fixed Tractor application form behavior in edit mode
-- Improved parsing of saved applications with older payload shapes
-- Normalized crop-name values for consistent lookups
-- Prefilled tractor/trailer/implement loan fields when editing
-- Ensured computed loan_amount is set correctly
-
-## Future Work (See FUTURE_ROADMAP.md)
-
-- Ad-hoc form field changes per client request
-- Application number auto-generation format changes
-- Manual backup feature (download database)
-- Automatic scheduled backups
-- Production deployment guide (Nginx reverse proxy)
-
-## Best Practices for Claude Code
-
-1. **Maintain Consistency**:
-   - Follow existing code styling and patterns
-   - Use the same naming conventions
-   - Keep component structure consistent
-
-2. **Test Thoroughly**:
-   - Document generation is fragile - test all schemes
-   - Form validation edge cases (empty values, invalid formats)
-   - Role-based access controls
-   - PDF/Excel output matches bank templates
-
-3. **Document Changes**:
-   - Update relevant markdown files when making significant changes
-   - Add comments to complex logic (especially coordinate mappings)
-   - Note any environmental dependencies
-
-4. **Respect Constraints**:
-   - Remember Windows/Excel dependency for PDF generation
-   - Keep security considerations in mind (auth, validation)
-   - Maintain backward compatibility where possible
-   - Consider the target users (bank staff with varying tech proficiency)
-
-This guide should help you effectively use Claude Code to work with the PCARDB Loan Automation System. When in doubt, refer back to the architecture documentation and existing code patterns.
+- Bank sign-off on printed Tractor packet → then replicate templates+specs to
+  SHEEP_40/20/10 → BULLOCK → LAND_DEV (shared pages already built; their UI
+  forms don't exist yet and will copy the Tractor form pattern).
+- Optional: Railway volume for persistent demo data; Windows-VM validation of
+  the GTK runtime before bank install; frontend dead-code sweep (PDFOverlay,
+  tractor_map.js, TractorApplicationForm.jsx) — needs owner approval.
