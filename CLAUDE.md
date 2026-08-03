@@ -112,6 +112,15 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 - **2026-08-03** — Formula map: all 489 cell formulas from the Vasant Malli
   Tractor workbook extracted to `legacy_assets/formula_maps/tractor_formulas.json`
   (gitignored) — reference for every computed figure in the packet.
+- **2026-08-03** — UI overhaul (no flow/field changes): forest-green + harvest-
+  gold design system (tailwind.config `primary`/`accent`/`surface`, self-hosted
+  Noto Sans Kannada in frontend/public/fonts). Redesigned Login (bank brand
+  panel, Kannada identity), SignUp (+ ವಲಯ region input feeding User.region),
+  Layout (dark green sidebar), Home (stat cards + recharts status donut),
+  SelectScheme; NewApplication restyled via SectionHeader/InputField/SelectField
+  (new `variant` prop: dark/highlight for the totals panels). Deps: motion,
+  recharts, class-variance-authority. Loan-duration select moved after
+  caste/farmer/borrower-type block (owner request).
 - **2026-08-03** — Form fix: crop income + land totals/valuation now recompute
   on every keystroke. RHF `watch()` returns the same array ref while typing
   inside field-array rows, so the effects only fired on row add/remove — now

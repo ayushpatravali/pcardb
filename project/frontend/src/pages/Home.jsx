@@ -1,21 +1,75 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Tractor, Sprout, Footprints, Settings, ArrowRight, Activity, Clock, FileText, Eye, Pencil, Filter, CheckSquare, Square } from 'lucide-react';
+import { motion } from 'motion/react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchStats, approveApplication } from '../services/api';
 import { useEffect, useState } from 'react';
 
-const StatCard = ({ label, value, icon, color, subLabel }) => (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4">
-        <div className={`p-4 rounded-xl ${color} bg-opacity-10 text-${color.replace('bg-', '')}-600`}>
+const STAT_TONES = {
+    primary: 'bg-primary-100 text-primary-700',
+    amber: 'bg-accent-100 text-accent-700',
+    green: 'bg-emerald-100 text-emerald-700',
+};
+
+const StatCard = ({ label, value, icon, tone = 'primary', subLabel, delay = 0 }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay }}
+        className="flex items-center space-x-4 rounded-2xl border border-stone-200/70 bg-white p-6 shadow-card"
+    >
+        <div className={`rounded-xl p-3.5 ${STAT_TONES[tone]}`}>
             {icon}
         </div>
         <div>
-            <p className="text-gray-500 text-sm font-medium">{label}</p>
-            <h4 className="text-3xl font-bold text-gray-900">{value}</h4>
-            {subLabel && <p className="text-xs text-gray-400 mt-1">{subLabel}</p>}
+            <p className="text-sm font-medium text-stone-500">{label}</p>
+            <h4 className="text-3xl font-bold tracking-tight text-stone-900">{value}</h4>
+            {subLabel && <p className="mt-0.5 text-xs text-stone-400">{subLabel}</p>}
         </div>
-    </div>
+    </motion.div>
 );
+
+const StatusDonut = ({ approved, pending }) => {
+    const data = [
+        { name: 'Approved', value: approved },
+        { name: 'Pending', value: pending },
+    ];
+    const COLORS = ['#2b6e4a', '#d4a53c'];
+    const empty = approved + pending === 0;
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.15 }}
+            className="rounded-2xl border border-stone-200/70 bg-white p-5 shadow-card"
+        >
+            <p className="text-sm font-medium text-stone-500">Status overview</p>
+            <div className="flex items-center">
+                <div className="h-24 w-24">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                            <Pie
+                                data={empty ? [{ name: '—', value: 1 }] : data}
+                                dataKey="value" innerRadius={28} outerRadius={44}
+                                strokeWidth={2} paddingAngle={empty ? 0 : 3}
+                            >
+                                {(empty ? [0] : data).map((_, i) => (
+                                    <Cell key={i} fill={empty ? '#e7e5e4' : COLORS[i]} />
+                                ))}
+                            </Pie>
+                            {!empty && <Tooltip formatter={(v, n) => [v, n]} />}
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+                <div className="ml-2 space-y-1.5 text-xs">
+                    <p className="flex items-center gap-2 text-stone-600">
+                        <span className="h-2.5 w-2.5 rounded-full" style={{ background: COLORS[0] }} /> Approved · <b>{approved}</b>
+                    </p>
+                    <p className="flex items-center gap-2 text-stone-600">
+                        <span className="h-2.5 w-2.5 rounded-full" style={{ background: COLORS[1] }} /> Pending · <b>{pending}</b>
+                    </p>
+                </div>
+            </div>
+        </motion.div>
+    );
+};
 
 const Home = () => {
     const { t } = useLanguage();
@@ -89,31 +143,38 @@ const Home = () => {
         <div>
             {/* Header & Stats */}
             <div className="mb-10">
-                <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-8">
+                <h1 className="mb-1 text-3xl font-bold tracking-tight text-stone-900">
                     {t('dashboard')}
                 </h1>
+                <p className="mb-8 text-sm text-stone-500">ದಿ ಗೋಕಾಕ ತಾ. ಪ್ರಾ. ಸ. ಕೃ. ಮತ್ತು ಗ್ರಾ. ಅ. ಬ್ಯಾಂಕ ನಿ.</p>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div className="mb-10 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
                     <StatCard
                         label={t('totalApps')}
                         value={stats.total_applications}
-                        icon={<FileText size={24} />}
-                        color="bg-indigo-600"
+                        icon={<FileText size={22} />}
+                        tone="primary"
                         subLabel={t('allTime')}
                     />
                     <StatCard
                         label={t('pendingReview')}
                         value={stats.pending_applications}
-                        icon={<Clock size={24} />}
-                        color="bg-amber-500"
+                        icon={<Clock size={22} />}
+                        tone="amber"
                         subLabel={t('awaitingApp')}
+                        delay={0.05}
                     />
                     <StatCard
                         label={t('approvedActive')}
                         value={stats.total_applications - stats.pending_applications}
-                        icon={<Activity size={24} />}
-                        color="bg-emerald-600"
+                        icon={<Activity size={22} />}
+                        tone="green"
                         subLabel={t('processed')}
+                        delay={0.1}
+                    />
+                    <StatusDonut
+                        approved={stats.total_applications - stats.pending_applications}
+                        pending={stats.pending_applications}
                     />
                 </div>
             </div>
@@ -168,7 +229,7 @@ const Home = () => {
                         </div>
                     </div>
 
-                    <Link to="/select-scheme" className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-sm flex items-center shrink-0">
+                    <Link to="/select-scheme" className="bg-primary-700 hover:bg-primary-800 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-sm flex items-center shrink-0">
                         <FileText size={18} className="mr-2" />
                         {t('newApplication')}
                     </Link>
@@ -195,7 +256,7 @@ const Home = () => {
 
                                     return (
                                         <tr key={app.id} className="hover:bg-gray-50 transition-colors group cursor-pointer" onClick={() => navigate(`/applications/${app.id}/print`)}>
-                                            <td className="p-4 text-blue-600 font-medium group-hover:underline">
+                                            <td className="p-4 text-primary-700 font-medium group-hover:underline">
                                                 {displayId}
                                             </td>
                                             <td className="p-4">
@@ -209,7 +270,7 @@ const Home = () => {
                                                 </div>
                                             </td>
                                             <td className="p-4">
-                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
                                                     {t(app.scheme_type)}
                                                 </span>
                                             </td>
@@ -249,7 +310,7 @@ const Home = () => {
                     ) : (
                         <div className="p-10 text-center text-gray-500">
                             <p>{t('noApps')}</p>
-                            <Link to="/select-scheme" className="text-blue-600 font-medium mt-2 inline-block">{t('startOne')}</Link>
+                            <Link to="/select-scheme" className="text-primary-700 font-medium mt-2 inline-block">{t('startOne')}</Link>
                         </div>
                     )}
                 </div>

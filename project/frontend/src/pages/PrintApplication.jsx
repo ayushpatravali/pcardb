@@ -61,7 +61,7 @@ const PrintApplication = () => {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
                     <button
                         onClick={() => window.open(`/api/pdf/download/${id}`, '_blank')}
-                        className="w-full sm:w-auto px-8 py-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 flex items-center justify-center transition-all transform hover:-translate-y-1"
+                        className="w-full sm:w-auto px-8 py-4 bg-primary-700 text-white rounded-xl font-bold hover:bg-primary-800 shadow-lg shadow-blue-200 flex items-center justify-center transition-all transform hover:-translate-y-1"
                     >
                         <Printer className="mr-3" size={24} />
                         Download 21-Page PDF

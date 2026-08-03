@@ -3,33 +3,33 @@ import { Tractor, Sprout, Footprints, Settings, ArrowRight } from 'lucide-react'
 import { useLanguage } from '../context/LanguageContext';
 
 const COLOR_MAP = {
-    blue: { bg: 'bg-blue-600', text: 'text-blue-600', light: 'bg-blue-100' },
-    green: { bg: 'bg-green-600', text: 'text-green-600', light: 'bg-green-100' },
-    orange: { bg: 'bg-orange-500', text: 'text-orange-600', light: 'bg-orange-100' },
-    indigo: { bg: 'bg-indigo-600', text: 'text-indigo-600', light: 'bg-indigo-100' },
-    purple: { bg: 'bg-purple-600', text: 'text-purple-600', light: 'bg-purple-100' },
-    indigo400: { bg: 'bg-indigo-400', text: 'text-indigo-500', light: 'bg-indigo-100' },
-    indigo300: { bg: 'bg-indigo-300', text: 'text-indigo-400', light: 'bg-indigo-50' }
+    blue: { bg: 'bg-primary-700', text: 'text-primary-700', light: 'bg-primary-100' },
+    green: { bg: 'bg-emerald-600', text: 'text-emerald-700', light: 'bg-emerald-100' },
+    orange: { bg: 'bg-accent-500', text: 'text-accent-700', light: 'bg-accent-100' },
+    indigo: { bg: 'bg-primary-500', text: 'text-primary-600', light: 'bg-primary-50' },
+    purple: { bg: 'bg-stone-500', text: 'text-stone-600', light: 'bg-stone-100' },
+    indigo400: { bg: 'bg-primary-400', text: 'text-primary-500', light: 'bg-primary-50' },
+    indigo300: { bg: 'bg-primary-300', text: 'text-primary-400', light: 'bg-primary-50' }
 };
 
 const SchemeCard = ({ title, desc, link, icon, colorKey }) => {
     const theme = COLOR_MAP[colorKey] || COLOR_MAP['blue'];
 
     return (
-        <Link to={link} className="block group relative bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
-            <div className={`absolute top-0 left-0 w-2 h-full ${theme.bg}`}></div>
+        <Link to={link} className="block group relative bg-white border border-stone-200/70 rounded-2xl shadow-card hover:shadow-lg hover:border-primary-200 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+            <div className={`absolute top-0 left-0 w-1.5 h-full ${theme.bg}`}></div>
             <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
-                    <div className={`w-14 h-14 rounded-2xl ${theme.light} ${theme.text} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                    <div className={`w-14 h-14 rounded-2xl ${theme.light} ${theme.text} flex items-center justify-center group-hover:scale-105 transition-transform`}>
                         {icon}
                     </div>
-                    <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                    <div className="w-8 h-8 rounded-full bg-stone-50 flex items-center justify-center text-stone-400 group-hover:bg-primary-700 group-hover:text-white transition-colors">
                         <ArrowRight size={16} />
                     </div>
                 </div>
 
-                <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">{title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed mb-4">{desc}</p>
+                <h3 className="text-xl font-bold text-stone-800 mb-2 group-hover:text-primary-700 transition-colors">{title}</h3>
+                <p className="text-sm text-stone-500 leading-relaxed mb-4">{desc}</p>
             </div>
         </Link>
     );

@@ -93,7 +93,7 @@ const ApplicationsList = () => {
 
     if (loading) return (
         <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
         </div>
     );
 
@@ -151,7 +151,7 @@ const ApplicationsList = () => {
                     </thead>
                     <tbody className="divide-y divide-gray-100">
                         {sortedApps.map((app, index) => (
-                            <tr key={app.id} className="hover:bg-blue-50/50 transition-colors group">
+                            <tr key={app.id} className="hover:bg-primary-50/50 transition-colors group">
                                 <td className="whitespace-nowrap px-6 py-4 font-medium text-gray-500">
                                     {index + 1}
                                 </td>
@@ -162,7 +162,7 @@ const ApplicationsList = () => {
                                     </div>
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4">
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
                                         {t(app.scheme_type)}
                                     </span>
                                 </td>
@@ -189,7 +189,7 @@ const ApplicationsList = () => {
                                         {/* View / Print (Available to ALL) */}
                                         <Link
                                             to={`/applications/${app.id}/print`}
-                                            className="p-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors"
+                                            className="p-1.5 bg-primary-50 text-primary-700 hover:bg-primary-100 rounded-lg transition-colors"
                                             title={t('view') + ' / ' + t('print')}
                                         >
                                             <Printer size={18} />

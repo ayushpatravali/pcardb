@@ -2,6 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-gray-50 text-gray-900;
+/* Self-hosted Kannada glyphs (bank machines may be offline). Latin text falls
+   back to the system UI font; only Kannada codepoints use Noto. */
+@font-face {
+  font-family: 'Noto Sans Kannada Web';
+  src: url('/fonts/NotoSansKannada-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Noto Sans Kannada Web';
+  src: url('/fonts/NotoSansKannada-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-surface text-stone-800;
+  }
+  ::selection {
+    @apply bg-primary-200 text-primary-950;
+  }
+  /* Quieter scrollbars */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.stone.300') transparent;
+  }
+  *::-webkit-scrollbar { width: 8px; height: 8px; }
+  *::-webkit-scrollbar-thumb { @apply bg-stone-300 rounded-full; }
+  *::-webkit-scrollbar-track { background: transparent; }
+
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type='number'] { -moz-appearance: textfield; }
 }

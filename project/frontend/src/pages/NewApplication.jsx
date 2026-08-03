@@ -9,12 +9,12 @@ import { calculateTractorLoanFields } from '../utils/tractorCalculations';
 
 // ── Scheme Config ─────────────────────────────────────────────────────────────
 const SCHEME_CONFIG = {
-    'TRACTOR':  { titleKey: 'tractorScheme', title: 'Tractor Purchase Scheme',   icon: <Car size={32} />,       gradient: 'from-blue-700 to-blue-900',    color: 'blue'   },
-    'LAND_DEV': { titleKey: 'landScheme',    title: 'Land Development Scheme',    icon: <Sprout size={32} />,    gradient: 'from-green-700 to-green-900',  color: 'green'  },
-    'SHEEP_40': { titleKey: 'sheep40',       title: 'Sheep Rearing (40+2)',       icon: <Clipboard size={32} />, gradient: 'from-indigo-700 to-indigo-900',color: 'indigo' },
-    'SHEEP_20': { titleKey: 'sheep20',       title: 'Sheep Rearing (20+1)',       icon: <Clipboard size={32} />, gradient: 'from-purple-700 to-purple-900',color: 'purple' },
-    'SHEEP_10': { titleKey: 'sheep10',       title: 'Sheep Rearing (10+1)',       icon: <Clipboard size={32} />, gradient: 'from-indigo-500 to-indigo-800',color: 'indigo' },
-    'BULLOCK':  { titleKey: 'bullockScheme', title: 'Bullock & Cart Scheme',      icon: <FileText size={32} />,  gradient: 'from-orange-600 to-orange-800',color: 'orange' },
+    'TRACTOR':  { titleKey: 'tractorScheme', title: 'Tractor Purchase Scheme',   icon: <Car size={32} />,       gradient: 'from-primary-800 to-primary-950',  color: 'blue'   },
+    'LAND_DEV': { titleKey: 'landScheme',    title: 'Land Development Scheme',    icon: <Sprout size={32} />,    gradient: 'from-emerald-700 to-primary-950',  color: 'green'  },
+    'SHEEP_40': { titleKey: 'sheep40',       title: 'Sheep Rearing (40+2)',       icon: <Clipboard size={32} />, gradient: 'from-primary-700 to-primary-900',  color: 'indigo' },
+    'SHEEP_20': { titleKey: 'sheep20',       title: 'Sheep Rearing (20+1)',       icon: <Clipboard size={32} />, gradient: 'from-primary-700 to-primary-900',  color: 'purple' },
+    'SHEEP_10': { titleKey: 'sheep10',       title: 'Sheep Rearing (10+1)',       icon: <Clipboard size={32} />, gradient: 'from-primary-600 to-primary-900',  color: 'indigo' },
+    'BULLOCK':  { titleKey: 'bullockScheme', title: 'Bullock & Cart Scheme',      icon: <FileText size={32} />,  gradient: 'from-accent-600 to-accent-900',    color: 'orange' },
 };
 
 // ── Dropdown Options ──────────────────────────────────────────────────────────
@@ -82,51 +82,82 @@ const FARMER_OPTIONS = ['ಸಣ್ಣ ರೈತ (Small)', 'ದೊಡ್ಡ ರ�
 const RELATION_OPTIONS = ['', 'ಪತ್ನಿ/ಪತಿ (Spouse)', 'ಮಗ (Son)', 'ಮಗಳು (Daughter)', 'ತಂದೆ (Father)', 'ತಾಯಿ (Mother)', 'ಸಹೋದರ (Brother)', 'ಇತರೆ (Other)'];
 
 // ── Reusable Components ───────────────────────────────────────────────────────
-const SectionHeader = ({ title, icon, color = 'gray' }) => (
-    <div className={`flex items-center mb-6 pb-3 border-b-2 border-${color}-100`}>
-        <div className={`p-2 bg-${color}-50 rounded-lg mr-3 text-${color}-600`}>
-            {icon || <ChevronRight size={18} />}
-        </div>
-        <h3 className={`text-lg font-bold text-${color}-800`}>{title}</h3>
-    </div>
-);
+// Tailwind can't compile dynamic `border-${color}-100` classes — explicit map.
+const SECTION_TONES = {
+    gray:   { chip: 'bg-stone-100 text-stone-600' },
+    blue:   { chip: 'bg-primary-100 text-primary-700' },
+    green:  { chip: 'bg-emerald-100 text-emerald-700' },
+    orange: { chip: 'bg-accent-100 text-accent-700' },
+    indigo: { chip: 'bg-primary-100 text-primary-700' },
+    purple: { chip: 'bg-primary-100 text-primary-700' },
+    amber:  { chip: 'bg-accent-100 text-accent-700' },
+    red:    { chip: 'bg-red-100 text-red-700' },
+    teal:   { chip: 'bg-primary-100 text-primary-700' },
+};
 
-const InputField = ({ label, register, type = 'text', placeholder, step, readOnly, className = '', inputProps = {} }) => (
-    <div className={`group ${className}`}>
-        <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5 group-focus-within:text-blue-600 transition-colors">
-            {label}
-        </label>
-        <input
-            type={type} step={step}
-            min={type === 'number' ? '0' : undefined}
-            onWheel={(e) => type === 'number' && e.target.blur()}
-            placeholder={placeholder}
-            readOnly={readOnly}
-            {...register}
-            {...inputProps}
-            className={`w-full px-4 py-2.5 border rounded-lg outline-none transition-all text-sm
-                ${readOnly
-                    ? 'bg-gray-100 text-gray-700 font-bold cursor-not-allowed border-gray-200'
-                    : 'bg-white text-gray-900 border-gray-200 focus:ring-2 focus:ring-blue-100 focus:border-blue-400 focus:bg-white'}`}
-        />
-    </div>
-);
+const SectionHeader = ({ title, icon, color = 'gray' }) => {
+    const tone = SECTION_TONES[color] || SECTION_TONES.gray;
+    return (
+        <div className="flex items-center mb-6 pb-3 border-b border-stone-200">
+            <div className={`p-2 rounded-lg mr-3 ${tone.chip}`}>
+                {icon || <ChevronRight size={18} />}
+            </div>
+            <h3 className="text-lg font-bold text-stone-800 tracking-tight">{title}</h3>
+        </div>
+    );
+};
+
+// variant: 'default' | 'dark' (on deep-green panels) | 'highlight' (key totals)
+const InputField = ({ label, register, type = 'text', placeholder, step, readOnly, className = '', inputProps = {}, variant = 'default' }) => {
+    const labelCls = (variant === 'dark' || variant === 'highlight')
+        ? 'text-primary-200'
+        : 'text-stone-500 group-focus-within:text-primary-700';
+    let inputCls;
+    if (variant === 'highlight') {
+        inputCls = 'bg-accent-300 text-primary-950 font-bold border-accent-400 cursor-not-allowed';
+    } else if (variant === 'dark') {
+        inputCls = readOnly
+            ? 'bg-white/10 text-white font-bold border-white/10 cursor-not-allowed'
+            : 'bg-white/10 text-white border-white/20 placeholder:text-primary-300 focus:border-accent-300 focus:ring-2 focus:ring-accent-300/30';
+    } else {
+        inputCls = readOnly
+            ? 'bg-stone-100 text-stone-700 font-bold cursor-not-allowed border-stone-200'
+            : 'bg-white text-stone-900 border-stone-200 focus:ring-2 focus:ring-primary-100 focus:border-primary-500';
+    }
+    return (
+        <div className={`group ${className}`}>
+            <label className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 transition-colors ${labelCls}`}>
+                {label}
+            </label>
+            <input
+                type={type} step={step}
+                min={type === 'number' ? '0' : undefined}
+                onWheel={(e) => type === 'number' && e.target.blur()}
+                placeholder={placeholder}
+                readOnly={readOnly}
+                {...register}
+                {...inputProps}
+                className={`w-full px-4 py-2.5 border rounded-xl outline-none transition-all text-sm ${inputCls}`}
+            />
+        </div>
+    );
+};
 
 const SelectField = ({ label, register, options, className = '' }) => (
     <div className={`group ${className}`}>
-        <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5 group-focus-within:text-blue-600 transition-colors">
+        <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5 group-focus-within:text-primary-700 transition-colors">
             {label}
         </label>
         <div className="relative">
             <select {...register}
-                className="w-full px-4 py-2.5 bg-white text-gray-900 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none appearance-none transition-all text-sm">
+                className="w-full px-4 py-2.5 bg-white text-stone-900 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary-100 focus:border-primary-500 outline-none appearance-none transition-all text-sm">
                 {options.map(opt => {
                     const value = typeof opt === 'string' ? opt : opt.value;
                     const labelText = typeof opt === 'string' ? opt : opt.label;
                     return <option key={value} value={value}>{labelText}</option>;
                 })}
             </select>
-            <div className="absolute right-3 top-3 text-gray-400 pointer-events-none">
+            <div className="absolute right-3 top-3 text-stone-400 pointer-events-none">
                 <ChevronRight size={16} className="rotate-90" />
             </div>
         </div>
@@ -609,7 +640,7 @@ const NewApplication = () => {
         <div className="max-w-5xl mx-auto pb-20">
 
             {/* Header Banner */}
-            <div className={`bg-gradient-to-br ${config.gradient} rounded-3xl p-10 mb-8 text-white shadow-2xl relative overflow-hidden`}>
+            <div className={`bg-gradient-to-br ${config.gradient} rounded-2xl p-8 mb-8 text-white shadow-card relative overflow-hidden`}>
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-20 -mt-20 blur-3xl" />
                 <div className="relative z-10 flex items-center">
                     <div className="p-4 bg-white/10 rounded-2xl mr-6 backdrop-blur-md border border-white/20">
@@ -619,7 +650,7 @@ const NewApplication = () => {
                         <h2 className="text-4xl font-black tracking-tight text-white mb-2 drop-shadow-md">
                             {t(config.titleKey || 'tractorScheme')}
                         </h2>
-                        <p className="text-blue-100 text-lg font-medium opacity-90">
+                        <p className="text-primary-100 text-lg font-medium opacity-90">
                             Fill in the details below to submit the loan application
                         </p>
                     </div>
@@ -632,33 +663,15 @@ const NewApplication = () => {
                 </div>
 
                 {/* ── 1. APPLICANT DETAILS ── */}
-                <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                <div className="bg-white p-8 rounded-2xl shadow-card border border-stone-200/70">
                     <SectionHeader title="ಅರ್ಜಿದಾರ ವಿವರ — Applicant Details" color="blue" />
 
-                    <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-5 max-w-2xl">
-                        <div>
-                            <InputField label="ಅರ್ಜಿ ದಿನಾಂಕ — Application Date" type="date"
-                                register={register('application_date')} />
-                            <p className="text-xs text-gray-400 mt-1">
-                                ಖಾಲಿ ಬಿಟ್ಟರೆ ಇಂದಿನ ದಿನಾಂಕ — leave blank to use today's date on the printed form
-                            </p>
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                ಸಾಲದ ಅವಧಿ — Loan Duration (Years)
-                            </label>
-                            <select
-                                {...register('loan_duration_years')}
-                                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                            >
-                                {Array.from({ length: 15 }, (_, i) => i + 1).map(y => (
-                                    <option key={y} value={y}>{y}</option>
-                                ))}
-                            </select>
-                            <p className="text-xs text-gray-400 mt-1">
-                                ಮರುಪಾವತಿ ಅವಧಿ — repayment period printed on the packet (default 7)
-                            </p>
-                        </div>
+                    <div className="mb-6 max-w-xs">
+                        <InputField label="ಅರ್ಜಿ ದಿನಾಂಕ — Application Date" type="date"
+                            register={register('application_date')} />
+                        <p className="text-xs text-gray-400 mt-1">
+                            ಖಾಲಿ ಬಿಟ್ಟರೆ ಇಂದಿನ ದಿನಾಂಕ — leave blank to use today's date on the printed form
+                        </p>
                     </div>
 
                     {/* Name split into 3 */}
@@ -714,10 +727,27 @@ const NewApplication = () => {
                                 options={['New / ಹೊಸ', 'Old / ಹಿಂದಿನ']} />
                         </div>
 
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                ಸಾಲದ ಅವಧಿ — Loan Duration (Years)
+                            </label>
+                            <select
+                                {...register('loan_duration_years')}
+                                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-100 focus:border-primary-500 bg-white"
+                            >
+                                {Array.from({ length: 15 }, (_, i) => i + 1).map(y => (
+                                    <option key={y} value={y}>{y}</option>
+                                ))}
+                            </select>
+                            <p className="text-xs text-gray-400 mt-1">
+                                ಮರುಪಾವತಿ ಅವಧಿ — repayment period printed on the packet (default 7)
+                            </p>
+                        </div>
+
                         {/* Previous-loan details: only for old borrowers; prints on PDF page 9 section 9) */}
                         {isOldBorrower && (
-                            <div className="md:col-span-2 mt-2 p-4 border border-orange-200 bg-orange-50/50 rounded-xl">
-                                <p className="text-xs font-bold text-orange-700 uppercase tracking-wider mb-3">
+                            <div className="md:col-span-2 mt-2 p-4 border border-accent-200 bg-accent-50/60 rounded-xl">
+                                <p className="text-xs font-bold text-accent-700 uppercase tracking-wider mb-3">
                                     ಹಿಂದಿನ ಸಾಲದ ವಿವರ — Previous Loan Details (ಹಳೇ ಸಾಲಗಾರರಿಗೆ)
                                 </p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
@@ -752,7 +782,7 @@ const NewApplication = () => {
                                 <button
                                     type="button"
                                     onClick={() => coAppAppend({ name: '', relation: '' })}
-                                    className="flex items-center gap-1 px-3 py-1 text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors"
+                                    className="flex items-center gap-1 px-3 py-1 text-xs font-semibold text-primary-700 bg-primary-50 border border-primary-200 rounded-lg hover:bg-primary-100 transition-colors"
                                 >
                                     <Plus size={14} /> ಸೇರಿಸಿ (Add)
                                 </button>
@@ -760,7 +790,7 @@ const NewApplication = () => {
                             
                             <div className="space-y-3">
                                 {coAppFields.map((field, index) => (
-                                    <div key={field.id} className="grid grid-cols-12 gap-3 items-end bg-gray-50 p-3 rounded-xl border border-gray-100">
+                                    <div key={field.id} className="grid grid-cols-12 gap-3 items-end bg-stone-50 p-3 rounded-xl border border-stone-200/70">
                                         <div className="col-span-6">
                                             <InputField label={`ಸಹ ಅರ್ಜಿದಾರ ${index + 1} — Name`}
                                                 register={register(`co_applicants.${index}.name`)}
@@ -788,7 +818,7 @@ const NewApplication = () => {
                 </div>
 
                 {/* ── 2. ADDRESS ── */}
-                <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                <div className="bg-white p-8 rounded-2xl shadow-card border border-stone-200/70">
                     <SectionHeader title="ವಾಸಸ್ಥಳ ವಿಳಾಸ — Residential Address" color="green" />
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
                         <InputField label="ಗ್ರಾಮ — Village *" register={register('village', { required: true })} inputProps={{ lang: 'kn' }} />
@@ -799,7 +829,7 @@ const NewApplication = () => {
                 </div>
 
                 {/* ── 3. LAND DETAILS ── */}
-                <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                <div className="bg-white p-8 rounded-2xl shadow-card border border-stone-200/70">
                     <SectionHeader title="ಭೂ ವಿವರ — Land Details" icon={<Sprout size={18} />} color="green" />
 
                     {schemeType === 'TRACTOR' && (
@@ -843,14 +873,14 @@ const NewApplication = () => {
                                             <input
                                                 {...register(`land_parcels.${index}.village`)}
                                                 placeholder="ಗ್ರಾಮ"
-                                                className="w-full px-2 py-1.5 text-sm outline-none bg-transparent focus:bg-blue-50 rounded"
+                                                className="w-full px-2 py-1.5 text-sm outline-none bg-transparent focus:bg-primary-50 rounded"
                                             />
                                         </td>
                                         <td className="border border-gray-200 px-1 py-1">
                                             <input
                                                 {...register(`land_parcels.${index}.survey_no`)}
                                                 placeholder="123/A"
-                                                className="w-full px-2 py-1.5 text-sm outline-none bg-transparent focus:bg-blue-50 rounded"
+                                                className="w-full px-2 py-1.5 text-sm outline-none bg-transparent focus:bg-primary-50 rounded"
                                             />
                                         </td>
                                         <td className="border border-gray-200 px-1 py-1">
@@ -858,7 +888,7 @@ const NewApplication = () => {
                                                 type="number" step="0.01"
                                                 {...register(`land_parcels.${index}.acres`)}
                                                 placeholder="0"
-                                                className="w-full px-2 py-1.5 text-sm outline-none bg-transparent focus:bg-blue-50 rounded"
+                                                className="w-full px-2 py-1.5 text-sm outline-none bg-transparent focus:bg-primary-50 rounded"
                                             />
                                         </td>
                                         <td className="border border-gray-200 px-1 py-1">
@@ -866,7 +896,7 @@ const NewApplication = () => {
                                                 type="number"
                                                 {...register(`land_parcels.${index}.guntas`)}
                                                 placeholder="0"
-                                                className="w-full px-2 py-1.5 text-sm outline-none bg-transparent focus:bg-blue-50 rounded"
+                                                className="w-full px-2 py-1.5 text-sm outline-none bg-transparent focus:bg-primary-50 rounded"
                                             />
                                         </td>
                                         <td className="border border-gray-200 px-1 py-1">
@@ -874,7 +904,7 @@ const NewApplication = () => {
                                                 type="number"
                                                 {...register(`land_parcels.${index}.akaar`)}
                                                 placeholder="0.00"
-                                                className="w-full px-2 py-1.5 text-sm outline-none bg-transparent focus:bg-blue-50 rounded"
+                                                className="w-full px-2 py-1.5 text-sm outline-none bg-transparent focus:bg-primary-50 rounded"
                                             />
                                         </td>
                                         {schemeType === 'TRACTOR' && (
@@ -937,7 +967,7 @@ const NewApplication = () => {
                 </div>
 
                 {/* ── 4. AGRICULTURE DETAILS ── */}
-                <div className="bg-white p-8 rounded-2xl shadow-sm border border-orange-100">
+                <div className="bg-white p-8 rounded-2xl shadow-card border border-stone-200/70">
                     <SectionHeader title="ಕೃಷಿ ವಿವರ — Agriculture Details" icon={<Sprout size={18} />} color="orange" />
                     
                     <div className="mb-6">
@@ -948,14 +978,14 @@ const NewApplication = () => {
                             <button
                                 type="button"
                                 onClick={() => cropsAppend({ crop_name: '', acres: '', guntas: '', annual_income: '' })}
-                                className="flex items-center gap-1 px-3 py-1 text-xs font-semibold text-orange-700 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors"
+                                className="flex items-center gap-1 px-3 py-1 text-xs font-semibold text-accent-700 bg-accent-50 border border-accent-200 rounded-lg hover:bg-accent-100 transition-colors"
                             >
                                 <Plus size={14} /> ಬೆಳೆ ಸೇರಿಸಿ (Add Crop)
                             </button>
                         </div>
                         <div className="space-y-3">
                             {cropsFields.map((field, index) => (
-                                <div key={field.id} className="grid grid-cols-12 gap-3 items-end bg-gray-50 p-3 rounded-xl border border-gray-100">
+                                <div key={field.id} className="grid grid-cols-12 gap-3 items-end bg-stone-50 p-3 rounded-xl border border-stone-200/70">
                                     <div className="col-span-4">
                                         <SelectField label={`ಬೆಳೆ ${index + 1} — Crop Name`}
                                             register={register(`crops.${index}.crop_name`)}
@@ -1009,7 +1039,7 @@ const NewApplication = () => {
                                 return (
                                     <label key={opt} className="flex flex-wrap items-center gap-3 px-3 py-2 border rounded-lg hover:bg-gray-50 cursor-pointer text-sm">
                                         <span className="flex items-center gap-2">
-                                            <input type="checkbox" value={opt} {...register('irrigation_source')} className="w-4 h-4 text-blue-600 rounded" />
+                                            <input type="checkbox" value={opt} {...register('irrigation_source')} className="w-4 h-4 text-primary-700 rounded" />
                                             <span>{opt}</span>
                                         </span>
                                         {selected && (
@@ -1034,7 +1064,7 @@ const NewApplication = () => {
                 </div>
 
                 {/* ── 5. BANK DETAILS ── */}
-                <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                <div className="bg-white p-8 rounded-2xl shadow-card border border-stone-200/70">
                     <SectionHeader title="ಬ್ಯಾಂಕ್ ವಿವರ — Bank Details" color="blue" />
                     
                     {/* Removed Requested Loan Amount */}
@@ -1064,56 +1094,56 @@ const NewApplication = () => {
 
                         {/* 1. Tractor Details */}
                         <div className="mb-6 bg-gray-50 p-5 rounded-xl border border-gray-200">
-                            <p className="text-sm font-bold text-blue-800 uppercase tracking-wider mb-4 border-b pb-2">1. ಟ್ರ್ಯಾಕ್ಟರ್ — Tractor Details</p>
+                            <p className="text-sm font-bold text-primary-800 uppercase tracking-wider mb-4 border-b border-stone-200 pb-2">1. ಟ್ರ್ಯಾಕ್ಟರ್ — Tractor Details</p>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                 <InputField label="ಕಂಪನಿ — Make" register={register('tractor_make')} placeholder="e.g. John Deere" />
                                 <InputField label="ಮಾಡೆಲ್ — Model" register={register('tractor_model')} placeholder="e.g. 5310" />
                                 <InputField label="ಅಶ್ವಶಕ್ತಿ — HP" register={register('tractor_hp')} placeholder="e.g. 50 HP" />
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-lg border border-gray-100">
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-lg border border-stone-200/70">
                                 <InputField label="ಡೀಲರ್ — Dealer Name" register={register('tractor_dealer')} placeholder="Dealer name" />
                                 <InputField label="ಕೋಟೇಶನ್ — Quotation (₹)" type="number" register={register('tractor_quotation')} placeholder="₹" />
                                 <InputField label="ಮುಂಗಡ ಪಾವತಿ — Down Payment (₹)" type="number" register={register('tractor_down_payment')} placeholder="₹" />
-                                <InputField label="ಸಾಲ — Loan (Auto ₹)" type="number" register={register('tractor_bank_loan')} readOnly className="bg-blue-50" />
+                                <InputField label="ಸಾಲ — Loan (Auto ₹)" type="number" register={register('tractor_bank_loan')} readOnly />
                             </div>
                         </div>
 
                         {/* 2. Trailer Details */}
                         <div className="mb-6 bg-gray-50 p-5 rounded-xl border border-gray-200">
-                            <p className="text-sm font-bold text-blue-800 uppercase tracking-wider mb-4 border-b pb-2">2. ಟ್ರೇಲರ್ — Trailer Details</p>
+                            <p className="text-sm font-bold text-primary-800 uppercase tracking-wider mb-4 border-b border-stone-200 pb-2">2. ಟ್ರೇಲರ್ — Trailer Details</p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <InputField label="ಕಂಪನಿ — Make" register={register('trailer_make')} placeholder="e.g. Meharin" />
                                 <InputField label="ಸಾಮರ್ಥ್ಯ — Capacity" register={register('trailer_capacity')} placeholder="e.g. 3 Ton" />
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-lg border border-gray-100">
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-lg border border-stone-200/70">
                                 <InputField label="ಡೀಲರ್ — Dealer Name" register={register('trailer_dealer')} placeholder="Dealer name" />
                                 <InputField label="ಕೋಟೇಶನ್ — Quotation (₹)" type="number" register={register('trailer_quotation')} placeholder="₹" />
                                 <InputField label="ಮುಂಗಡ ಪಾವತಿ — Down Payment (₹)" type="number" register={register('trailer_down_payment')} placeholder="₹" />
-                                <InputField label="ಸಾಲ — Loan (Auto ₹)" type="number" register={register('trailer_bank_loan')} readOnly className="bg-blue-50" />
+                                <InputField label="ಸಾಲ — Loan (Auto ₹)" type="number" register={register('trailer_bank_loan')} readOnly />
                             </div>
                         </div>
 
                         {/* 3. Implement Details */}
                         <div className="mb-6 bg-gray-50 p-5 rounded-xl border border-gray-200">
-                            <p className="text-sm font-bold text-blue-800 uppercase tracking-wider mb-4 border-b pb-2">3. ಉಪಕರಣಗಳು — Implements Details</p>
-                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-lg border border-gray-100">
+                            <p className="text-sm font-bold text-primary-800 uppercase tracking-wider mb-4 border-b border-stone-200 pb-2">3. ಉಪಕರಣಗಳು — Implements Details</p>
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-lg border border-stone-200/70">
                                 <InputField label="ಮೇಕರ್ಸ್/ಡೀಲರ್ — Makers/Dealer" register={register('implement_dealer')} placeholder="Makers or Dealer" />
                                 <InputField label="ಕೋಟೇಶನ್ — Quotation (₹)" type="number" register={register('implement_quotation')} placeholder="₹" />
                                 <InputField label="ಮುಂಗಡ ಪಾವತಿ — Down Payment (₹)" type="number" register={register('implement_down_payment')} placeholder="₹" />
-                                <InputField label="ಸಾಲ — Loan (Auto ₹)" type="number" register={register('implement_bank_loan')} readOnly className="bg-blue-50" />
+                                <InputField label="ಸಾಲ — Loan (Auto ₹)" type="number" register={register('implement_bank_loan')} readOnly />
                             </div>
                         </div>
 
                         {/* Grand Totals */}
-                        <div className="bg-blue-600 border border-blue-700 rounded-xl p-6 text-white shadow-inner">
+                        <div className="bg-primary-900 border border-primary-800 rounded-2xl p-6 shadow-card">
                             <div className="flex items-center gap-2 mb-4">
-                                <Calculator size={20} className="text-blue-200" />
-                                <span className="font-bold text-lg">ಒಟ್ಟು — Grand Totals</span>
+                                <Calculator size={20} className="text-accent-300" />
+                                <span className="font-bold text-lg text-white">ಒಟ್ಟು — Grand Totals</span>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                                <InputField label="ಒಟ್ಟು ಕೋಟೇಶನ್ — Total Quotation (₹)" type="number" register={register('total_quotation')} readOnly className="opacity-90" />
-                                <InputField label="ಒಟ್ಟು ಮುಂಗಡ ಪಾವತಿ — Total Down Payment (₹)" type="number" register={register('total_down_payment')} readOnly className="opacity-90" />
-                                <InputField label="ಒಟ್ಟು ಸಾಲದ ಮೊತ್ತ — Total Loan Amount (₹)" type="number" register={register('total_loan_amount')} readOnly className="font-bold bg-yellow-400 text-black border-none shadow-md" />
+                                <InputField label="ಒಟ್ಟು ಕೋಟೇಶನ್ — Total Quotation (₹)" type="number" register={register('total_quotation')} readOnly variant="dark" />
+                                <InputField label="ಒಟ್ಟು ಮುಂಗಡ ಪಾವತಿ — Total Down Payment (₹)" type="number" register={register('total_down_payment')} readOnly variant="dark" />
+                                <InputField label="ಒಟ್ಟು ಸಾಲದ ಮೊತ್ತ — Total Loan Amount (₹)" type="number" register={register('total_loan_amount')} readOnly variant="highlight" />
                             </div>
                         </div>
                     </div>
@@ -1121,7 +1151,7 @@ const NewApplication = () => {
 
                 {/* SHEEP */}
                 {schemeType.includes('SHEEP') && (
-                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                    <div className="bg-white p-8 rounded-2xl shadow-card border border-stone-200/70">
                         <SectionHeader title="ಯೋಜನೆ ವೆಚ್ಚ — Project Cost Breakdown" icon={<Clipboard size={18} />} color="indigo" />
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                             <InputField label="ಪ್ರಾಣಿ ವೆಚ್ಚ — Animal Cost" type="number" register={register('animal_cost')} />
@@ -1129,7 +1159,7 @@ const NewApplication = () => {
                             <InputField label="ಮೇವು — Feed Cost" type="number" register={register('feed_cost')} />
                             <InputField label="ವಿಮೆ — Insurance" type="number" register={register('insurance_amt')} />
                             <InputField label="ಇತರೆ — Miscellaneous" type="number" register={register('misc_cost')} />
-                            <div className="bg-indigo-50 p-4 rounded-xl border border-indigo-100">
+                            <div className="bg-primary-50 p-4 rounded-xl border border-primary-100">
                                 <InputField label="ಒಟ್ಟು ವೆಚ್ಚ — Total (Auto ₹)" register={register('sheep_total_cost')} readOnly />
                             </div>
                         </div>
@@ -1138,17 +1168,17 @@ const NewApplication = () => {
 
                 {/* BULLOCK */}
                 {schemeType === 'BULLOCK' && (
-                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-orange-100">
+                    <div className="bg-white p-8 rounded-2xl shadow-card border border-stone-200/70">
                         <SectionHeader title="ಎತ್ತು ಬಂಡಿ ವಿವರ — Bullock Cart Details" icon={<FileText size={18} />} color="orange" />
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <InputField label="ಎತ್ತುಗಳ ಬೆಲೆ — Bullock Pair Cost (₹)" type="number" register={register('bullock_cost')} />
                             <InputField label="ಬಂಡಿ ಬೆಲೆ — Cart Cost (₹)" type="number" register={register('cart_cost')} />
                             <InputField label="ಬ್ಯಾಂಕ್ ಸಾಲ — Loan Amount (₹)" type="number" register={register('bullock_loan_amount')} placeholder="Enter loan amount" />
                             <div className="grid grid-cols-2 gap-3">
-                                <div className="bg-orange-50 p-3 rounded-xl border border-orange-100">
+                                <div className="bg-accent-50 p-3 rounded-xl border border-accent-100">
                                     <InputField label="ಒಟ್ಟು ವೆಚ್ಚ — Total (Auto ₹)" register={register('bullock_total_cost')} readOnly />
                                 </div>
-                                <div className="bg-orange-50 p-3 rounded-xl border border-orange-100">
+                                <div className="bg-accent-50 p-3 rounded-xl border border-accent-100">
                                     <InputField label="ಮಾರ್ಜಿನ್ — Margin (Auto ₹)" register={register('bullock_margin_money')} readOnly />
                                 </div>
                             </div>
@@ -1158,7 +1188,7 @@ const NewApplication = () => {
 
                 {/* LAND DEV */}
                 {schemeType === 'LAND_DEV' && (
-                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-green-100">
+                    <div className="bg-white p-8 rounded-2xl shadow-card border border-stone-200/70">
                         <SectionHeader title="ಭೂ ಅಭಿವೃದ್ಧಿ — Land Development Metrics" icon={<Sprout size={18} />} color="green" />
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                             <InputField label="ಸರ್ವೆ ಸಂಖ್ಯೆ — Survey Number" register={register('land_survey_no')} />
@@ -1172,9 +1202,9 @@ const NewApplication = () => {
                 )}
 
                 {/* ── Overall Loan Amount ── */}
-                <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-6 rounded-2xl">
+                <div className="bg-primary-950 p-6 rounded-2xl border border-primary-900 shadow-card">
                     <div className="flex items-center gap-3 mb-4">
-                        <Calculator size={20} className="text-yellow-400" />
+                        <Calculator size={20} className="text-accent-300" />
                         <span className="font-bold text-white text-lg">ಒಟ್ಟು ಸಾಲ ಮೊತ್ತ — Total Loan Requested</span>
                     </div>
                     <InputField
@@ -1182,12 +1212,14 @@ const NewApplication = () => {
                         type="number"
                         register={register('loan_amount', { required: true })}
                         placeholder="Total loan amount requested"
-                        className="text-white"                        readOnly={schemeType === 'TRACTOR'}                    />
+                        variant="dark"
+                        readOnly={schemeType === 'TRACTOR'}
+                    />
                 </div>
 
                 {/* Submit */}
                 <button type="submit"
-                    className="w-full bg-gray-900 text-white py-4 rounded-2xl font-bold hover:bg-black transition shadow-xl flex items-center justify-center text-lg gap-3">
+                    className="w-full bg-primary-700 text-white py-4 rounded-2xl font-bold hover:bg-primary-800 transition shadow-lg flex items-center justify-center text-lg gap-3 focus:outline-none focus:ring-2 focus:ring-primary-300">
                     <Save size={20} />
                     {id ? 'ಅಪ್ಡೇಟ್ ಮಾಡಿ — Update Application' : 'ಸಲ್ಲಿಸಿ — Submit Application'}
                 </button>
