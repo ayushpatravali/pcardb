@@ -49,6 +49,20 @@ PDF/templates before implementing. Plan + execute in the next session, on owner'
 - Placeholder only. Do nothing until owner explains. The formula extraction in
   item 0 will likely cover this.
 
+## 6. PRE-GO-LIVE (owner, 2026-08-03): form must respect the language switch
+- The app has a KN/EN toggle (`frontend/src/context/LanguageContext.jsx`,
+  `t()` + `utils/translations.js`, switch in Layout.jsx) — but
+  `NewApplication.jsx` ignores it: ~100 labels are hardcoded bilingual
+  ("ಬ್ಯಾಂಕ್ ಹೆಸರು — Bank Name"), plus the amber Kannada-input note, the HP
+  note, section headers, and dropdown option labels (caste, crops, irrigation,
+  relations, farmer/borrower type).
+- Required: Kannada mode = 100% Kannada (labels, notes, options — no English
+  anywhere); English mode = English. Move every form string into the
+  translations map; option lists get per-language labels (stored values stay
+  unchanged so the backend contract and PDF mapping are untouched).
+- Owner explicitly wants the bilingual UI KEPT for now (they read it during
+  testing). Do this only as the final step before bank go-live.
+
 ## Reminders carried over
 - After implementing: update CLAUDE.md Changelog (standing rule).
 - Owner still to: sync fork + redeploy Railway for land-valuation/previous-loans

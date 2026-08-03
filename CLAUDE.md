@@ -145,6 +145,13 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 
 ## Next / pending
 
+- **PRE-GO-LIVE (owner, 2026-08-03):** wire NewApplication.jsx into the
+  existing KN/EN language switch — Kannada mode must be 100% Kannada (labels,
+  notes, dropdown options), English mode English. Bilingual labels stay until
+  then (owner reads them during testing). Stored option VALUES must not change
+  (backend contract + PDF kn_display mapping depend on them). Details in
+  NEXT_SESSION_TASKS.md item 6.
+
 - Bank sign-off on printed Tractor packet → then replicate templates+specs to
   SHEEP_40/20/10 → BULLOCK → LAND_DEV (shared pages already built; their UI
   forms don't exist yet and will copy the Tractor form pattern).
