@@ -38,11 +38,13 @@ const Login = () => {
         <div className="min-h-screen grid lg:grid-cols-2 bg-surface">
             {/* Brand panel */}
             <div className="relative hidden lg:flex flex-col justify-between overflow-hidden bg-primary-950 p-12 text-white">
-                <div className="pointer-events-none absolute inset-0 opacity-[0.05]"
-                    style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)', backgroundSize: '26px 26px' }} />
-                <div className="pointer-events-none absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-primary-700/40 blur-3xl" />
+                {/* Bank building as full-panel watermark */}
+                <img src="/bank-building.jpg" alt="" aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover opacity-[0.16]" />
+                {/* Green wash so the text stays readable over the photo */}
+                <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-primary-950/85 via-primary-950/55 to-primary-950/85" />
 
-                <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+                <motion.div className="relative z-10" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
                     <div className="flex items-center gap-4">
                         <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-400 text-primary-950 shadow-lg">
                             <Landmark size={28} />
@@ -54,7 +56,7 @@ const Login = () => {
                     </div>
                 </motion.div>
 
-                <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}>
+                <motion.div className="relative z-10" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}>
                     <h1 className="text-2xl xl:text-3xl font-bold leading-snug tracking-tight">
                         ಗೋಕಾಕ ತಾಲೂಕಾ ಪ್ರಾಥಮಿಕ ಸಹಕಾರಿ ಕೃಷಿ ಮತ್ತು ಗ್ರಾಮೀಣ ಅಭಿವೃದ್ಧಿ ಬ್ಯಾಂಕ ನಿ., ಗೋಕಾಕ
                     </h1>
@@ -71,15 +73,9 @@ const Login = () => {
                     </ul>
                 </motion.div>
 
-                {/* Bank building */}
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.25 }}>
-                    <div className="overflow-hidden rounded-2xl border border-white/15 shadow-2xl">
-                        <img src="/bank-building.jpg" alt="ಗೋಕಾಕ ಬ್ಯಾಂಕ್ ಕಟ್ಟಡ" className="h-48 xl:h-56 w-full object-cover object-top" />
-                    </div>
-                    <p className="mt-3 text-xs text-primary-300/70">
-                        ಜಿಲ್ಲಾ : ಬೆಳಗಾವಿ &nbsp;·&nbsp; ಕರ್ನಾಟಕ
-                    </p>
-                </motion.div>
+                <p className="relative z-10 text-xs text-primary-200/80">
+                    ಜಿಲ್ಲಾ : ಬೆಳಗಾವಿ &nbsp;·&nbsp; ಕರ್ನಾಟಕ
+                </p>
             </div>
 
             {/* Form panel */}
