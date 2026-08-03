@@ -1,10 +1,23 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Tractor, Sprout, Footprints, Settings, ArrowRight, Activity, Clock, FileText, Eye, Pencil, Filter, CheckSquare, Square } from 'lucide-react';
 import { motion } from 'motion/react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { useLanguage } from '../context/LanguageContext';
-import { fetchStats, approveApplication } from '../services/api';
+import { fetchStats, fetchApplications, approveApplication } from '../services/api';
 import { useEffect, useState } from 'react';
+
+const SCHEME_LABELS = {
+    TRACTOR: 'ಟ್ರ್ಯಾಕ್ಟರ್', LAND_DEV: 'ಭೂ ಅಭಿವೃದ್ಧಿ', BULLOCK: 'ಎತ್ತು-ಬಂಡಿ',
+    SHEEP_40: 'ಕುರಿ 40+2', SHEEP_20: 'ಕುರಿ 20+1', SHEEP_10: 'ಕುರಿ 10+1',
+};
+const COST_BANDS = [
+    { key: '< ₹2 ಲಕ್ಷ', max: 200000 },
+    { key: '₹2–5 ಲಕ್ಷ', max: 500000 },
+    { key: '₹5–10 ಲಕ್ಷ', max: 1000000 },
+    { key: '> ₹10 ಲಕ್ಷ', max: Infinity },
+];
+const inr = (n) => n >= 100000 ? `₹${(n / 100000).toFixed(n % 100000 ? 1 : 0)}L` : `₹${Math.round(n / 1000)}k`;
 
 const STAT_TONES = {
     primary: 'bg-primary-100 text-primary-700',
@@ -75,6 +88,7 @@ const Home = () => {
     const { t } = useLanguage();
     const navigate = useNavigate();
     const [stats, setStats] = useState({ total_applications: 0, pending_applications: 0, recent_applications: [] });
+    const [allApps, setAllApps] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('all');
     const [sortConfig, setSortConfig] = useState({ key: 'created_at', direction: 'desc' }); // Sort State
@@ -84,6 +98,11 @@ const Home = () => {
             try {
                 const data = await fetchStats();
                 setStats(data);
+                // Full list for the breakdown charts (officers only see their own)
+                try {
+                    const apps = await fetchApplications();
+                    setAllApps(Array.isArray(apps) ? apps : []);
+                } catch { /* charts degrade gracefully */ }
             } catch (error) {
                 console.error("Failed to fetch stats", error);
                 if (error.response && error.response.status === 401) {
@@ -177,6 +196,78 @@ const Home = () => {
                         pending={stats.pending_applications}
                     />
                 </div>
+
+                {/* Breakdown charts: by scheme (count + sanctioned value) and by loan size */}
+                {allApps.length > 0 && (() => {
+                    const bySchemeMap = {};
+                    allApps.forEach(a => {
+                        const k = a.scheme_type || 'OTHER';
+                        bySchemeMap[k] = bySchemeMap[k] || { name: SCHEME_LABELS[k] || k, count: 0, amount: 0 };
+                        bySchemeMap[k].count += 1;
+                        bySchemeMap[k].amount += a.loan_amount || 0;
+                    });
+                    const byScheme = Object.values(bySchemeMap).sort((a, b) => b.count - a.count);
+                    const bands = COST_BANDS.map(b => ({ name: b.key, count: 0, amount: 0 }));
+                    allApps.forEach(a => {
+                        const amt = a.loan_amount || 0;
+                        const i = COST_BANDS.findIndex(b => amt <= b.max);
+                        bands[i === -1 ? bands.length - 1 : i].count += 1;
+                        bands[i === -1 ? bands.length - 1 : i].amount += amt;
+                    });
+                    const totalValue = allApps.reduce((s, a) => s + (a.loan_amount || 0), 0);
+                    const maxBand = Math.max(1, ...bands.map(b => b.count));
+                    return (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.2 }}
+                            className="grid grid-cols-1 gap-5 lg:grid-cols-2"
+                        >
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle className="text-base">ಯೋಜನೆವಾರು ಅರ್ಜಿಗಳು — Applications by scheme</CardTitle>
+                                    <CardDescription>Count per scheme · total sanctioned value {inr(totalValue)}</CardDescription>
+                                </CardHeader>
+                                <CardContent className="h-56">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <BarChart data={byScheme} margin={{ top: 8, right: 8, left: -22, bottom: 0 }}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#e7e5e4" vertical={false} />
+                                            <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#57534e' }} axisLine={false} tickLine={false} />
+                                            <YAxis allowDecimals={false} tick={{ fontSize: 12, fill: '#a8a29e' }} axisLine={false} tickLine={false} />
+                                            <Tooltip
+                                                formatter={(v, n, { payload }) => [`${v} · ${inr(payload.amount)}`, 'Applications']}
+                                                cursor={{ fill: '#f5f5f4' }}
+                                            />
+                                            <Bar dataKey="count" fill="#2b6e4a" radius={[6, 6, 0, 0]} maxBarSize={44} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </CardContent>
+                            </Card>
+
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle className="text-base">ಸಾಲದ ಮೊತ್ತದ ಶ್ರೇಣಿ — Loan size distribution</CardTitle>
+                                    <CardDescription>Applications grouped by requested amount</CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-4 pt-4">
+                                    {bands.map(b => (
+                                        <div key={b.name}>
+                                            <div className="mb-1 flex items-center justify-between text-sm">
+                                                <span className="font-medium text-stone-700">{b.name}</span>
+                                                <span className="text-stone-500">{b.count} {b.count === 1 ? 'application' : 'applications'} · {b.amount ? inr(b.amount) : '—'}</span>
+                                            </div>
+                                            <div className="h-2.5 w-full overflow-hidden rounded-full bg-stone-100">
+                                                <motion.div
+                                                    initial={{ width: 0 }} animate={{ width: `${(b.count / maxBand) * 100}%` }}
+                                                    transition={{ duration: 0.6, delay: 0.3 }}
+                                                    className="h-full rounded-full bg-gradient-to-r from-primary-600 to-primary-400"
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+                    );
+                })()}
             </div>
 
             {/* Recent Activity Section */}

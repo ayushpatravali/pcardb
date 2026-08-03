@@ -3,6 +3,9 @@ import { useSearchParams, useNavigate, useParams } from 'react-router-dom';
 import api, { getApplication, updateApplication } from '../services/api';
 import React from 'react';
 import { FileText, Car, Sprout, Clipboard, ChevronRight, Save, Plus, Trash2, Calculator } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useLanguage } from '../context/LanguageContext';
 import { calculateTractorLoanSummary } from '../utils/tractorFormCalculations.mjs';
 import { calculateTractorLoanFields } from '../utils/tractorCalculations';
@@ -108,28 +111,25 @@ const SectionHeader = ({ title, icon, color = 'gray' }) => {
 };
 
 // variant: 'default' | 'dark' (on deep-green panels) | 'highlight' (key totals)
+// Wraps the shadcn Input primitive; register spread is passed through untouched.
 const InputField = ({ label, register, type = 'text', placeholder, step, readOnly, className = '', inputProps = {}, variant = 'default' }) => {
     const labelCls = (variant === 'dark' || variant === 'highlight')
         ? 'text-primary-200'
         : 'text-stone-500 group-focus-within:text-primary-700';
-    let inputCls;
+    let inputCls = '';
     if (variant === 'highlight') {
-        inputCls = 'bg-accent-300 text-primary-950 font-bold border-accent-400 cursor-not-allowed';
+        inputCls = 'read-only:bg-accent-300 read-only:text-primary-950 read-only:border-accent-400 bg-accent-300 text-primary-950 font-bold border-accent-400 cursor-not-allowed';
     } else if (variant === 'dark') {
         inputCls = readOnly
-            ? 'bg-white/10 text-white font-bold border-white/10 cursor-not-allowed'
-            : 'bg-white/10 text-white border-white/20 placeholder:text-primary-300 focus:border-accent-300 focus:ring-2 focus:ring-accent-300/30';
-    } else {
-        inputCls = readOnly
-            ? 'bg-stone-100 text-stone-700 font-bold cursor-not-allowed border-stone-200'
-            : 'bg-white text-stone-900 border-stone-200 focus:ring-2 focus:ring-primary-100 focus:border-primary-500';
+            ? 'read-only:bg-white/10 read-only:text-white read-only:border-white/10 font-bold cursor-not-allowed'
+            : 'bg-white/10 text-white border-white/20 placeholder:text-primary-300 focus:border-accent-300 focus:ring-accent-300/30';
     }
     return (
         <div className={`group ${className}`}>
             <label className={`block text-xs font-semibold uppercase tracking-wider mb-1.5 transition-colors ${labelCls}`}>
                 {label}
             </label>
-            <input
+            <Input
                 type={type} step={step}
                 min={type === 'number' ? '0' : undefined}
                 onWheel={(e) => type === 'number' && e.target.blur()}
@@ -137,7 +137,7 @@ const InputField = ({ label, register, type = 'text', placeholder, step, readOnl
                 readOnly={readOnly}
                 {...register}
                 {...inputProps}
-                className={`w-full px-4 py-2.5 border rounded-xl outline-none transition-all text-sm ${inputCls}`}
+                className={inputCls}
             />
         </div>
     );
@@ -662,6 +662,40 @@ const NewApplication = () => {
                     ಕನ್ನಡದಲ್ಲಿ ನಮೂದಿಸಿ — ಹೆಸರು, ಗ್ರಾಮ, ವಿಳಾಸ ಮತ್ತು ಇತರ Kannada ಕ್ಷೇತ್ರಗಳಿಗೆ ಕನ್ನಡವನ್ನು ಬಳಸಿ. IFSC, ಖಾತೆ ಸಂಖ್ಯೆ, ಮೊಬೈಲ್ ಮತ್ತು ಆಧಾರ್ ಕ್ಷೇತ್ರಗಳಿಗೆ ಇಂಗ್ಲಿಷ್/ಆಂಕಿ ಅಕ್ಷರಗಳನ್ನು ಹಾಗೆಯೇ ಉಳಿಸಲಾಗುವುದು.
                 </div>
 
+                {/* Live summary — sticks while scrolling; values update as the operator types */}
+                {(() => {
+                    const liveLoan = parseFloat(watch('loan_amount')) || 0;
+                    const liveAcres = watch('total_area_acres');
+                    const liveGuntas = watch('total_guntas');
+                    const liveDuration = watch('loan_duration_years') || 7;
+                    const extent = (parseFloat(liveAcres) || 0) > 0
+                        ? `${parseInt(liveAcres, 10)}.${String(parseInt(liveGuntas, 10) || 0).padStart(2, '0')}`
+                        : null;
+                    return (
+                        <AnimatePresence>
+                            {(liveLoan > 0 || extent) && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+                                    className="sticky top-3 z-30 flex flex-wrap items-center gap-x-6 gap-y-1 rounded-2xl border border-primary-800 bg-primary-950/95 px-5 py-3 text-sm text-white shadow-lg backdrop-blur"
+                                >
+                                    <span className="flex items-center gap-2 font-semibold text-accent-300">
+                                        <Calculator size={15} /> ನೇರ ಲೆಕ್ಕ — Live
+                                    </span>
+                                    {extent && (
+                                        <span>ಒಟ್ಟು ಹಿಡುವಳಿ&nbsp;<b>{extent}</b>&nbsp;<span className="text-primary-300">ಎಕರೆ</span></span>
+                                    )}
+                                    {liveLoan > 0 && (
+                                        <span>ಸಾಲ&nbsp;<b>₹{liveLoan.toLocaleString('en-IN')}</b></span>
+                                    )}
+                                    {liveLoan > 0 && (
+                                        <span className="text-primary-200">ಅವಧಿ {liveDuration} ವರ್ಷ · ಕಂತು ≈ ₹{Math.round(liveLoan / (liveDuration * 2)).toLocaleString('en-IN')} × {liveDuration * 2}</span>
+                                    )}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    );
+                })()}
+
                 {/* ── 1. APPLICANT DETAILS ── */}
                 <div className="bg-white p-8 rounded-2xl shadow-card border border-stone-200/70">
                     <SectionHeader title="ಅರ್ಜಿದಾರ ವಿವರ — Applicant Details" color="blue" />
@@ -779,13 +813,10 @@ const NewApplication = () => {
                                 <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">
                                     ಸಹ ಅರ್ಜಿದಾರರು — Co-Applicants (Optional)
                                 </p>
-                                <button
-                                    type="button"
-                                    onClick={() => coAppAppend({ name: '', relation: '' })}
-                                    className="flex items-center gap-1 px-3 py-1 text-xs font-semibold text-primary-700 bg-primary-50 border border-primary-200 rounded-lg hover:bg-primary-100 transition-colors"
-                                >
+                                <Button type="button" variant="secondary" size="sm"
+                                    onClick={() => coAppAppend({ name: '', relation: '' })}>
                                     <Plus size={14} /> ಸೇರಿಸಿ (Add)
-                                </button>
+                                </Button>
                             </div>
                             
                             <div className="space-y-3">
@@ -957,13 +988,10 @@ const NewApplication = () => {
                         </table>
                     </div>
 
-                    <button
-                        type="button"
-                        onClick={() => landAppend({ sl: String(landFields.length + 1), village: '', survey_no: '', acres: '', guntas: '', akaar: '' })}
-                        className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-green-700 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors"
-                    >
+                    <Button type="button" variant="secondary" size="sm"
+                        onClick={() => landAppend({ sl: String(landFields.length + 1), village: '', survey_no: '', acres: '', guntas: '', akaar: '' })}>
                         <Plus size={16} /> ಸಾಲು ಸೇರಿಸಿ — Add Row
-                    </button>
+                    </Button>
                 </div>
 
                 {/* ── 4. AGRICULTURE DETAILS ── */}
@@ -975,13 +1003,10 @@ const NewApplication = () => {
                             <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                 ಬೆಳೆ ವಿವರ — Crop Details (ವಾರ್ಷಿಕ ಬೆಳೆ)
                             </label>
-                            <button
-                                type="button"
-                                onClick={() => cropsAppend({ crop_name: '', acres: '', guntas: '', annual_income: '' })}
-                                className="flex items-center gap-1 px-3 py-1 text-xs font-semibold text-accent-700 bg-accent-50 border border-accent-200 rounded-lg hover:bg-accent-100 transition-colors"
-                            >
+                            <Button type="button" variant="secondary" size="sm"
+                                onClick={() => cropsAppend({ crop_name: '', acres: '', guntas: '', annual_income: '' })}>
                                 <Plus size={14} /> ಬೆಳೆ ಸೇರಿಸಿ (Add Crop)
-                            </button>
+                            </Button>
                         </div>
                         <div className="space-y-3">
                             {cropsFields.map((field, index) => (
@@ -1218,11 +1243,10 @@ const NewApplication = () => {
                 </div>
 
                 {/* Submit */}
-                <button type="submit"
-                    className="w-full bg-primary-700 text-white py-4 rounded-2xl font-bold hover:bg-primary-800 transition shadow-lg flex items-center justify-center text-lg gap-3 focus:outline-none focus:ring-2 focus:ring-primary-300">
+                <Button type="submit" size="lg" className="w-full py-7 text-lg rounded-2xl shadow-lg">
                     <Save size={20} />
                     {id ? 'ಅಪ್ಡೇಟ್ ಮಾಡಿ — Update Application' : 'ಸಲ್ಲಿಸಿ — Submit Application'}
-                </button>
+                </Button>
 
             </form>
         </div>

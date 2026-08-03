@@ -38,9 +38,42 @@ const Login = () => {
         <div className="min-h-screen grid lg:grid-cols-2 bg-surface">
             {/* Brand panel */}
             <div className="relative hidden lg:flex flex-col justify-between overflow-hidden bg-primary-950 p-12 text-white">
-                <div className="pointer-events-none absolute inset-0 opacity-[0.07]"
+                <div className="pointer-events-none absolute inset-0 opacity-[0.05]"
                     style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)', backgroundSize: '26px 26px' }} />
                 <div className="pointer-events-none absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-primary-700/40 blur-3xl" />
+                {/* Bank + farmland backdrop illustration */}
+                <svg className="pointer-events-none absolute bottom-0 left-0 w-full opacity-[0.10]" viewBox="0 0 720 260" fill="none" aria-hidden="true">
+                    {/* sun */}
+                    <circle cx="600" cy="60" r="34" stroke="#dfbd63" strokeWidth="2.5" />
+                    <g stroke="#dfbd63" strokeWidth="2">
+                        <line x1="600" y1="10" x2="600" y2="0" /><line x1="600" y1="120" x2="600" y2="110" />
+                        <line x1="550" y1="60" x2="540" y2="60" /><line x1="660" y1="60" x2="650" y2="60" />
+                        <line x1="565" y1="25" x2="558" y2="18" /><line x1="642" y1="102" x2="635" y2="95" />
+                        <line x1="642" y1="18" x2="635" y2="25" /><line x1="558" y1="102" x2="565" y2="95" />
+                    </g>
+                    {/* bank building */}
+                    <g stroke="#fff" strokeWidth="2.5">
+                        <polygon points="120,78 250,78 185,38" />
+                        <line x1="112" y1="86" x2="258" y2="86" />
+                        <line x1="130" y1="86" x2="130" y2="180" /><line x1="163" y1="86" x2="163" y2="180" />
+                        <line x1="196" y1="86" x2="196" y2="180" /><line x1="229" y1="86" x2="229" y2="180" />
+                        <line x1="240" y1="86" x2="240" y2="180" />
+                        <line x1="104" y1="188" x2="266" y2="188" />
+                        <line x1="96" y1="196" x2="274" y2="196" />
+                    </g>
+                    {/* field furrows */}
+                    <g stroke="#fff" strokeWidth="2">
+                        <path d="M0 258 C 180 236, 420 236, 720 252" />
+                        <path d="M0 244 C 200 224, 460 226, 720 238" />
+                        <path d="M40 232 C 240 214, 480 218, 700 226" />
+                    </g>
+                    {/* crop sprigs */}
+                    <g stroke="#dfbd63" strokeWidth="2">
+                        <path d="M330 226 v-22 M330 212 l-9 -9 M330 212 l9 -9 M330 220 l-7 -7 M330 220 l7 -7" />
+                        <path d="M420 230 v-20 M420 218 l-8 -8 M420 218 l8 -8" />
+                        <path d="M500 224 v-24 M500 208 l-9 -9 M500 208 l9 -9 M500 216 l-7 -7 M500 216 l7 -7" />
+                    </g>
+                </svg>
 
                 <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
                     <div className="flex items-center gap-4">
