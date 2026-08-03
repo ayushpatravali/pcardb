@@ -27,9 +27,16 @@ OUTPUT_DIR = Path(os.environ.get("OUTPUT_DIR", BASE_DIR / "assets" / "generated"
 # Fixed insurance component added on top of the final loan amount wherever it
 # prints (bank instruction 2026-08: show "+ 1 lakh", never the word insurance).
 INSURANCE_AMOUNT = 100000
-# Fixed trailer/hire income added to the repayment line (workbook T5!G15 note
-# ",+100960 Trailer Income" — bank instruction: fixed everywhere).
-TRAILER_HIRE_INCOME = 100960
+# Tractor hire-income chain (packet page 14 section 7 -> feeds T5 8.7 as
+# "ಅಂಶ 7:ಇ(7)"). Bank set the hourly rate to 400 on 2026-08-03; the workbook's
+# stale figures (200/hr, +100960) were acknowledged as mistakes.
+HIRE_HOURS = 600
+HIRE_RATE = 400
+HIRE_MAINTENANCE_COST = 20000
+HIRE_OWN_USE_COST = 20000
+HIRE_INCOME_GROSS = HIRE_HOURS * HIRE_RATE                    # col 3 = 1 x 2
+HIRE_INCOME_TOTAL = HIRE_INCOME_GROSS - HIRE_MAINTENANCE_COST  # col 5 = 3 - 4
+HIRE_INCOME_NET = HIRE_INCOME_TOTAL - HIRE_OWN_USE_COST        # col 7 = 5 - 6
 DEFAULT_LOAN_DURATION_YEARS = 7
 DEFAULT_REGION_KN = "ಗೋಕಾಕ"
 
@@ -250,10 +257,10 @@ def build_context(app: Application, details, spec) -> dict:
     net_repayment_eligibility = (
         round(repayment_eligibility - prev_installment) if repayment_eligibility else None
     )
-    # T5 8.7 total = 75% of incremental income + fixed hire income; also prints
-    # as "expected income from the scheme" at page 6 item 13 (bank instruction).
+    # T5 8.7 total = 75% of incremental income + net hire income (T4 col 7);
+    # also prints as "expected income from the scheme" at page 6 item 13.
     repayment_capacity = (
-        repayment_eligibility + TRAILER_HIRE_INCOME if repayment_eligibility else None
+        repayment_eligibility + HIRE_INCOME_NET if repayment_eligibility else None
     )
 
     computed = {
@@ -266,7 +273,13 @@ def build_context(app: Application, details, spec) -> dict:
         "repayment_eligibility": repayment_eligibility,
         "net_repayment_eligibility": net_repayment_eligibility,
         "repayment_capacity": repayment_capacity,
-        "hire_income": TRAILER_HIRE_INCOME,
+        "hire_income": HIRE_INCOME_NET,
+        "hire_rate": HIRE_RATE,
+        "hire_hours": HIRE_HOURS,
+        "hire_income_gross": HIRE_INCOME_GROSS,
+        "hire_maintenance_cost": HIRE_MAINTENANCE_COST,
+        "hire_income_total": HIRE_INCOME_TOTAL,
+        "hire_own_use_cost": HIRE_OWN_USE_COST,
         "prev_outstanding": prev_outstanding or None,
         "installment_kantu": None,  # set below when scheme details carry the loan total
         "insurance_amount": INSURANCE_AMOUNT,

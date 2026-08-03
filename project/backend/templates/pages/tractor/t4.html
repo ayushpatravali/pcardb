@@ -78,14 +78,15 @@
   <tr>
     <td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td>
   </tr>
+  {# whole row computed from HIRE_* constants in render_service (rate 400/hr) #}
   <tr style="height:16mm;">
-    <td class="value">600<br>ಗಂಟೆಗಳು</td>
-    <td class="value">ರೂ. 400</td>
-    <td class="value">120000</td>
-    <td class="value">20000</td>
-    <td class="value">100000</td>
-    <td class="value">20000</td>
-    <td class="value">80000</td>
+    <td class="value">{{ computed.hire_hours | num }}<br>ಗಂಟೆಗಳು</td>
+    <td class="value">ರೂ. {{ computed.hire_rate | num }}</td>
+    <td class="value">{{ computed.hire_income_gross | num }}</td>
+    <td class="value">{{ computed.hire_maintenance_cost | num }}</td>
+    <td class="value">{{ computed.hire_income_total | num }}</td>
+    <td class="value">{{ computed.hire_own_use_cost | num }}</td>
+    <td class="value">{{ computed.hire_income | num }}</td>
   </tr>
 </table>
 
