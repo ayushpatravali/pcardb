@@ -117,6 +117,11 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 - **2026-08-03** — Formula map: all 489 cell formulas from the Vasant Malli
   Tractor workbook extracted to `legacy_assets/formula_maps/tractor_formulas.json`
   (gitignored) — reference for every computed figure in the packet.
+- **2026-08-03** — Dates: dashboard table pinned to en-GB (was viewer-locale;
+  US testers saw mm/dd on the same URL). Native date pickers REPLACED with
+  DD/MM/YYYY masked text inputs (browser widget follows the viewer's OS
+  region — cannot be styled). dmyToIso/isoToDmy convert at payload/hydration;
+  age auto-calc parses the masked format. PDF was always dd/mm/yyyy.
 - **2026-08-03** — Hire-income chain computed from constants (HIRE_RATE=400/hr
   × 600 hrs): t4 row = 2,40,000 → −20,000 → 2,20,000 → −20,000 → net 2,00,000;
   t5 8.7 = 75% incremental + 2,00,000 (replaces workbook's stale +1,00,960);
