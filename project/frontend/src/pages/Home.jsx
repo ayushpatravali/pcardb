@@ -165,7 +165,7 @@ const Home = () => {
                 <h1 className="mb-1 text-3xl font-bold tracking-tight text-stone-900">
                     {t('dashboard')}
                 </h1>
-                <p className="mb-8 text-sm text-stone-500">ದಿ ಗೋಕಾಕ ತಾ. ಪ್ರಾ. ಸ. ಕೃ. ಮತ್ತು ಗ್ರಾ. ಅ. ಬ್ಯಾಂಕ ನಿ.</p>
+                <p className="mb-8 text-sm text-stone-500">ಗೋಕಾಕ ತಾ. ಪ್ರಾ. ಸ. ಕೃ. ಮತ್ತು ಗ್ರಾ. ಅ. ಬ್ಯಾಂಕ ನಿ., ಗೋಕಾಕ</p>
 
                 <div className="mb-10 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
                     <StatCard
