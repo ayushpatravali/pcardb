@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Landmark, User, KeyRound, ShieldCheck, FileText, Printer } from 'lucide-react';
+import { Landmark, User, KeyRound, ShieldCheck, FileText, Printer, Calculator, Tractor } from 'lucide-react';
 import { login as apiLogin } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
@@ -64,7 +64,9 @@ const Login = () => {
 
                     <ul className="mt-10 space-y-4">
                         <Feature icon={<FileText size={16} />} text="ಸಾಲದ ಅರ್ಜಿಗಳ ಡಿಜಿಟಲ್ ದಾಖಲಾತಿ" />
-                        <Feature icon={<Printer size={16} />} text="21-ಪುಟದ ಮುದ್ರಣ ಸಿದ್ಧ ಕನ್ನಡ ಅರ್ಜಿ ಪ್ಯಾಕೆಟ್" />
+                        <Feature icon={<Printer size={16} />} text="ಮುದ್ರಣ ಸಿದ್ಧ ಕನ್ನಡ ಅರ್ಜಿ ಪ್ಯಾಕೆಟ್ — ನೇರವಾಗಿ ಪ್ರಿಂಟ್ ಮಾಡಿ" />
+                        <Feature icon={<Calculator size={16} />} text="ಸ್ವಯಂಚಾಲಿತ ಲೆಕ್ಕಾಚಾರ — ಬೆಳೆ ಆದಾಯ, ಜಮೀನಿನ ಮೌಲ್ಯ, ಸಾಲದ ಕಂತು" />
+                        <Feature icon={<Tractor size={16} />} text="ಟ್ರ್ಯಾಕ್ಟರ್ · ಕುರಿ ಸಾಕಾಣಿಕೆ · ಎತ್ತು-ಬಂಡಿ · ಭೂ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆಗಳು" />
                         <Feature icon={<ShieldCheck size={16} />} text="ಬ್ಯಾಂಕ್ ಒಳಜಾಲದಲ್ಲಿ ಮಾತ್ರ — ಸುರಕ್ಷಿತ ದತ್ತಾಂಶ" />
                     </ul>
                 </motion.div>
