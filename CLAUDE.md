@@ -188,16 +188,21 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 
 ## Next / pending
 
-- **PRE-GO-LIVE (owner, 2026-08-03):** wire NewApplication.jsx into the
-  existing KN/EN language switch — Kannada mode must be 100% Kannada (labels,
-  notes, dropdown options), English mode English. Bilingual labels stay until
-  then (owner reads them during testing). Stored option VALUES must not change
-  (backend contract + PDF kn_display mapping depend on them). Details in
-  NEXT_SESSION_TASKS.md item 6.
-
+- **From CROP INCOME CHART.xlsx notes (item 7, partially done):** still pending
+  — female-loanees dashboard card (count + caste categories 1–4), hobli
+  dropdown (ಅರಬಾಂವಿ, ಕೌಜಲಗಿ, ಗೋಕಾಕ) + taluk dropdown (ಮೂಡಲಗಿ, ಗೋಕಾಕ),
+  and "also add after this Last Name next line" (needs owner clarification).
+  Note: form has no gender-independent "female loanee" flag beyond `gender`.
+- **Owner actions:** Sync fork + redeploy Railway (demo is many commits
+  behind: crop chart, caste list, Kannada mode, UI v2, page-10 calcs, extent
+  fixes all not yet on demo); revoke the two GitHub PATs pasted in chat.
 - Bank sign-off on printed Tractor packet → then replicate templates+specs to
   SHEEP_40/20/10 → BULLOCK → LAND_DEV (shared pages already built; their UI
   forms don't exist yet and will copy the Tractor form pattern).
 - Optional: Railway volume for persistent demo data; Windows-VM validation of
   the GTK runtime before bank install; frontend dead-code sweep (PDFOverlay,
   tractor_map.js, TractorApplicationForm.jsx) — needs owner approval.
+- (done 2026-08-03) KN/EN language switch for the form; PDF ದಿ removal was NOT
+  done in backend BANK constants on purpose (matches bank's reference PDFs) —
+  frontend-only per owner. If the bank wants it off the print, edit
+  `schemas/common_fields.py` BANK name_line1.
