@@ -24,7 +24,7 @@
     <td></td>
     <td>{{ p.village }}</td>
     <td>{{ p.survey_no }}</td>
-    <td>{{ '%.2f' | format(p.acres) }}</td>
+    <td>{{ p.extent }}</td>
     <td>{{ '%.2f' | format(p.akaar) }}</td>
   </tr>
   {% endfor %}
@@ -33,7 +33,7 @@
   {% endfor %}
   <tr class="center value">
     <td></td><td></td><td></td>
-    <td>{{ app.total_area_acres | num }}</td>
+    <td>{{ computed.total_extent }}</td>
     <td></td>
   </tr>
 </table>

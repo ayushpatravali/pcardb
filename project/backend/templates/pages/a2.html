@@ -12,13 +12,13 @@
     <tr>
       <td style="border-bottom:none; padding-top:2mm">
         ಖುಷ್ಕಿ : <span class="fill" style="min-width:32mm">&nbsp;</span> ಎಕರೆ, &nbsp;
-        ನೀರಾವರಿ <span class="fill" style="min-width:26mm">{{ '%.2f' | format(app.total_area_acres) }}</span> ಎಕರೆ, &nbsp;
+        ನೀರಾವರಿ <span class="fill" style="min-width:26mm">{{ computed.total_extent }}</span> ಎಕರೆ, &nbsp;
         ತೋಟ <span class="fill" style="min-width:32mm">&nbsp;</span> ಎಕರೆ
       </td>
     </tr>
     <tr>
       <td style="border-top:none; padding-bottom:2mm" class="center">
-        ಒಟ್ಟು <span class="fill" style="min-width:26mm">{{ '%.2f' | format(app.total_area_acres) }}</span> ಎಕರೆ
+        ಒಟ್ಟು <span class="fill" style="min-width:26mm">{{ computed.total_extent }}</span> ಎಕರೆ
       </td>
     </tr>
   </table>
@@ -41,7 +41,7 @@
       <td class="value">{{ loop.index }}</td>
       <td class="value">{{ p.village }}</td>
       <td class="value">{{ p.survey_no }}</td>
-      <td class="value">{{ '%.2f' | format(p.acres) }}</td>
+      <td class="value">{{ p.extent }}</td>
       <td></td>
       <td></td>
     </tr>
@@ -53,7 +53,7 @@
       <td></td>
       <td class="bold">ಒಟ್ಟು</td>
       <td></td>
-      <td class="value">{{ '%.2f' | format(app.total_area_acres) }}</td>
+      <td class="value">{{ computed.total_extent }}</td>
       <td></td>
       <td></td>
     </tr>
@@ -97,7 +97,7 @@
       <td class="value">{{ loop.index }}</td>
       <td class="value">{{ p.village }}</td>
       <td class="value">{{ p.survey_no }}</td>
-      <td class="value">{{ '%.2f' | format(p.acres) }}</td>
+      <td class="value">{{ p.extent }}</td>
     </tr>
     {% endfor %}
     {% for _ in range(5 - parsed.land_parcels[:5] | length) %}
@@ -107,7 +107,7 @@
       <td></td>
       <td class="bold">ಒಟ್ಟು</td>
       <td></td>
-      <td class="value">{{ '%.2f' | format(app.total_area_acres) }}</td>
+      <td class="value">{{ computed.total_extent }}</td>
     </tr>
   </table>
 </div>

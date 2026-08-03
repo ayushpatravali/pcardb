@@ -49,7 +49,7 @@
     <td class="center bold">{{ p.survey_no }}</td>
     <td class="center bold">{{ '%.2f' | format(p.acres) if p.acres is not none else '' }}</td>
     <td class="center bold">{{ p.guntas or '' }}</td>
-    <td class="center small">{% if loop.first %}{{ app.irrigation_source }}{% endif %}</td>
+    <td class="center small">{% if loop.first %}{{ computed.irrigation_kn }}{% endif %}</td>
     <td class="center bold">{% if loop.first and parsed.crops %}{{ parsed.crops[0].crop_name }}{% endif %}</td>
     <td class="center bold">{{ p.valuation | num if p.valuation else '' }}</td>
   </tr>

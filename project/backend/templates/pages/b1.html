@@ -45,9 +45,9 @@
     <td class="lbl">ಅರ್ಜಿದಾರರ ಒಟ್ಟು ಹಿಡುವಳಿ (ಎಕರೆ)</td>
     <td class="ct">
       <div class="rline"><span>ಖುಷ್ಕಿ <span class="fill blank" style="min-width:35mm"></span></span>
-        <span>ಸದಸ್ಯ ಸಂಖ್ಯೆ &nbsp;<span class="fill">{{ app.total_area_acres | num }}</span></span></div>
+        <span>ಸದಸ್ಯ ಸಂಖ್ಯೆ &nbsp;<span class="fill">{{ computed.total_extent }}</span></span></div>
       <div class="rline"><span>ತೋಟ <span class="fill blank" style="min-width:35mm"></span></span>
-        <span>ಒಟ್ಟು ಕ್ಷೇತ್ರ &nbsp;<span class="fill">{{ app.total_area_acres | num }}</span></span></div>
+        <span>ಒಟ್ಟು ಕ್ಷೇತ್ರ &nbsp;<span class="fill">{{ computed.total_extent }}</span></span></div>
     </td>
   </tr>
   <tr>
@@ -65,7 +65,7 @@
       <div style="border-bottom:1px dashed #000">ಸರ್ವೆ ನಂ. &nbsp;&nbsp;
         {% for p in parsed.land_parcels[:2] %}<span class="value" style="margin-right:12mm">{{ p.survey_no }}</span>{% endfor %}</div>
       <div class="rline"><span>ಕ್ಷೇತ್ರ &nbsp;&nbsp;
-        {% for p in parsed.land_parcels[:2] %}<span class="value" style="margin-right:12mm">{{ '%.2f' | format(p.acres) }}</span>{% endfor %}</span>
+        {% for p in parsed.land_parcels[:2] %}<span class="value" style="margin-right:12mm">{{ p.extent }}</span>{% endfor %}</span>
         <span>ಎಕರೆ</span></div>
     </td>
   </tr>
@@ -110,7 +110,7 @@
     <td class="value" style="text-align:left">{{ p.village }}</td>
     <td class="value">{{ p.survey_no }}</td>
     <td></td>
-    <td class="value">{{ '%.2f' | format(p.acres) }}</td>
+    <td class="value">{{ p.extent }}</td>
     <td class="value">0</td>
     <td class="value">0</td>
     <td></td>
@@ -127,7 +127,7 @@
     <tr><td class="right" style="width:38mm; padding:0.5mm 2mm">ಖುಷ್ಕಿ</td><td style="border:1px solid #000; width:20mm; height:6mm"></td><td style="border:1px solid #000; width:18mm"></td></tr>
     <tr><td class="right" style="padding:0.5mm 2mm">ನೀರಾವರಿ</td><td style="border:1px solid #000"></td><td style="border:1px solid #000"></td></tr>
     <tr><td class="right" style="padding:0.5mm 2mm">ಬಾಗಾಯತ</td><td style="border:1px solid #000"></td><td style="border:1px solid #000"></td></tr>
-    <tr><td class="right" style="padding:0.5mm 2mm">ಒಟ್ಟು</td><td class="center value" style="border:1px solid #000">{{ app.total_area_acres | num }}</td><td class="center value" style="border:1px solid #000">0</td></tr>
+    <tr><td class="right" style="padding:0.5mm 2mm">ಒಟ್ಟು</td><td class="center value" style="border:1px solid #000">{{ computed.total_extent }}</td><td class="center value" style="border:1px solid #000">0</td></tr>
   </table>
   <div style="flex:1; align-self:flex-end; text-align:right" class="small">ಮು.ಪು.ನೋ</div>
 </div>

@@ -112,6 +112,14 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 - **2026-08-03** — Formula map: all 489 cell formulas from the Vasant Malli
   Tractor workbook extracted to `legacy_assets/formula_maps/tractor_formulas.json`
   (gitignored) — reference for every computed figure in the packet.
+- **2026-08-03** — Display normalization (render_service): (1) acre.gunta
+  extent notation — parcels/crops get `p.extent`/`c.extent` ("8.19" = 8 ac 19 g)
+  and `computed.total_extent`; all templates that printed bare acres now use
+  them (page 19 keeps its separate acre/gunta columns). (2) Kannada-only
+  output: `kn_display()` strips English halves of bilingual form values —
+  "General / ಸಾಮಾನ್ಯ"→ಸಾಮಾನ್ಯ, "ಕಾಲುವೆ (Canal)"→ಕಾಲುವೆ (keeps "(7 HP)"),
+  English crop values map via CROP_KN (Sugarcane→ಕಬ್ಬು…), farmer_type token
+  mapping. New computed keys: caste_kn, irrigation_kn, total_extent.
 - **2026-08-03** — Page 10 section 12 (ಆರ್ಥಿಕ ಸಕ್ಷಮತೆ) fully computed using the
   workbook's B4/T5 formula chain (mapped in `docs/formula_map_pages_9_10.md`):
   security = land_valuation_total; loan eligibility = 80% of it; net = − old

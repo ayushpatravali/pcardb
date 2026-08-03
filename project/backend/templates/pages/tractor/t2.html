@@ -26,9 +26,9 @@
     <td class="center">{{ p.sl }}</td>
     <td class="center">{{ p.survey_no }}</td>
     <td></td>
-    <td class="center">{{ "%.2f" | format(p.acres) }}</td>
+    <td class="center">{{ p.extent }}</td>
     <td></td>
-    <td class="center">{{ "%.2f" | format(p.acres) }}</td>
+    <td class="center">{{ p.extent }}</td>
   </tr>
   {% endfor %}
   {% for _ in range(5 - parsed.land_parcels | length if parsed.land_parcels | length < 5 else 0) %}
@@ -36,8 +36,8 @@
   {% endfor %}
   <tr>
     <td></td><td class="center">ಒಟ್ಟು</td><td></td>
-    <td class="center value">{{ "%.2f" | format(app.total_area_acres) }}</td><td></td>
-    <td class="center value">{{ "%.2f" | format(app.total_area_acres) }}</td>
+    <td class="center value">{{ computed.total_extent }}</td><td></td>
+    <td class="center value">{{ computed.total_extent }}</td>
   </tr>
 </table>
 
@@ -71,7 +71,7 @@
     <td>4. ಇತರ ನೀರಾವರಿ</td><td></td><td></td><td></td><td></td><td></td><td></td>
   </tr>
   <tr>
-    <td>5. ಒಟ್ಟು</td><td class="center value">{{ "%.2f" | format(app.total_area_acres) }}</td>
+    <td>5. ಒಟ್ಟು</td><td class="center value">{{ computed.total_extent }}</td>
     <td class="center">ಒಟ್ಟು</td><td></td><td></td><td></td><td></td>
   </tr>
 </table>
@@ -97,9 +97,9 @@
     <td class="center">{{ p.sl }}</td>
     <td class="center">{{ p.survey_no }}</td>
     <td></td>
-    <td class="center">{{ "%.2f" | format(p.acres) }}</td>
+    <td class="center">{{ p.extent }}</td>
     <td></td>
-    <td class="center">{{ "%.2f" | format(p.acres) }}</td>
+    <td class="center">{{ p.extent }}</td>
     <td></td>
   </tr>
   {% endfor %}
@@ -108,8 +108,8 @@
   {% endfor %}
   <tr>
     <td></td><td></td><td></td>
-    <td class="center value">{{ "%.2f" | format(app.total_area_acres) }}</td><td></td>
-    <td class="center value">{{ "%.2f" | format(app.total_area_acres) }}</td><td></td>
+    <td class="center value">{{ computed.total_extent }}</td><td></td>
+    <td class="center value">{{ computed.total_extent }}</td><td></td>
   </tr>
 </table>
 </div>

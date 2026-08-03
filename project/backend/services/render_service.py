@@ -8,6 +8,7 @@ Error policy: fail loudly. Missing required fields raise MissingFieldsError
 """
 import json
 import os
+import re
 from datetime import datetime
 from pathlib import Path
 
@@ -35,6 +36,64 @@ FARMER_TYPE_KN = {
     "Marginal": "ಅತಿ ಸಣ್ಣ ರೈತರು",
     "Big": "ದೊಡ್ಡ ರೈತರು",
 }
+# The form stores crop values in English (its dropdown's value attribute);
+# the packet must print Kannada only.
+CROP_KN = {
+    "Sugarcane": "ಕಬ್ಬು", "Rice": "ಭತ್ತ", "Jowar": "ಜೋಳ", "Maize": "ಮೆಕ್ಕೆ ಜೋಳ",
+    "Wheat": "ಗೋಧಿ", "Cotton": "ಹತ್ತಿ", "Groundnut": "ಶೇಂಗಾ",
+    "Sunflower": "ಸೂರ್ಯಕಾಂತಿ", "Soybean": "ಸೋಯಾಬೀನ್", "Tomato": "ಟೊಮ್ಯಾಟೋ",
+    "Onion": "ಈರುಳ್ಳಿ", "Chilli": "ಮೆಣಸಿನಕಾಯಿ", "Banana": "ಬಾಳೆ",
+    "Grapes": "ದ್ರಾಕ್ಷಿ", "Other": "ಇತರೆ",
+}
+
+_PAREN_RE = re.compile(r"\s*\(([^)]*)\)")
+
+
+def _has_kannada(text):
+    return any("ಀ" <= ch <= "೿" for ch in text or "")
+
+
+def kn_display(value):
+    """Strip the English halves of the form's bilingual option strings.
+    'General / ಸಾಮಾನ್ಯ' -> 'ಸಾಮಾನ್ಯ'; 'ಕಾಲುವೆ (Canal)' -> 'ಕಾಲುವೆ';
+    '(5 HP)' style parentheticals are kept (HP is wanted on the print)."""
+    if not value:
+        return value
+    value = CROP_KN.get(str(value).strip(), str(value))
+    if " / " in value:
+        parts = [p.strip() for p in value.split(" / ")]
+        kn = [p for p in parts if _has_kannada(p)]
+        if kn:
+            value = " / ".join(kn)
+
+    def _paren(m):
+        inner = m.group(1).strip()
+        if _has_kannada(inner) or re.search(r"\d|HP|ಎಚ್", inner, re.IGNORECASE):
+            return m.group(0)
+        return ""  # English-only parenthetical: drop it
+
+    return _PAREN_RE.sub(_paren, value).strip()
+
+
+def extent_str(acres, guntas):
+    """Bank notation: 8 acres 19 guntas prints as '8.19' (not decimal acres)."""
+    a = _to_float(acres)
+    g = int(_to_float(guntas))
+    if g:
+        return f"{int(a)}.{g:02d}"
+    return f"{a:.2f}" if a else ""
+
+
+def _farmer_type_kn(value):
+    """Form stores 'ಸಣ್ಣ ರೈತ (Small)' etc. — map the English token to the
+    packet's canonical wording, else strip the English half."""
+    if not value:
+        return ""
+    m = _PAREN_RE.search(value)
+    token = m.group(1).strip() if m else value.strip()
+    return FARMER_TYPE_KN.get(token) or FARMER_TYPE_KN.get(value) or kn_display(value)
+
+
 def borrower_type_kn(value):
     """Form stores 'New / ಹೊಸ' or 'Old / ಹಿಂದಿನ' — match by substring."""
     if not value:
@@ -123,6 +182,19 @@ def build_context(app: Application, details, spec) -> dict:
         "previous_loans": previous_loans,
     }
 
+    # Display normalization: Kannada-only values, and acre.gunta extent
+    # notation (8 acres 19 guntas -> "8.19") for every parcel/crop row.
+    for p in parsed["land_parcels"]:
+        if isinstance(p, dict):
+            p["extent"] = extent_str(p.get("acres"), p.get("guntas"))
+    for c in parsed["crops"]:
+        if isinstance(c, dict):
+            c["crop_name"] = kn_display(c.get("crop_name"))
+            c["extent"] = extent_str(c.get("acres"), c.get("guntas"))
+    for co in parsed["co_applicants"]:
+        if isinstance(co, dict) and co.get("relation"):
+            co["relation"] = kn_display(co["relation"])
+
     # Land valuation (TRACTOR): parcel value = per-acre rate x extent. The form
     # stores it per parcel; recompute here so API-created rows behave the same.
     rate = app.land_valuation_per_acre or 0
@@ -183,8 +255,11 @@ def build_context(app: Application, details, spec) -> dict:
         "insurance_amount": INSURANCE_AMOUNT,
         "loan_duration_years": int(app.loan_duration_years or DEFAULT_LOAN_DURATION_YEARS),
         "dob": _fmt_date(app.dob),
-        "farmer_type_kn": FARMER_TYPE_KN.get(app.farmer_type, app.farmer_type or ""),
+        "farmer_type_kn": _farmer_type_kn(app.farmer_type),
         "borrower_type_kn": borrower_type_kn(app.borrower_type),
+        "caste_kn": kn_display(app.caste),
+        "irrigation_kn": kn_display(app.irrigation_source),
+        "total_extent": extent_str(app.total_area_acres, app.total_guntas),
         "annual_income": annual_income,
         "total_akaar": round(total_akaar, 2) if total_akaar else None,
         "land_valuation_total": round(valuation_total) if valuation_total else None,
