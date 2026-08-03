@@ -48,19 +48,19 @@
     <td class="n">8.5</td>
     <td>ಅರ್ಜಿದಾರರ ಹೊಂದಿದ ಸಾಲಗಳು<br>ಸಾಲ ಬಾಕಿ ಮೊತ್ತ (ಔಟ್ ಸ್ಟ್ಯಾಂಡಿಂಗ್)</td>
     <td class="m right">ರೂ.</td>
-    <td class="v"><span class="dash" style="min-width:26mm;"></span></td>
+    <td class="v"><span class="dash" style="min-width:26mm;">{{ computed.prev_outstanding | num }}</span></td>
   </tr>
   <tr class="rule">
     <td class="n">8.6</td>
     <td>ನಿವ್ವಳ ಸಾಲದ ಅರ್ಹತೆ (ಅಂಶ : 8 : 4 – 8 : 5)</td>
     <td class="m"></td>
-    <td class="v"><span class="value">{{ elig | num }}</span></td>
+    <td class="v"><span class="value">{{ (elig - (computed.prev_outstanding or 0)) | round | int | num }}</span></td>
   </tr>
   <tr class="rule">
     <td class="n">8.7</td>
     <td>ಸಾಲದ ಮರುಪಾವತಿ<br>(ಅಂಶ 8:1 ರ ಶೇ. 75 + ಅಂಶ 7:ಇ(7))</td>
-    <td class="m"><span class="dash">{{ r75 | num }} +</span></td>
-    <td class="v"><span class="dash" style="min-width:26mm;"></span></td>
+    <td class="m"><span class="dash">{{ r75 | num }} + {{ computed.hire_income | num }}</span></td>
+    <td class="v"><span class="dash" style="min-width:26mm;">{{ (r75 + computed.hire_income) | num }}</span></td>
   </tr>
   <tr class="rule">
     <td class="n">8.8</td>

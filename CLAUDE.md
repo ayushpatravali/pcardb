@@ -112,6 +112,14 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 - **2026-08-03** — Formula map: all 489 cell formulas from the Vasant Malli
   Tractor workbook extracted to `legacy_assets/formula_maps/tractor_formulas.json`
   (gitignored) — reference for every computed figure in the packet.
+- **2026-08-03** — PDF batch (owner): t4 rate ₹200→₹400; t5 8.5 shows old-loan
+  outstanding, 8.6 = eligibility − outstanding, 8.7 prints "r75 + 1,00,960"
+  (fixed TRAILER_HIRE_INCOME) with total; ssm2 item 13 = that 8.7 total
+  (`computed.repayment_capacity`) replacing stale 59920 (workbook linked the
+  SHEEP sheet's net income); a1 scheme table gets "+ 1,00,000" insurance row;
+  ssm boxed title centered. **`num` filter now prints Indian digit grouping**
+  (11,30,000) and strips operator-typed commas before parsing (also in
+  `_to_float` and annual-income derivation).
 - **2026-08-03** — Palette: primary green rebased on John Deere green #367C2B
   (owner request) — whole scale regenerated in tailwind.config.js; chart hexes
   in Home.jsx updated to match. Accent gold unchanged.
@@ -191,9 +199,19 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 
 ## Next / pending
 
+- **Deployment strategy PLANNED (2026-08-03)** — see `docs/DEPLOYMENT_PLAN.md`
+  (per-branch `branch_config.json` instead of git branches; signed license
+  w/ expiry as payment control, renewed by owner over SSH; daily no-PII
+  heartbeat; standing access = Tailscale + Windows OpenSSH + RDP, owner is
+  tailnet admin; remote one-file installer after the Gokak pilot; LAN
+  hostname, no domain) and `docs/STARTUP_GUIDE.md`
+  (proprietorship + Udyam + AMC template). Build order: branch-config refactor
+  first (fold into hobli/taluk dropdown task), license+heartbeat only at first
+  paid deal.
 - **From CROP INCOME CHART.xlsx notes (item 7, partially done):** still pending
   — female-loanees dashboard card (count + caste categories 1–4), hobli
-  dropdown (ಅರಬಾಂವಿ, ಕೌಜಲಗಿ, ಗೋಕಾಕ) + taluk dropdown (ಮೂಡಲಗಿ, ಗೋಕಾಕ),
+  dropdown (ಅರಬಾಂವಿ, ಕೌಜಲಗಿ, ಗೋಕಾಕ) + taluk dropdown (ಮೂಡಲಗಿ, ಗೋಕಾಕ)
+  — make these read from branch config per the deployment plan,
   and "also add after this Last Name next line" (needs owner clarification).
   Note: form has no gender-independent "female loanee" flag beyond `gender`.
 - **Owner actions:** Sync fork + redeploy Railway (demo is many commits

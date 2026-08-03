@@ -108,7 +108,9 @@
       <td class="value center">{{ computed.total_project_cost | num if computed.total_project_cost is defined else '' }}</td>
       <td class="value center">{{ app.loan_amount | num }}</td>
     </tr>
-    <tr><td class="center">2</td><td></td><td></td><td></td></tr>
+    {# insurance component below the loan amount — amount only, no label #}
+    <tr><td class="center">2</td><td></td><td></td>
+      <td class="value center">+ {{ computed.insurance_amount | num }}</td></tr>
     <tr><td class="center">3</td><td></td><td></td><td></td></tr>
     <tr><td class="center">4</td><td></td><td></td><td></td></tr>
   </table>

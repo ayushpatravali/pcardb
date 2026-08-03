@@ -27,6 +27,9 @@ OUTPUT_DIR = Path(os.environ.get("OUTPUT_DIR", BASE_DIR / "assets" / "generated"
 # Fixed insurance component added on top of the final loan amount wherever it
 # prints (bank instruction 2026-08: show "+ 1 lakh", never the word insurance).
 INSURANCE_AMOUNT = 100000
+# Fixed trailer/hire income added to the repayment line (workbook T5!G15 note
+# ",+100960 Trailer Income" — bank instruction: fixed everywhere).
+TRAILER_HIRE_INCOME = 100960
 DEFAULT_LOAN_DURATION_YEARS = 7
 DEFAULT_REGION_KN = "ಗೋಕಾಕ"
 
@@ -112,15 +115,18 @@ class MissingFieldsError(Exception):
 
 
 def plain_number(value):
-    """Whole floats print without decimals: 1130000.0 -> '1130000'.
-    The legacy forms print raw digits, no thousands separators."""
+    """Amounts print with Indian digit grouping (1130000 -> '11,30,000');
+    operator-typed commas in the stored value are cleaned first (bank
+    instruction 2026-08). Whole floats drop the decimals."""
     if value is None or value == "":
         return ""
+    if isinstance(value, str):
+        value = value.replace(",", "").strip()
     try:
         f = float(value)
     except (TypeError, ValueError):
         return str(value)
-    return str(int(f)) if f == int(f) else f"{f:g}"
+    return indian_format(int(f) if f == int(f) else f)
 
 
 # Numeric fields inside the JSON-string columns. The React form submits these
@@ -129,7 +135,10 @@ _NUMERIC_JSON_FIELDS = {"acres", "guntas", "akaar", "annual_income", "sl", "valu
 
 
 def _to_float(value):
+    """Coerce to float; tolerates operator-typed commas ('1,00,000')."""
     try:
+        if isinstance(value, str):
+            value = value.replace(",", "").strip()
         return float(value)
     except (TypeError, ValueError):
         return 0.0
@@ -241,6 +250,11 @@ def build_context(app: Application, details, spec) -> dict:
     net_repayment_eligibility = (
         round(repayment_eligibility - prev_installment) if repayment_eligibility else None
     )
+    # T5 8.7 total = 75% of incremental income + fixed hire income; also prints
+    # as "expected income from the scheme" at page 6 item 13 (bank instruction).
+    repayment_capacity = (
+        repayment_eligibility + TRAILER_HIRE_INCOME if repayment_eligibility else None
+    )
 
     computed = {
         "application_date": _fmt_date(app.application_date or app.created_at),
@@ -251,6 +265,9 @@ def build_context(app: Application, details, spec) -> dict:
         "net_loan_eligibility": net_loan_eligibility,
         "repayment_eligibility": repayment_eligibility,
         "net_repayment_eligibility": net_repayment_eligibility,
+        "repayment_capacity": repayment_capacity,
+        "hire_income": TRAILER_HIRE_INCOME,
+        "prev_outstanding": prev_outstanding or None,
         "installment_kantu": None,  # set below when scheme details carry the loan total
         "insurance_amount": INSURANCE_AMOUNT,
         "loan_duration_years": int(app.loan_duration_years or DEFAULT_LOAN_DURATION_YEARS),

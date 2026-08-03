@@ -48,7 +48,7 @@ def derive_server_fields(application: Application) -> None:
         try:
             crops = json.loads(application.current_crop)
             incomes = [
-                float(c.get("annual_income") or 0)
+                float(str(c.get("annual_income") or 0).replace(",", "") or 0)
                 for c in crops
                 if isinstance(c, dict)
             ]
