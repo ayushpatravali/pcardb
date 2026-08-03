@@ -112,6 +112,13 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 - **2026-08-03** — Formula map: all 489 cell formulas from the Vasant Malli
   Tractor workbook extracted to `legacy_assets/formula_maps/tractor_formulas.json`
   (gitignored) — reference for every computed figure in the packet.
+- **2026-08-03** — Page 10 section 12 (ಆರ್ಥಿಕ ಸಕ್ಷಮತೆ) fully computed using the
+  workbook's B4/T5 formula chain (mapped in `docs/formula_map_pages_9_10.md`):
+  security = land_valuation_total; loan eligibility = 80% of it; net = − old
+  outstanding; repayment eligibility = 75% of (30% × annual income); net = −
+  old installment (page 9 ಉ feeds page 10 ಊ); ಏ kantu = total loan ÷ duration.
+  Also: b4 sanction line now prints "+ 100000" (workbook B4!F42 hardcodes it —
+  5th insurance site); b3 item-5 dealer/ಸಮರ್ಪಕವಾಗಿದೆ values left-aligned.
 - **2026-08-03** — Loan duration + insurance: `loan_duration_years` field (form
   select 1–15, default 7) drives b4 repayment period ("N ವರ್ಷ (2N ಕಂತು)") and t5
   kantu (= total_loan/duration) + 8.10 row. Fixed `INSURANCE_AMOUNT=100000`

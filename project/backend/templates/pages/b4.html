@@ -52,20 +52,22 @@
 <div class="item"><span class="num-col">12)</span>
   <div class="body">
     <div>ಆರ್ಥಿಕ ಸಕ್ಷಮತೆ :</div>
-    <div class="row"><span class="lab">ಅ) ಭದ್ರತೆ ಮೌಲ್ಯ : &nbsp; ರೂ. <span class="fill blank">&nbsp;</span></span>
+    {# Values follow the workbook's B4 formula chain — docs/formula_map_pages_9_10.md #}
+    <div class="row"><span class="lab">ಅ) ಭದ್ರತೆ ಮೌಲ್ಯ : &nbsp; ರೂ. <span class="fill blank">{{ computed.land_valuation_total | num }}</span></span>
       <span>ಸದಸ್ಯ ಸಂಖ್ಯೆ <span class="fill blank short">&nbsp;</span></span></div>
-    <div class="row"><span class="lab">ಆ) ಸಾಲದ ಅರ್ಹತೆ : &nbsp; ರೂ. <span class="fill blank">&nbsp;</span></span>
+    <div class="row"><span class="lab">ಆ) ಸಾಲದ ಅರ್ಹತೆ : &nbsp; ರೂ. <span class="fill blank">{{ computed.loan_eligibility | num }}</span></span>
       <span>(ಮೌಲ್ಯ % <span class="fill short">80%</span> %)</span></div>
-    <div class="row"><span class="lab">ಇ) ಹಿಂದಿನ ಸಾಲಗಳ ಹೊರೆಬಾಕಿ &nbsp; ರೂ. <span class="fill blank">&nbsp;</span></span>
+    <div class="row"><span class="lab">ಇ) ಹಿಂದಿನ ಸಾಲಗಳ ಹೊರೆಬಾಕಿ &nbsp; ರೂ. <span class="fill blank">{{ parsed.previous_loans.outstanding | num }}</span></span>
       <span>ದಾಖಲೆಯ ಹಾಳೆ ಸಂಖ್ಯೆ <span class="fill blank short">&nbsp;</span></span></div>
-    <div class="row"><span class="lab">ಈ) ನಿವ್ವಳ ಸಾಲದ ಅರ್ಹತೆ &nbsp; ರೂ. <span class="fill blank">&nbsp;</span></span>
+    <div class="row"><span class="lab">ಈ) ನಿವ್ವಳ ಸಾಲದ ಅರ್ಹತೆ &nbsp; ರೂ. <span class="fill blank">{{ computed.net_loan_eligibility | num }}</span></span>
       <span>ದಾಖಲೆಯ ಹಾಳೆ ಸಂಖ್ಯೆ <span class="fill blank short">&nbsp;</span></span></div>
     <div class="row"><span class="lab">ಉ) ಮರುಪಾವತಿ ಅರ್ಹತೆ (ಅಂಶ 11 ಇ &nbsp; <span class="fill short">75%</span> &nbsp;%)</span>
-      <span>ರೂ. <span class="fill blank">&nbsp;</span></span></div>
+      <span>ರೂ. <span class="fill blank">{{ computed.repayment_eligibility | num }}</span></span></div>
+    {# ಊ ← page 9 ಉ) ಒಟ್ಟು ವಾರ್ಷಿಕ ಕಂತಿನ ಮೊತ್ತ (old-borrower block) #}
     <div class="row"><span class="lab">ಊ) ಹಿಂದಿನ ಸಾಲಗಳ ಮರುಪಾವತಿ ಕಂತು</span>
-      <span>ರೂ. <span class="fill blank">&nbsp;</span></span></div>
+      <span>ರೂ. <span class="fill blank">{{ parsed.previous_loans.annual_installment | num }}</span></span></div>
     <div class="row"><span class="lab">ಋ) ನಿವ್ವಳ ಮರುಪಾವತಿ ಅರ್ಹತೆ (ಅಂಶ ಉ–ಊ)</span>
-      <span>ರೂ. <span class="fill blank">&nbsp;</span></span></div>
+      <span>ರೂ. <span class="fill blank">{{ computed.net_repayment_eligibility | num }}</span></span></div>
     <div class="row">
       <span class="lab">ಎ) ಉದ್ದೇಶಿತ ಸಾಲದ ಮರುಪಾವತಿ ಅವಧಿ : ಒಟ್ಟು <span class="fill short">{{ computed.loan_duration_years }}</span> ವರ್ಷಗಳು, ಇದರಲ್ಲಿ</span>
       <span><span class="fill blank short">&nbsp;</span> ತಿಂಗಳುಗಳು</span></div>
@@ -73,7 +75,7 @@
       <span class="lab">ಪ್ರಾರಂಭಿಕ ವರದಿ, ನಂತರ <span class="fill">{{ computed.loan_duration_years }} ವರ್ಷ ({{ computed.loan_duration_years * 2 }} ಕಂತು)</span></span>
       <span class="small">ವರ್ಷಗಳಲ್ಲಿ ಮಾಸಿಕ / ತ್ರೈಮಾಸಿಕ / ಅರ್ಧವಾರ್ಷಿಕ / ವಾರ್ಷಿಕ ಕಂತುಗಳು</span></div>
     <div class="row"><span class="lab">ಏ) ಉದ್ದೇಶಿತ ಸಾಲದ ಮರುಪಾವತಿ ಕಂತಿನ ಮೊತ್ತ</span>
-      <span>ರೂ. <span class="fill blank">&nbsp;</span> + ಬಡ್ಡಿ</span></div>
+      <span>ರೂ. <span class="fill blank">{{ computed.annual_kantu | num }}</span> + ಬಡ್ಡಿ</span></div>
   </div>
 </div>
 <div class="rule"></div>
@@ -104,8 +106,9 @@
 </table>
 
 <div class="row" style="margin-top:3mm;">
+  {# workbook B4!F42 hardcodes ",+100000" beside the sanction amount #}
   <span>ಕೆಳಕಂಡ ಷರತ್ತುಗಳಿಗೆ ಒಳಪಟ್ಟು ರೂ. <span class="fill">{{ app.loan_amount | num }}</span>
-    <span class="fill blank short">&nbsp;</span></span>
+    <span class="fill short">+ {{ computed.insurance_amount | num }}</span></span>
   <span>ಸಾಲ ಮಂಜೂರು ಮಾಡಬಹುದು</span>
 </div>
 

@@ -150,9 +150,36 @@ def build_context(app: Application, details, spec) -> dict:
     applicant = getattr(app, "applicant", None)
     region_kn = (getattr(applicant, "region", None) or "").strip() or DEFAULT_REGION_KN
 
+    # Financial-viability chain (page 10 section 12) — formulas lifted from the
+    # bank's Tractor workbook, sheets B4/T5 (see docs/formula_map_pages_9_10.md):
+    #   loan eligibility   = 80% of security (land valuation total)  [B4!E14]
+    #   net loan elig.     = that − old-loan outstanding             [B4!F18]
+    #   incremental income = 30% of annual income                    [T5!I3]
+    #   repayment elig.    = 75% of incremental income               [B4!J20]
+    #   net repayment      = that − old-loan annual installment      [B4!J24]
+    prev_outstanding = _to_float(previous_loans.get("outstanding"))
+    prev_installment = _to_float(previous_loans.get("annual_installment"))
+    inc = float(annual_income or 0)
+    incremental_income = round(inc * 0.30) if inc else None
+    loan_eligibility = round(valuation_total * 0.80) if valuation_total else None
+    net_loan_eligibility = (
+        round(loan_eligibility - prev_outstanding) if loan_eligibility else None
+    )
+    repayment_eligibility = round(incremental_income * 0.75) if incremental_income else None
+    net_repayment_eligibility = (
+        round(repayment_eligibility - prev_installment) if repayment_eligibility else None
+    )
+
     computed = {
         "application_date": _fmt_date(app.application_date or app.created_at),
         "region_kn": region_kn,
+        "incremental_income": incremental_income,
+        "post_dev_income": round(inc + inc * 0.30) if inc else None,
+        "loan_eligibility": loan_eligibility,
+        "net_loan_eligibility": net_loan_eligibility,
+        "repayment_eligibility": repayment_eligibility,
+        "net_repayment_eligibility": net_repayment_eligibility,
+        "annual_kantu": None,  # set below when scheme details carry the loan total
         "insurance_amount": INSURANCE_AMOUNT,
         "loan_duration_years": int(app.loan_duration_years or DEFAULT_LOAN_DURATION_YEARS),
         "dob": _fmt_date(app.dob),
@@ -168,6 +195,11 @@ def build_context(app: Application, details, spec) -> dict:
     if details is not None and app.scheme_type == SchemeType.TRACTOR:
         computed["total_project_cost"] = details.total_quotation
         computed["margin_money"] = details.total_down_payment
+        # B4!J30 = T5!F18: annual installment = total loan / repayment years
+        if details.total_loan_amount:
+            computed["annual_kantu"] = round(
+                details.total_loan_amount / computed["loan_duration_years"]
+            )
 
     context = {
         "bank": BANK,
