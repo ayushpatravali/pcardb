@@ -151,6 +151,7 @@ class ApplicationCreate(BaseModel):
     annual_income: Optional[float] = None
 
     loan_amount: Optional[float] = None
+    loan_duration_years: Optional[int] = None
     borrower_type: Optional[str] = None
     co_applicants: Optional[str] = None  # JSON string
     previous_loans: Optional[str] = None  # JSON string

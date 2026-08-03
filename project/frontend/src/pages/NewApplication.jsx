@@ -210,6 +210,7 @@ const NewApplication = () => {
             crops: [{ crop_name: '', acres: '', guntas: '', annual_income: '' }],
             irrigation_source: [],
             irrigation_hp: {},
+            loan_duration_years: 7,
         }
     });
 
@@ -375,6 +376,7 @@ const NewApplication = () => {
                 const formData = {
                     ...app,
                     application_date: typeof app.application_date === 'string' ? app.application_date.slice(0, 10) : '',
+                    loan_duration_years: app.loan_duration_years || 7,
                     prev_purpose: prevLoans.purpose || '',
                     prev_total_loan: prevLoans.total_loan || '',
                     prev_outstanding: prevLoans.outstanding || '',
@@ -477,7 +479,7 @@ const NewApplication = () => {
         const headerFields = [
             'father_name_kn', 'age', 'gender', 'mobile_no', 'aadhaar_no',
             'caste', 'farmer_type', 'occupation', 'dob', 'current_crop',
-            'annual_income', 'loan_amount', 'borrower_type',
+            'annual_income', 'loan_amount', 'loan_duration_years', 'borrower_type',
             'account_no', 'ifsc_code', 'bank_name', 'branch_name',
             'village', 'hobli', 'taluk', 'district', 'scheme_type',
             'total_area_acres', 'total_guntas', 'land_valuation_per_acre',
@@ -617,19 +619,37 @@ const NewApplication = () => {
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-                    ಕನ್ನಡದಲ್ಲಿ ನಮೂದಿಸಿ — ಹೆಸರು, ಗ್ರಾಮ, 주소 ಮತ್ತು ಇತರ Kannada ಕ್ಷೇತ್ರಗಳಿಗೆ ಕನ್ನಡವನ್ನು ಬಳಸಿ. IFSC, ಖಾತೆ ಸಂಖ್ಯೆ, ಮೊಬೈಲ್ ಮತ್ತು ಆಧಾರ್ ಕ್ಷೇತ್ರಗಳಿಗೆ ಇಂಗ್ಲಿಷ್/ಆಂಕಿ ಅಕ್ಷರಗಳನ್ನು ಹಾಗೆಯೇ ಉಳಿಸಲಾಗುವುದು.
+                    ಕನ್ನಡದಲ್ಲಿ ನಮೂದಿಸಿ — ಹೆಸರು, ಗ್ರಾಮ, ವಿಳಾಸ ಮತ್ತು ಇತರ Kannada ಕ್ಷೇತ್ರಗಳಿಗೆ ಕನ್ನಡವನ್ನು ಬಳಸಿ. IFSC, ಖಾತೆ ಸಂಖ್ಯೆ, ಮೊಬೈಲ್ ಮತ್ತು ಆಧಾರ್ ಕ್ಷೇತ್ರಗಳಿಗೆ ಇಂಗ್ಲಿಷ್/ಆಂಕಿ ಅಕ್ಷರಗಳನ್ನು ಹಾಗೆಯೇ ಉಳಿಸಲಾಗುವುದು.
                 </div>
 
                 {/* ── 1. APPLICANT DETAILS ── */}
                 <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
                     <SectionHeader title="ಅರ್ಜಿದಾರ ವಿವರ — Applicant Details" color="blue" />
 
-                    <div className="mb-6 max-w-xs">
-                        <InputField label="ಅರ್ಜಿ ದಿನಾಂಕ — Application Date" type="date"
-                            register={register('application_date')} />
-                        <p className="text-xs text-gray-400 mt-1">
-                            ಖಾಲಿ ಬಿಟ್ಟರೆ ಇಂದಿನ ದಿನಾಂಕ — leave blank to use today's date on the printed form
-                        </p>
+                    <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-5 max-w-2xl">
+                        <div>
+                            <InputField label="ಅರ್ಜಿ ದಿನಾಂಕ — Application Date" type="date"
+                                register={register('application_date')} />
+                            <p className="text-xs text-gray-400 mt-1">
+                                ಖಾಲಿ ಬಿಟ್ಟರೆ ಇಂದಿನ ದಿನಾಂಕ — leave blank to use today's date on the printed form
+                            </p>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                ಸಾಲದ ಅವಧಿ — Loan Duration (Years)
+                            </label>
+                            <select
+                                {...register('loan_duration_years')}
+                                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                            >
+                                {Array.from({ length: 15 }, (_, i) => i + 1).map(y => (
+                                    <option key={y} value={y}>{y}</option>
+                                ))}
+                            </select>
+                            <p className="text-xs text-gray-400 mt-1">
+                                ಮರುಪಾವತಿ ಅವಧಿ — repayment period printed on the packet (default 7)
+                            </p>
+                        </div>
                     </div>
 
                     {/* Name split into 3 */}

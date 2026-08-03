@@ -4,7 +4,7 @@
 {% set val83 = inc82 * 8 %}
 {% set elig = (val83 / 2) | round | int %}
 {% set r75 = (inc30 * 0.75) | round | int %}
-{% set kantu = (((details.total_loan_amount or 0) / 7) | round | int) if details else 0 %}
+{% set kantu = (((details.total_loan_amount or 0) / computed.loan_duration_years) | round | int) if details else 0 %}
 <div class="pg-t5">
 <style>
   .pg-t5 table.fin { table-layout: fixed; }
@@ -66,7 +66,7 @@
     <td class="n">8.8</td>
     <td>ಟ್ರ್ಯಾಕ್ಟರ್ : ಪವರ್ ಟಿಲ್ಲರ್ ಸಾಲ ರೂ.</td>
     <td class="m right">ರೂ.</td>
-    <td class="v"><span class="value">{{ details.total_loan_amount | num if details else "" }}</span></td>
+    <td class="v"><span class="value">{{ details.total_loan_amount | num if details else "" }} + {{ computed.insurance_amount | num }}</span></td>
   </tr>
   <tr class="rule">
     <td class="n">8.9</td>
@@ -77,7 +77,7 @@
   <tr class="rule">
     <td class="n">8.10</td>
     <td>(1) ಮರುಪಾವತಿ ಅವಧಿ (ವರ್ಷಗಳು)<br>(2) ಬಡ್ಡಿ ದರ (ಶೇ)</td>
-    <td class="m"><span class="dash" style="min-width:24mm;">7</span><br><span class="dash" style="min-width:24mm;">12.50</span></td>
+    <td class="m"><span class="dash" style="min-width:24mm;">{{ computed.loan_duration_years }}</span><br><span class="dash" style="min-width:24mm;">12.50</span></td>
     <td class="v"></td>
   </tr>
 </table>

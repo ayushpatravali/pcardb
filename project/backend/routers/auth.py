@@ -21,6 +21,7 @@ class UserCreate(BaseModel):
     password: str
     full_name: str
     role: Role = Role.FIELD_OFFICER # Default to Field Officer
+    region: Optional[str] = None  # operator's zone (Kannada); defaults to ಗೋಕಾಕ
 
 
 class UserPublic(BaseModel):
@@ -29,6 +30,7 @@ class UserPublic(BaseModel):
     username: str
     full_name: Optional[str] = None
     role: Role
+    region: Optional[str] = None
 
 @router.post("/token", response_model=Token)
 async def login_for_access_token(
@@ -69,7 +71,8 @@ def register_user(user_in: UserCreate, session: Session = Depends(get_session)):
         username=user_in.username,
         hashed_password=get_password_hash(user_in.password),
         full_name=user_in.full_name,
-        role=user_in.role
+        role=user_in.role,
+        region=user_in.region or "ಗೋಕಾಕ",
     )
     session.add(user)
     session.commit()

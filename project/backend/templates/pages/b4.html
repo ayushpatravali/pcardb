@@ -67,10 +67,10 @@
     <div class="row"><span class="lab">ಋ) ನಿವ್ವಳ ಮರುಪಾವತಿ ಅರ್ಹತೆ (ಅಂಶ ಉ–ಊ)</span>
       <span>ರೂ. <span class="fill blank">&nbsp;</span></span></div>
     <div class="row">
-      <span class="lab">ಎ) ಉದ್ದೇಶಿತ ಸಾಲದ ಮರುಪಾವತಿ ಅವಧಿ : ಒಟ್ಟು <span class="fill short">7</span> ವರ್ಷಗಳು, ಇದರಲ್ಲಿ</span>
+      <span class="lab">ಎ) ಉದ್ದೇಶಿತ ಸಾಲದ ಮರುಪಾವತಿ ಅವಧಿ : ಒಟ್ಟು <span class="fill short">{{ computed.loan_duration_years }}</span> ವರ್ಷಗಳು, ಇದರಲ್ಲಿ</span>
       <span><span class="fill blank short">&nbsp;</span> ತಿಂಗಳುಗಳು</span></div>
     <div class="row">
-      <span class="lab">ಪ್ರಾರಂಭಿಕ ವರದಿ, ನಂತರ <span class="fill">7 ವರ್ಷ (14 ಕಂತು)</span></span>
+      <span class="lab">ಪ್ರಾರಂಭಿಕ ವರದಿ, ನಂತರ <span class="fill">{{ computed.loan_duration_years }} ವರ್ಷ ({{ computed.loan_duration_years * 2 }} ಕಂತು)</span></span>
       <span class="small">ವರ್ಷಗಳಲ್ಲಿ ಮಾಸಿಕ / ತ್ರೈಮಾಸಿಕ / ಅರ್ಧವಾರ್ಷಿಕ / ವಾರ್ಷಿಕ ಕಂತುಗಳು</span></div>
     <div class="row"><span class="lab">ಏ) ಉದ್ದೇಶಿತ ಸಾಲದ ಮರುಪಾವತಿ ಕಂತಿನ ಮೊತ್ತ</span>
       <span>ರೂ. <span class="fill blank">&nbsp;</span> + ಬಡ್ಡಿ</span></div>

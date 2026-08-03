@@ -47,7 +47,8 @@
 </div>
 
 <div style="margin-top:8mm">
-  <div>ಸ್ಥಳ : &nbsp;&nbsp;&nbsp;&nbsp; <span class="value">{{ app.branch_name }}</span></div>
+  {# ಸ್ಥಳ = where the application is signed — the bank's seat (Gokak), not the applicant's branch. #}
+  <div>ಸ್ಥಳ : &nbsp;&nbsp;&nbsp;&nbsp; <span class="value">{{ bank.place }}</span></div>
   <div style="display:flex; margin-top:2mm">
     <div style="flex:1">ದಿನಾಂಕ : &nbsp; <span class="value small">{{ computed.application_date }}</span></div>
     <div style="flex:1; text-align:right">ಅರ್ಜಿದಾರನ / ಳ ರುಜು/ ಹೆಬ್ಬೆಟ್ಟಿನ ಗುರುತು</div>

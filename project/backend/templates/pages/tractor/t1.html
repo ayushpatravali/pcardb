@@ -138,5 +138,8 @@
     <td class="right value" style="border:1px solid #000;">{{ details.total_down_payment | num }}</td></tr>
   <tr><td style="border:1px solid #000;">ಸಾಲದ ಅವಶ್ಯಕತೆ</td><td style="border:1px solid #000;">ರೂ.</td>
     <td class="right value" style="border:1px solid #000;">{{ details.total_loan_amount | num }}</td></tr>
+  {# insurance component below the final loan amount — amount only, no label #}
+  <tr><td style="border:1px solid #000;"></td><td style="border:1px solid #000;">ರೂ.</td>
+    <td class="right value" style="border:1px solid #000;">+ {{ computed.insurance_amount | num }}</td></tr>
 </table>
 </div>

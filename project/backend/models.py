@@ -41,6 +41,8 @@ class User(SQLModel, table=True):
         sa_column=Column(SAEnum(Role, values_callable=_enum_values), nullable=False),
     )
     full_name: Optional[str] = None
+    # Operator's zone/region (Kannada) — printed at ವಲಯ on page 4 of the packet.
+    region: Optional[str] = Field(default="ಗೋಕಾಕ")
     applications: List["Application"] = Relationship(back_populates="applicant")
 
 
@@ -102,6 +104,7 @@ class Application(SQLModel, table=True):
 
     # Loan / Scheme Meta
     loan_amount: Optional[float] = None
+    loan_duration_years: Optional[int] = None  # ಸಾಲದ ಅವಧಿ; packet default 7
     scheme_type: SchemeType = Field(
         sa_column=Column(
             SAEnum(SchemeType, values_callable=_enum_values), nullable=False, index=True

@@ -1,0 +1,55 @@
+# Tasks queued by owner (dictated 2026-08-02, night)
+
+**STATUS 2026-08-03: items 0–4 DONE (see CLAUDE.md changelog). Item 5 (page-10
+calculation) still WAITING on owner's explanation — the formula map at
+`legacy_assets/formula_maps/tractor_formulas.json` is ready for it.**
+
+Owner's instruction: these were dictated quickly; verify each against the actual
+PDF/templates before implementing. Plan + execute in the next session, on owner's go.
+
+## 0. FIRST STEP (owner's explicit priority): extract formulas from the Tractor Excel workbook
+- Scan the Tractor Excel workbook in `legacy_assets/` (e.g. `Vasant Malli.xlsx`) and
+  extract **all cell formulas** (per sheet, per cell), save them to a reference file.
+- Purpose: the workbook encodes the bank's real calculation logic for each row/figure
+  printed in the packet — having the formulas mapped to cells makes every computed
+  field unambiguous (especially the page-10 calculation, item 5).
+- Owner: "either do it for the concerned fields, or else you can just scan it for
+  everything" → scan everything, save the full formula map.
+
+## 1. Loan duration (ಸಾಲದ ಅವಧಿ / "Saal-e-awadhi") + insurance +1 lakh on final loan amount
+- Add a **loan duration** field (Kannada: ಸಾಲದ ಅವಧಿ).
+- The final loan amount appears in **4 places** across the PDF (sometimes inside a
+  table, sometimes a plain line in a table). At each of those 4 places, add
+  **+1 lakh (₹1,00,000)**:
+  - In a table: add the +1 lakh **below** the total/final amount row.
+  - In a single line: append the +1 lakh **after** the final loan amount.
+- (Exact rendering — whether it's shown as a separate "+100000" line or folded into
+  a new total — to be confirmed with owner while implementing.)
+
+## 2. Insurance labelling + bank name Yadavad → Gokak
+- The +1 lakh is insurance, but **do NOT print the word "insurance"** anywhere —
+  just add the +1 lakh amount.
+- **Bank name is wrong**: currently prints "Yadavad" somewhere; it must be **Gokak**.
+  Check where the bank name is fetched/stored (`schemas/common_fields.py` BANK
+  constants, DB `bank_name` column, seed data) and fix at the source, not per-template.
+
+## 3. Page 5: place field ("Thada" / ಸ್ಥಳ, left side) shows Yadavad → must be Gokak
+- On PDF page 5, the left-side "place" line (owner said "Thada", likely ಸ್ಥಳ = place)
+  currently prints Yadavad; correct it to **Gokak**.
+
+## 4. Page 4: region ("Valya" / ವಲಯ?) — per-user region assignment at login
+- On PDF page 4 there's a field owner calls "Valya" (likely ವಲಯ = zone/region).
+- Feature: assign a **region/city + role to each user account**; the region of the
+  logged-in operator who types the application prints in that spot.
+- Until branch cities are provided: **default region = Gokak** for everyone.
+- Must print in **correct Kannada** — currently it's in English and wrong.
+- Touches: User model (new region column), auth/user creation, render context.
+
+## 5. Page 10: complex calculation — owner will explain tomorrow
+- Placeholder only. Do nothing until owner explains. The formula extraction in
+  item 0 will likely cover this.
+
+## Reminders carried over
+- After implementing: update CLAUDE.md Changelog (standing rule).
+- Owner still to: sync fork + redeploy Railway for land-valuation/previous-loans
+  commits; revoke the two GitHub PATs pasted in chat earlier.

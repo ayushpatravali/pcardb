@@ -109,6 +109,20 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 - **2026-08-02** — Application date override (blank = today), irrigation HP
   dropdown 1–20 step 0.5 + "HP only for motorised sources" note, page-1 photo
   box → passport 35×45mm labeled ಅರ್ಜಿದಾರರ ಭಾವಚಿತ್ರ.
+- **2026-08-03** — Formula map: all 489 cell formulas from the Vasant Malli
+  Tractor workbook extracted to `legacy_assets/formula_maps/tractor_formulas.json`
+  (gitignored) — reference for every computed figure in the packet.
+- **2026-08-03** — Loan duration + insurance: `loan_duration_years` field (form
+  select 1–15, default 7) drives b4 repayment period ("N ವರ್ಷ (2N ಕಂತು)") and t5
+  kantu (= total_loan/duration) + 8.10 row. Fixed `INSURANCE_AMOUNT=100000`
+  (render_service constant) prints as "+ 100000" (never the word insurance) at
+  the 4 final-loan-amount sites: b3 cost table, t1 totals table, t5 8.8, t7
+  recommendation line (fills the existing "+ ___ ವಿಮೆ" blank).
+- **2026-08-03** — Gokak fixes + per-user region: a3 ಸ್ಥಳ now prints `bank.place`
+  constant (ಗೋಕಾಕ), was operator-typed branch_name. New `User.region` column
+  (Kannada, default ಗೋಕಾಕ; settable via /register) prints at a4 ವಲಯ via
+  `computed.region_kn`. `app.bank_name` prints nowhere in the packet. Also fixed
+  a stray Korean "주소" in the form's Kannada notice (→ ವಿಳಾಸ).
 - **2026-08-02** — Previous-loan block (borrower type = Old): 8 inputs stored
   as `previous_loans` JSON; PDF page 9 section 9) reordered (amounts first,
   attachment items last), ಲಗತ್ತಿಸಿದೆ → ಲಗತ್ತಿಸಿರಿ, values bound.

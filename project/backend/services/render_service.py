@@ -23,6 +23,12 @@ TEMPLATE_DIR = BASE_DIR / "templates"
 FONT_DIR = Path(os.environ.get("FONT_DIR", BASE_DIR / "assets" / "fonts"))
 OUTPUT_DIR = Path(os.environ.get("OUTPUT_DIR", BASE_DIR / "assets" / "generated"))
 
+# Fixed insurance component added on top of the final loan amount wherever it
+# prints (bank instruction 2026-08: show "+ 1 lakh", never the word insurance).
+INSURANCE_AMOUNT = 100000
+DEFAULT_LOAN_DURATION_YEARS = 7
+DEFAULT_REGION_KN = "ಗೋಕಾಕ"
+
 # Kannada display strings for form-collected English enum-ish values.
 FARMER_TYPE_KN = {
     "Small": "ಸಣ್ಣ ರೈತರು",
@@ -139,8 +145,16 @@ def build_context(app: Application, details, spec) -> dict:
             float(c.get("annual_income") or 0) for c in parsed["crops"] if isinstance(c, dict)
         )
 
+    # Operator's zone for the ವಲಯ line — from the user who owns the application.
+    # getattr chain keeps detached fixtures (no applicant) working.
+    applicant = getattr(app, "applicant", None)
+    region_kn = (getattr(applicant, "region", None) or "").strip() or DEFAULT_REGION_KN
+
     computed = {
         "application_date": _fmt_date(app.application_date or app.created_at),
+        "region_kn": region_kn,
+        "insurance_amount": INSURANCE_AMOUNT,
+        "loan_duration_years": int(app.loan_duration_years or DEFAULT_LOAN_DURATION_YEARS),
         "dob": _fmt_date(app.dob),
         "farmer_type_kn": FARMER_TYPE_KN.get(app.farmer_type, app.farmer_type or ""),
         "borrower_type_kn": borrower_type_kn(app.borrower_type),
