@@ -58,8 +58,13 @@ Never run WeasyPrint through `nohup`/`env` on macOS (SIP strips DYLD vars).
 **Demo hosting (Railway, free):** Dockerfile at repo root; single container
 serves API + built frontend (`/api/*` routes + SPA fallback in `main.py`).
 Env vars on the service: `MANAGER_PASSWORD`, `OFFICER_PASSWORD`, `DEMO_SEED=1`
-(auto-seeds the editable Vasant Malli sample each boot). Disk is ephemeral —
-data resets on redeploy. `GET /healthz` shows env delivery as booleans.
+(auto-seeds the editable Vasant Malli sample each boot). `GET /healthz` shows
+env delivery as booleans. **Persistent data:** attach a Railway Volume mounted
+at `/data` and set `DATABASE_URL=sqlite:////data/database.db` (four slashes) —
+without it the disk is ephemeral and typed applications are LOST on redeploy
+(bit the owner on 2026-08-03). Volume DB schema persists across deploys, so
+future schema changes need ALTER statements there too (or delete the volume DB
+to recreate).
 Final deployment target: fully local on the bank manager's machine, bank LAN only.
 
 ## Testing
