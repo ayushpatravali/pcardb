@@ -67,7 +67,10 @@ bilingual mix (owner's preference for testing). Original spec below.
 - Owner explicitly wants the bilingual UI KEPT for now (they read it during
   testing). Do this only as the final step before bank go-live.
 
-## 7. Feature requests embedded in CROP INCOME CHART.xlsx (found 2026-08-03, NOT yet implemented)
+## 7. Feature requests embedded in CROP INCOME CHART.xlsx
+**✅ DONE 2026-08-03: caste dropdown (12 chart castes verbatim, prints exactly
+on PDF) + free-text add-caste option. STILL PENDING: female-loanees dashboard
+card, "last name next line" (clarify), hobli/taluk dropdowns.**
 The chart's side columns contain owner notes (Nudi-encoded, decoded here):
 - **Caste dropdown list** (per chart): 1) ಪರಿಶಿಷ್ಟ ಜಾತಿ 2) ಪರಿಶಿಷ್ಟ ಪಂಗಡ
   3) ಅಲ್ಪಸಂಖ್ಯಾತರು 4) ಇತರೆ ಸಾಮಾನ್ಯ, plus: ದಿಗಂಬರ ಜೈನ, ಮುಸ್ಲಿಂ, ಹಿಂದೂ ರಡ್ಡಿ,
