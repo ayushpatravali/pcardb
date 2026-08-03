@@ -112,6 +112,13 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 - **2026-08-03** — Formula map: all 489 cell formulas from the Vasant Malli
   Tractor workbook extracted to `legacy_assets/formula_maps/tractor_formulas.json`
   (gitignored) — reference for every computed figure in the packet.
+- **2026-08-03** — Kannada-only mode: ಕನ್ನಡಕ್ಕೆ ಬದಲಿಸಿ now makes the whole form
+  pure Kannada (labels, section titles, dropdown/checkbox options, notes,
+  buttons, placeholders, sidebar) via `src/lib/kannada.js` knLabel/knOption —
+  display-only transforms; stored option VALUES unchanged (backend contract +
+  PDF kn_display intact). English mode keeps the bilingual mix. Language
+  choice persisted in localStorage (used to reset on refresh). This closes
+  NEXT_SESSION_TASKS item 6 (was parked for pre-go-live; owner pulled it in).
 - **2026-08-03** — UI v2: shadcn/ui components authored in src/components/ui
   (button/card/input/badge/separator, cva + cn util, @ alias). Login brand
   panel gains bank+farmland SVG backdrop. Dashboard: per-scheme bar chart

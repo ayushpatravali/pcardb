@@ -50,7 +50,7 @@ const Layout = () => {
                 <div className="mx-5 border-t border-white/10" />
 
                 <nav className="flex-1 overflow-y-auto p-4">
-                    <div className="mb-2 px-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary-400">Menu</div>
+                    <div className="mb-2 px-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-primary-400">{language === 'kn' ? 'ಮೆನು' : 'Menu'}</div>
                     <NavItem to="/" icon={<Home size={18} />} label={t('dashboard')} />
                     <NavItem to="/select-scheme" icon={<FilePlus size={18} />} label={t('newApplication')} />
                     {role === 'manager' && (
@@ -73,8 +73,12 @@ const Layout = () => {
                             {role ? role[0].toUpperCase() : 'U'}
                         </div>
                         <div className="ml-3">
-                            <p className="text-sm font-medium capitalize text-white">{role || 'User'}</p>
-                            <p className="text-[11px] text-primary-300">Active Session</p>
+                            <p className="text-sm font-medium capitalize text-white">
+                                {language === 'kn'
+                                    ? ({ manager: 'ವ್ಯವಸ್ಥಾಪಕರು', field_officer: 'ಕ್ಷೇತ್ರ ಅಧಿಕಾರಿ' }[role] || role || 'User')
+                                    : (role || 'User')}
+                            </p>
+                            <p className="text-[11px] text-primary-300">{language === 'kn' ? 'ಸಕ್ರಿಯ ಅಧಿವೇಶನ' : 'Active Session'}</p>
                         </div>
                     </div>
                     <button

@@ -4,10 +4,15 @@ import { translations } from '../utils/translations';
 const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-    const [language, setLanguage] = useState('en'); // Default to English
+    // Default English; persisted so a page refresh keeps the operator's choice
+    const [language, setLanguage] = useState(() => localStorage.getItem('language') || 'en');
 
     const toggleLanguage = () => {
-        setLanguage(prev => (prev === 'en' ? 'kn' : 'en'));
+        setLanguage(prev => {
+            const next = prev === 'en' ? 'kn' : 'en';
+            localStorage.setItem('language', next);
+            return next;
+        });
     };
 
     const t = (key) => {

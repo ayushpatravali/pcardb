@@ -49,7 +49,11 @@ PDF/templates before implementing. Plan + execute in the next session, on owner'
 - Placeholder only. Do nothing until owner explains. The formula extraction in
   item 0 will likely cover this.
 
-## 6. PRE-GO-LIVE (owner, 2026-08-03): form must respect the language switch
+## 6. ✅ DONE 2026-08-03 — form respects the language switch (owner pulled it in early)
+Kannada mode = 100% Kannada via src/lib/kannada.js; English mode keeps the
+bilingual mix (owner's preference for testing). Original spec below.
+
+## (original) PRE-GO-LIVE: form must respect the language switch
 - The app has a KN/EN toggle (`frontend/src/context/LanguageContext.jsx`,
   `t()` + `utils/translations.js`, switch in Layout.jsx) — but
   `NewApplication.jsx` ignores it: ~100 labels are hardcoded bilingual

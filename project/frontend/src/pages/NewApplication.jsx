@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useLanguage } from '../context/LanguageContext';
+import { knLabel, knOption, hasKannada } from '@/lib/kannada';
 import { calculateTractorLoanSummary } from '../utils/tractorFormCalculations.mjs';
 import { calculateTractorLoanFields } from '../utils/tractorCalculations';
 
@@ -100,12 +101,13 @@ const SECTION_TONES = {
 
 const SectionHeader = ({ title, icon, color = 'gray' }) => {
     const tone = SECTION_TONES[color] || SECTION_TONES.gray;
+    const { language } = useLanguage();
     return (
         <div className="flex items-center mb-6 pb-3 border-b border-stone-200">
             <div className={`p-2 rounded-lg mr-3 ${tone.chip}`}>
                 {icon || <ChevronRight size={18} />}
             </div>
-            <h3 className="text-lg font-bold text-stone-800 tracking-tight">{title}</h3>
+            <h3 className="text-lg font-bold text-stone-800 tracking-tight">{language === 'kn' ? knLabel(title) : title}</h3>
         </div>
     );
 };
@@ -113,6 +115,13 @@ const SectionHeader = ({ title, icon, color = 'gray' }) => {
 // variant: 'default' | 'dark' (on deep-green panels) | 'highlight' (key totals)
 // Wraps the shadcn Input primitive; register spread is passed through untouched.
 const InputField = ({ label, register, type = 'text', placeholder, step, readOnly, className = '', inputProps = {}, variant = 'default' }) => {
+    const { language } = useLanguage();
+    if (language === 'kn') {
+        label = knLabel(label);
+        if (placeholder === '10 digit number') placeholder = '10 ಅಂಕಿಗಳು';
+        else if (placeholder === '12 digit number') placeholder = '12 ಅಂಕಿಗಳು';
+        else if (placeholder && !hasKannada(placeholder) && !/^₹/.test(placeholder)) placeholder = undefined;
+    }
     const labelCls = (variant === 'dark' || variant === 'highlight')
         ? 'text-primary-200'
         : 'text-stone-500 group-focus-within:text-primary-700';
@@ -143,17 +152,20 @@ const InputField = ({ label, register, type = 'text', placeholder, step, readOnl
     );
 };
 
-const SelectField = ({ label, register, options, className = '' }) => (
+const SelectField = ({ label, register, options, className = '' }) => {
+    const { language } = useLanguage();
+    return (
     <div className={`group ${className}`}>
         <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5 group-focus-within:text-primary-700 transition-colors">
-            {label}
+            {language === 'kn' ? knLabel(label) : label}
         </label>
         <div className="relative">
             <select {...register}
                 className="w-full px-4 py-2.5 bg-white text-stone-900 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary-100 focus:border-primary-500 outline-none appearance-none transition-all text-sm">
                 {options.map(opt => {
                     const value = typeof opt === 'string' ? opt : opt.value;
-                    const labelText = typeof opt === 'string' ? opt : opt.label;
+                    let labelText = typeof opt === 'string' ? opt : opt.label;
+                    if (language === 'kn') labelText = knOption(labelText);
                     return <option key={value} value={value}>{labelText}</option>;
                 })}
             </select>
@@ -162,7 +174,8 @@ const SelectField = ({ label, register, options, className = '' }) => (
             </div>
         </div>
     </div>
-);
+    );
+};
 
 const getCropRate = (cropName) => {
     if (!cropName) return 0;
@@ -227,7 +240,9 @@ const NewApplication = () => {
     const [searchParams] = useSearchParams();
     const { id } = useParams();
     const navigate = useNavigate();
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
+    // Kannada-only mode: strip the English halves of bilingual display strings
+    const L = React.useCallback((s) => (language === 'kn' ? knLabel(s) : s), [language]);
 
     const [schemeType, setSchemeType] = React.useState(searchParams.get('scheme') || 'TRACTOR');
     const config = SCHEME_CONFIG[schemeType] || SCHEME_CONFIG['TRACTOR'];
@@ -651,7 +666,7 @@ const NewApplication = () => {
                             {t(config.titleKey || 'tractorScheme')}
                         </h2>
                         <p className="text-primary-100 text-lg font-medium opacity-90">
-                            Fill in the details below to submit the loan application
+                            {language === 'kn' ? 'ಸಾಲದ ಅರ್ಜಿ ಸಲ್ಲಿಸಲು ಕೆಳಗಿನ ವಿವರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ' : 'Fill in the details below to submit the loan application'}
                         </p>
                     </div>
                 </div>
@@ -659,7 +674,7 @@ const NewApplication = () => {
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-                    ಕನ್ನಡದಲ್ಲಿ ನಮೂದಿಸಿ — ಹೆಸರು, ಗ್ರಾಮ, ವಿಳಾಸ ಮತ್ತು ಇತರ Kannada ಕ್ಷೇತ್ರಗಳಿಗೆ ಕನ್ನಡವನ್ನು ಬಳಸಿ. IFSC, ಖಾತೆ ಸಂಖ್ಯೆ, ಮೊಬೈಲ್ ಮತ್ತು ಆಧಾರ್ ಕ್ಷೇತ್ರಗಳಿಗೆ ಇಂಗ್ಲಿಷ್/ಆಂಕಿ ಅಕ್ಷರಗಳನ್ನು ಹಾಗೆಯೇ ಉಳಿಸಲಾಗುವುದು.
+                    {language === 'kn' ? 'ಕನ್ನಡದಲ್ಲಿ ನಮೂದಿಸಿ — ಹೆಸರು, ಗ್ರಾಮ, ವಿಳಾಸ ಮತ್ತು ಇತರ ಕನ್ನಡ ಕ್ಷೇತ್ರಗಳಿಗೆ ಕನ್ನಡವನ್ನು ಬಳಸಿ. IFSC, ಖಾತೆ ಸಂಖ್ಯೆ, ಮೊಬೈಲ್ ಮತ್ತು ಆಧಾರ್ ಕ್ಷೇತ್ರಗಳಿಗೆ ಇಂಗ್ಲಿಷ್/ಅಂಕಿ ಅಕ್ಷರಗಳನ್ನು ಹಾಗೆಯೇ ಉಳಿಸಲಾಗುವುದು.' : 'ಕನ್ನಡದಲ್ಲಿ ನಮೂದಿಸಿ — ಹೆಸರು, ಗ್ರಾಮ, ವಿಳಾಸ ಮತ್ತು ಇತರ Kannada ಕ್ಷೇತ್ರಗಳಿಗೆ ಕನ್ನಡವನ್ನು ಬಳಸಿ. IFSC, ಖಾತೆ ಸಂಖ್ಯೆ, ಮೊಬೈಲ್ ಮತ್ತು ಆಧಾರ್ ಕ್ಷೇತ್ರಗಳಿಗೆ ಇಂಗ್ಲಿಷ್/ಆಂಕಿ ಅಕ್ಷರಗಳನ್ನು ಹಾಗೆಯೇ ಉಳಿಸಲಾಗುವುದು.'}
                 </div>
 
                 {/* Live summary — sticks while scrolling; values update as the operator types */}
@@ -679,7 +694,7 @@ const NewApplication = () => {
                                     className="sticky top-3 z-30 flex flex-wrap items-center gap-x-6 gap-y-1 rounded-2xl border border-primary-800 bg-primary-950/95 px-5 py-3 text-sm text-white shadow-lg backdrop-blur"
                                 >
                                     <span className="flex items-center gap-2 font-semibold text-accent-300">
-                                        <Calculator size={15} /> ನೇರ ಲೆಕ್ಕ — Live
+                                        <Calculator size={15} /> {L("ನೇರ ಲೆಕ್ಕ — Live")}
                                     </span>
                                     {extent && (
                                         <span>ಒಟ್ಟು ಹಿಡುವಳಿ&nbsp;<b>{extent}</b>&nbsp;<span className="text-primary-300">ಎಕರೆ</span></span>
@@ -704,23 +719,23 @@ const NewApplication = () => {
                         <InputField label="ಅರ್ಜಿ ದಿನಾಂಕ — Application Date" type="date"
                             register={register('application_date')} />
                         <p className="text-xs text-gray-400 mt-1">
-                            ಖಾಲಿ ಬಿಟ್ಟರೆ ಇಂದಿನ ದಿನಾಂಕ — leave blank to use today's date on the printed form
+                            {L("ಖಾಲಿ ಬಿಟ್ಟರೆ ಇಂದಿನ ದಿನಾಂಕ — leave blank to use today's date on the printed form")}
                         </p>
                     </div>
 
                     {/* Name split into 3 */}
                     <div className="mb-6">
                         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                            ಅರ್ಜಿದಾರ ಹೆಸರು — Full Name *
+                            {L("ಅರ್ಜಿದಾರ ಹೆಸರು — Full Name *")}
                         </p>
                         <div className="grid grid-cols-3 gap-3">
-                            <InputField label="First Name (ಮೊದಲ ಹೆಸರು)"
+                            <InputField label="ಮೊದಲ ಹೆಸರು — First Name"
                                 register={register('name_first', { required: true })}
                                 placeholder="ರಮೇಶ" />
-                            <InputField label="Middle Name (Husband/Father Name)"
+                            <InputField label="ಮಧ್ಯದ ಹೆಸರು (ತಂದೆ/ಗಂಡನ ಹೆಸರು) — Middle Name"
                                 register={register('name_middle')}
                                 placeholder="ಕುಮಾರ" />
-                            <InputField label="Last Name / Surname (ಹೆಚ್ಚಿನ ಹೆಸರು)"
+                            <InputField label="ಅಡ್ಡಹೆಸರು — Last Name / Surname"
                                 register={register('name_last', { required: true })}
                                 placeholder="ಪಾಟೀಲ" />
                         </div>
@@ -763,7 +778,7 @@ const NewApplication = () => {
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                ಸಾಲದ ಅವಧಿ — Loan Duration (Years)
+                                {L("ಸಾಲದ ಅವಧಿ — Loan Duration (Years)")}
                             </label>
                             <select
                                 {...register('loan_duration_years')}
@@ -774,7 +789,7 @@ const NewApplication = () => {
                                 ))}
                             </select>
                             <p className="text-xs text-gray-400 mt-1">
-                                ಮರುಪಾವತಿ ಅವಧಿ — repayment period printed on the packet (default 7)
+                                {L("ಮರುಪಾವತಿ ಅವಧಿ — repayment period printed on the packet (default 7)")}
                             </p>
                         </div>
 
@@ -782,7 +797,7 @@ const NewApplication = () => {
                         {isOldBorrower && (
                             <div className="md:col-span-2 mt-2 p-4 border border-accent-200 bg-accent-50/60 rounded-xl">
                                 <p className="text-xs font-bold text-accent-700 uppercase tracking-wider mb-3">
-                                    ಹಿಂದಿನ ಸಾಲದ ವಿವರ — Previous Loan Details (ಹಳೇ ಸಾಲಗಾರರಿಗೆ)
+                                    {L("ಹಿಂದಿನ ಸಾಲದ ವಿವರ — Previous Loan Details (ಹಳೇ ಸಾಲಗಾರರಿಗೆ)")}
                                 </p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                                     <div className="md:col-span-2">
@@ -811,11 +826,11 @@ const NewApplication = () => {
                         <div className="md:col-span-2 mt-4">
                             <div className="flex items-center justify-between mb-3">
                                 <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                    ಸಹ ಅರ್ಜಿದಾರರು — Co-Applicants (Optional)
+                                    {L("ಸಹ ಅರ್ಜಿದಾರರು — Co-Applicants (Optional)")}
                                 </p>
                                 <Button type="button" variant="secondary" size="sm"
                                     onClick={() => coAppAppend({ name: '', relation: '' })}>
-                                    <Plus size={14} /> ಸೇರಿಸಿ (Add)
+                                    <Plus size={14} /> {L("ಸೇರಿಸಿ (Add)")}
                                 </Button>
                             </div>
                             
@@ -841,7 +856,7 @@ const NewApplication = () => {
                                     </div>
                                 ))}
                                 {coAppFields.length === 0 && (
-                                    <p className="text-sm text-gray-400 italic">No co-applicants added.</p>
+                                    <p className="text-sm text-gray-400 italic">{language === 'kn' ? 'ಸಹ ಅರ್ಜಿದಾರರನ್ನು ಸೇರಿಸಿಲ್ಲ.' : 'No co-applicants added.'}</p>
                                 )}
                             </div>
                         </div>
@@ -866,7 +881,7 @@ const NewApplication = () => {
                     {schemeType === 'TRACTOR' && (
                         <div className="mb-4 max-w-sm">
                             <label className="block text-xs font-bold text-green-800 mb-1">
-                                ಜಮೀನಿನ ಮೌಲ್ಯ (ಪ್ರತಿ ಎಕರೆಗೆ) — Land Valuation per Acre (₹)
+                                {L("ಜಮೀನಿನ ಮೌಲ್ಯ (ಪ್ರತಿ ಎಕರೆಗೆ) — Land Valuation per Acre (₹)")}
                             </label>
                             <input
                                 type="number" step="1"
@@ -883,13 +898,13 @@ const NewApplication = () => {
                             <thead>
                                 <tr className="bg-green-50">
                                     <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800 w-10">ಸ.ನಂ</th>
-                                    <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800">ಗ್ರಾಮ — Village</th>
-                                    <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800">ಸರ್ವೆ ನಂ — Survey No</th>
-                                    <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800">ಎಕರೆ — Acres</th>
-                                    <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800">ಗುಂಟೆ — Guntas</th>
-                                    <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800">ಆಕಾರ — Akaar</th>
+                                    <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800">{L("ಗ್ರಾಮ — Village")}</th>
+                                    <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800">{L("ಸರ್ವೆ ನಂ — Survey No")}</th>
+                                    <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800">{L("ಎಕರೆ — Acres")}</th>
+                                    <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800">{L("ಗುಂಟೆ — Guntas")}</th>
+                                    <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800">{L("ಆಕಾರ — Akaar")}</th>
                                     {schemeType === 'TRACTOR' && (
-                                        <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800">ಜಮೀನಿನ ಮೌಲ್ಯ — Land Value</th>
+                                        <th className="border border-green-200 px-3 py-2 text-left text-xs font-bold text-green-800">{L("ಜಮೀನಿನ ಮೌಲ್ಯ — Land Value")}</th>
                                     )}
                                     <th className="border border-green-200 px-2 py-2 w-10"></th>
                                 </tr>
@@ -962,7 +977,7 @@ const NewApplication = () => {
                             <tfoot>
                                 <tr className="bg-green-100 font-bold">
                                     <td className="border border-green-300 px-2 py-2 text-center text-xs text-green-800" colSpan={3}>
-                                        ಒಟ್ಟು — Total
+                                        {L("ಒಟ್ಟು — Total")}
                                     </td>
                                     <td className="border border-green-300 px-2 py-2 text-center text-xs text-green-900">
                                         <input readOnly {...register('total_area_acres')}
@@ -990,7 +1005,7 @@ const NewApplication = () => {
 
                     <Button type="button" variant="secondary" size="sm"
                         onClick={() => landAppend({ sl: String(landFields.length + 1), village: '', survey_no: '', acres: '', guntas: '', akaar: '' })}>
-                        <Plus size={16} /> ಸಾಲು ಸೇರಿಸಿ — Add Row
+                        <Plus size={16} /> {L("ಸಾಲು ಸೇರಿಸಿ — Add Row")}
                     </Button>
                 </div>
 
@@ -1001,11 +1016,11 @@ const NewApplication = () => {
                     <div className="mb-6">
                         <div className="flex items-center justify-between mb-3">
                             <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                ಬೆಳೆ ವಿವರ — Crop Details (ವಾರ್ಷಿಕ ಬೆಳೆ)
+                                {L("ಬೆಳೆ ವಿವರ — Crop Details (ವಾರ್ಷಿಕ ಬೆಳೆ)")}
                             </label>
                             <Button type="button" variant="secondary" size="sm"
                                 onClick={() => cropsAppend({ crop_name: '', acres: '', guntas: '', annual_income: '' })}>
-                                <Plus size={14} /> ಬೆಳೆ ಸೇರಿಸಿ (Add Crop)
+                                <Plus size={14} /> {L("ಬೆಳೆ ಸೇರಿಸಿ (Add Crop)")}
                             </Button>
                         </div>
                         <div className="space-y-3">
@@ -1051,11 +1066,13 @@ const NewApplication = () => {
                     {/* Irrigation Checkboxes */}
                     <div>
                         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                            ನೀರಾವರಿ ಮೂಲ — Irrigation Source (Select Multiple)
+                            {L("ನೀರಾವರಿ ಮೂಲ — Irrigation Source (Select Multiple)")}
                         </label>
                         <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-3">
-                            ಸೂಚನೆ: ಅಗತ್ಯವಿರುವ ನೀರಾವರಿ ಮೂಲಗಳಿಗೆ ಮಾತ್ರ HP ನಮೂದಿಸಿ — Enter HP only for the resources that require it
-                            (e.g. borewell/pumpset). Sources without a motor can be left blank.
+                            {L("ಸೂಚನೆ: ಅಗತ್ಯವಿರುವ ನೀರಾವರಿ ಮೂಲಗಳಿಗೆ ಮಾತ್ರ HP ನಮೂದಿಸಿ — Enter HP only for the resources that require it")}
+                            {language === 'kn'
+                                ? ' (ಉದಾ: ಕೊಳವೆ ಬಾವಿ/ಪಂಪಸೆಟ್). ಮೋಟಾರ್ ಇಲ್ಲದ ಮೂಲಗಳಿಗೆ ಖಾಲಿ ಬಿಡಬಹುದು.'
+                                : ' (e.g. borewell/pumpset). Sources without a motor can be left blank.'}
                         </p>
                         <div className="grid gap-3 mb-3">
                             {IRRIGATION_OPTIONS.map((opt) => {
@@ -1065,7 +1082,7 @@ const NewApplication = () => {
                                     <label key={opt} className="flex flex-wrap items-center gap-3 px-3 py-2 border rounded-lg hover:bg-gray-50 cursor-pointer text-sm">
                                         <span className="flex items-center gap-2">
                                             <input type="checkbox" value={opt} {...register('irrigation_source')} className="w-4 h-4 text-primary-700 rounded" />
-                                            <span>{opt}</span>
+                                            <span>{language === 'kn' ? knOption(opt) : opt}</span>
                                         </span>
                                         {selected && (
                                             <div className="flex items-center gap-2 mt-2 sm:mt-0">
@@ -1119,7 +1136,7 @@ const NewApplication = () => {
 
                         {/* 1. Tractor Details */}
                         <div className="mb-6 bg-gray-50 p-5 rounded-xl border border-gray-200">
-                            <p className="text-sm font-bold text-primary-800 uppercase tracking-wider mb-4 border-b border-stone-200 pb-2">1. ಟ್ರ್ಯಾಕ್ಟರ್ — Tractor Details</p>
+                            <p className="text-sm font-bold text-primary-800 uppercase tracking-wider mb-4 border-b border-stone-200 pb-2">{L("1. ಟ್ರ್ಯಾಕ್ಟರ್ — Tractor Details")}</p>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                 <InputField label="ಕಂಪನಿ — Make" register={register('tractor_make')} placeholder="e.g. John Deere" />
                                 <InputField label="ಮಾಡೆಲ್ — Model" register={register('tractor_model')} placeholder="e.g. 5310" />
@@ -1135,7 +1152,7 @@ const NewApplication = () => {
 
                         {/* 2. Trailer Details */}
                         <div className="mb-6 bg-gray-50 p-5 rounded-xl border border-gray-200">
-                            <p className="text-sm font-bold text-primary-800 uppercase tracking-wider mb-4 border-b border-stone-200 pb-2">2. ಟ್ರೇಲರ್ — Trailer Details</p>
+                            <p className="text-sm font-bold text-primary-800 uppercase tracking-wider mb-4 border-b border-stone-200 pb-2">{L("2. ಟ್ರೇಲರ್ — Trailer Details")}</p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <InputField label="ಕಂಪನಿ — Make" register={register('trailer_make')} placeholder="e.g. Meharin" />
                                 <InputField label="ಸಾಮರ್ಥ್ಯ — Capacity" register={register('trailer_capacity')} placeholder="e.g. 3 Ton" />
@@ -1150,7 +1167,7 @@ const NewApplication = () => {
 
                         {/* 3. Implement Details */}
                         <div className="mb-6 bg-gray-50 p-5 rounded-xl border border-gray-200">
-                            <p className="text-sm font-bold text-primary-800 uppercase tracking-wider mb-4 border-b border-stone-200 pb-2">3. ಉಪಕರಣಗಳು — Implements Details</p>
+                            <p className="text-sm font-bold text-primary-800 uppercase tracking-wider mb-4 border-b border-stone-200 pb-2">{L("3. ಉಪಕರಣಗಳು — Implements Details")}</p>
                             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-lg border border-stone-200/70">
                                 <InputField label="ಮೇಕರ್ಸ್/ಡೀಲರ್ — Makers/Dealer" register={register('implement_dealer')} placeholder="Makers or Dealer" />
                                 <InputField label="ಕೋಟೇಶನ್ — Quotation (₹)" type="number" register={register('implement_quotation')} placeholder="₹" />
@@ -1163,7 +1180,7 @@ const NewApplication = () => {
                         <div className="bg-primary-900 border border-primary-800 rounded-2xl p-6 shadow-card">
                             <div className="flex items-center gap-2 mb-4">
                                 <Calculator size={20} className="text-accent-300" />
-                                <span className="font-bold text-lg text-white">ಒಟ್ಟು — Grand Totals</span>
+                                <span className="font-bold text-lg text-white">{L("ಒಟ್ಟು — Grand Totals")}</span>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                                 <InputField label="ಒಟ್ಟು ಕೋಟೇಶನ್ — Total Quotation (₹)" type="number" register={register('total_quotation')} readOnly variant="dark" />
@@ -1230,7 +1247,7 @@ const NewApplication = () => {
                 <div className="bg-primary-950 p-6 rounded-2xl border border-primary-900 shadow-card">
                     <div className="flex items-center gap-3 mb-4">
                         <Calculator size={20} className="text-accent-300" />
-                        <span className="font-bold text-white text-lg">ಒಟ್ಟು ಸಾಲ ಮೊತ್ತ — Total Loan Requested</span>
+                        <span className="font-bold text-white text-lg">{L("ಒಟ್ಟು ಸಾಲ ಮೊತ್ತ — Total Loan Requested")}</span>
                     </div>
                     <InputField
                         label="ಅಪೇಕ್ಷಿಸಿರುವ ಸಾಲದ ಮೊತ್ತ — Loan Amount Requested (₹) *"
@@ -1245,7 +1262,7 @@ const NewApplication = () => {
                 {/* Submit */}
                 <Button type="submit" size="lg" className="w-full py-7 text-lg rounded-2xl shadow-lg">
                     <Save size={20} />
-                    {id ? 'ಅಪ್ಡೇಟ್ ಮಾಡಿ — Update Application' : 'ಸಲ್ಲಿಸಿ — Submit Application'}
+                    {id ? L('ಅಪ್ಡೇಟ್ ಮಾಡಿ — Update Application') : L('ಸಲ್ಲಿಸಿ — Submit Application')}
                 </Button>
 
             </form>
