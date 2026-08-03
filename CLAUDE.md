@@ -112,6 +112,10 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 - **2026-08-03** — Formula map: all 489 cell formulas from the Vasant Malli
   Tractor workbook extracted to `legacy_assets/formula_maps/tractor_formulas.json`
   (gitignored) — reference for every computed figure in the packet.
+- **2026-08-03** — Form fix: crop income + land totals/valuation now recompute
+  on every keystroke. RHF `watch()` returns the same array ref while typing
+  inside field-array rows, so the effects only fired on row add/remove — now
+  keyed on JSON-serialized row contents.
 - **2026-08-03** — Display normalization (render_service): (1) acre.gunta
   extent notation — parcels/crops get `p.extent`/`c.extent` ("8.19" = 8 ac 19 g)
   and `computed.total_extent`; all templates that printed bare acres now use
