@@ -3,6 +3,7 @@ import { Tractor, Sprout, Footprints, Settings, ArrowRight, Activity, Clock, Fil
 import { motion } from 'motion/react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { knOption } from '@/lib/kannada';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchStats, fetchApplications, approveApplication } from '../services/api';
 import { useEffect, useState } from 'react';
@@ -216,10 +217,20 @@ const Home = () => {
                     });
                     const totalValue = allApps.reduce((s, a) => s + (a.loan_amount || 0), 0);
                     const maxBand = Math.max(1, ...bands.map(b => b.count));
+                    // Caste categorization — only castes that actually have applications
+                    const byCasteMap = {};
+                    allApps.forEach(a => {
+                        const label = knOption(a.caste || '') || 'ಇತರೆ';
+                        byCasteMap[label] = (byCasteMap[label] || 0) + 1;
+                    });
+                    const byCaste = Object.entries(byCasteMap)
+                        .map(([name, count]) => ({ name, count }))
+                        .sort((a, b) => b.count - a.count);
+                    const maxCaste = Math.max(1, ...byCaste.map(c => c.count));
                     return (
                         <motion.div
                             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.2 }}
-                            className="grid grid-cols-1 gap-5 lg:grid-cols-2"
+                            className="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3"
                         >
                             <Card>
                                 <CardHeader>
@@ -259,6 +270,30 @@ const Home = () => {
                                                     initial={{ width: 0 }} animate={{ width: `${(b.count / maxBand) * 100}%` }}
                                                     transition={{ duration: 0.6, delay: 0.3 }}
                                                     className="h-full rounded-full bg-gradient-to-r from-primary-600 to-primary-400"
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </CardContent>
+                            </Card>
+
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle className="text-base">ಜಾತಿವಾರು ಅರ್ಜಿಗಳು — Applications by caste</CardTitle>
+                                    <CardDescription>Only categories with applications are shown</CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-4 pt-4">
+                                    {byCaste.map(c => (
+                                        <div key={c.name}>
+                                            <div className="mb-1 flex items-center justify-between text-sm">
+                                                <span className="font-medium text-stone-700">{c.name}</span>
+                                                <span className="text-stone-500">{c.count} {c.count === 1 ? 'application' : 'applications'}</span>
+                                            </div>
+                                            <div className="h-2.5 w-full overflow-hidden rounded-full bg-stone-100">
+                                                <motion.div
+                                                    initial={{ width: 0 }} animate={{ width: `${(c.count / maxCaste) * 100}%` }}
+                                                    transition={{ duration: 0.6, delay: 0.35 }}
+                                                    className="h-full rounded-full bg-gradient-to-r from-accent-500 to-accent-300"
                                                 />
                                             </div>
                                         </div>
