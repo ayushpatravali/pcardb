@@ -19,7 +19,7 @@
 <div class="row"><span class="n">13)</span><span class="lbl">ವ್ಯವಹಾರವಿದ್ದಲ್ಲಿ ದಾಖಲೆ ಲಗತ್ತಿಸಿದೆಯೇ ?</span>
   <span style="margin-left:24mm">ಪುಟ ಸಂಖ್ಯೆ <span class="fill blank" style="min-width:40mm"></span></span></div>
 <div class="row"><span class="n">14)</span><span class="lbl">ಪ್ರಾಥಮಿಕ ಬ್ಯಾಂಕಿನ ಠರಾವಿನ</span>
-  <span>ದಿನಾಂಕ : <span class="fill blank" style="min-width:40mm"></span> ಮೊತ್ತ &nbsp;<span class="fill">{{ app.loan_amount | num }}</span></span></div>
+  <span>ದಿನಾಂಕ : <span class="fill blank" style="min-width:40mm"></span> ಮೊತ್ತ &nbsp;<span class="fill">{{ app.loan_amount | num }} + {{ computed.insurance_amount | num }}</span></span></div>
 <div class="right" style="margin-top:2mm">
   ವ್ಯವಸ್ಥಾಪಕರು (ಹೆಸರು / ಸಹಿ)<br>
   ಪ್ರಾ.ಸ.ಕೃ.ಗ್ರಾ.ಬ್ಯಾಂಕ್ ನಿ &nbsp;<span class="value">{{ app.branch_name }}</span>
@@ -105,7 +105,7 @@
 <div class="row" style="border-top:1px solid #000; padding-top:1mm"><span class="n">8</span>
   <span>ಪ್ರಾ. ಬ್ಯಾಂಕಿನ ನಿರ್ದೇಶಕ ಮಂಡಳ ಠರಾವು &nbsp;<span class="fill" style="min-width:18mm">0</span></span></div>
 <div class="row"><span class="n"></span>
-  <span style="flex:1">ರೂ. &nbsp;<span class="fill">{{ app.loan_amount | num }}</span> <span class="fill blank" style="min-width:22mm"></span></span>
+  <span style="flex:1">ರೂ. &nbsp;<span class="fill">{{ app.loan_amount | num }} + {{ computed.insurance_amount | num }}</span> <span class="fill blank" style="min-width:22mm"></span></span>
   <span>ಗಳಿಗೆ ಇದ್ದು ಪುಟ <span class="fill blank" style="min-width:24mm"></span> ರಲ್ಲಿ</span></div>
 <div class="row"><span class="n"></span>
   <span style="flex:1">ದಾಖಲೆ ಲಗತ್ತಿಸಿ</span>

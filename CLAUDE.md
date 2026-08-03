@@ -112,6 +112,10 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 - **2026-08-03** — Formula map: all 489 cell formulas from the Vasant Malli
   Tractor workbook extracted to `legacy_assets/formula_maps/tractor_formulas.json`
   (gitignored) — reference for every computed figure in the packet.
+- **2026-08-03** — Insurance "+1,00,000" now at EVERY loan-amount print site
+  (16 total): a1 request line + scheme table, a3 declaration, b1 demand+loan
+  lines, b2 ×2, b3 cost table, b4 sanction, t1 ×2, t2, t5 8.8, t7, valuation
+  ×2. Single constant INSURANCE_AMOUNT in render_service.
 - **2026-08-03** — PDF batch (owner): t4 rate ₹200→₹400; t5 8.5 shows old-loan
   outstanding, 8.6 = eligibility − outstanding, 8.7 prints "r75 + 1,00,960"
   (fixed TRAILER_HIRE_INCOME) with total; ssm2 item 13 = that 8.7 total
