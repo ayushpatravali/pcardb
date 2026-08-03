@@ -179,7 +179,7 @@ def build_context(app: Application, details, spec) -> dict:
         "net_loan_eligibility": net_loan_eligibility,
         "repayment_eligibility": repayment_eligibility,
         "net_repayment_eligibility": net_repayment_eligibility,
-        "annual_kantu": None,  # set below when scheme details carry the loan total
+        "installment_kantu": None,  # set below when scheme details carry the loan total
         "insurance_amount": INSURANCE_AMOUNT,
         "loan_duration_years": int(app.loan_duration_years or DEFAULT_LOAN_DURATION_YEARS),
         "dob": _fmt_date(app.dob),
@@ -195,10 +195,12 @@ def build_context(app: Application, details, spec) -> dict:
     if details is not None and app.scheme_type == SchemeType.TRACTOR:
         computed["total_project_cost"] = details.total_quotation
         computed["margin_money"] = details.total_down_payment
-        # B4!J30 = T5!F18: annual installment = total loan / repayment years
+        # Page 10 ಏ) prints the PER-INSTALLMENT amount: installments are
+        # half-yearly, so N years = 2N kantu -> total loan / (years * 2).
+        # (t5's 8.9 stays annual — its label says ವಾರ್ಷಿಕ.)
         if details.total_loan_amount:
-            computed["annual_kantu"] = round(
-                details.total_loan_amount / computed["loan_duration_years"]
+            computed["installment_kantu"] = round(
+                details.total_loan_amount / (computed["loan_duration_years"] * 2)
             )
 
     context = {
