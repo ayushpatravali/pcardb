@@ -40,9 +40,9 @@ const Login = () => {
             <div className="relative hidden lg:flex flex-col justify-between overflow-hidden bg-primary-950 p-12 text-white">
                 {/* Bank building as full-panel watermark */}
                 <img src="/bank-building.jpg" alt="" aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover opacity-[0.16]" />
+                    className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover opacity-[0.45]" />
                 {/* Green wash so the text stays readable over the photo */}
-                <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-primary-950/85 via-primary-950/55 to-primary-950/85" />
+                <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-primary-950/80 via-primary-950/30 to-primary-950/80" />
 
                 <motion.div className="relative z-10" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
                     <div className="flex items-center gap-4">
