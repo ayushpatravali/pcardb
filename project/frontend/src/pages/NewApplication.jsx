@@ -1,4 +1,4 @@
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { useSearchParams, useNavigate, useParams } from 'react-router-dom';
 import api, { getApplication, updateApplication } from '../services/api';
 import React from 'react';
@@ -6,6 +6,7 @@ import { FileText, Car, Sprout, Clipboard, ChevronRight, Save, Plus, Trash2, Cal
 import { motion, AnimatePresence } from 'motion/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { DatePicker } from '@/components/ui/datepicker';
 import { useLanguage } from '../context/LanguageContext';
 import { knLabel, knOption, hasKannada } from '@/lib/kannada';
 import { calculateTractorLoanSummary } from '../utils/tractorFormCalculations.mjs';
@@ -801,10 +802,15 @@ const NewApplication = () => {
                     <SectionHeader title="ಅರ್ಜಿದಾರ ವಿವರ — Applicant Details" color="blue" />
 
                     <div className="mb-6 max-w-xs">
-                        <InputField label="ಅರ್ಜಿ ದಿನಾಂಕ — Application Date"
-                            register={register('application_date')}
-                            placeholder="DD/MM/YYYY"
-                            inputProps={{ maxLength: 10, inputMode: 'numeric', onInput: dmyMask }} />
+                        <div className="group">
+                            <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5">
+                                {L("ಅರ್ಜಿ ದಿನಾಂಕ — Application Date")}
+                            </label>
+                            <Controller name="application_date" control={control}
+                                render={({ field }) => (
+                                    <DatePicker value={field.value || ''} onChange={field.onChange} />
+                                )} />
+                        </div>
                         <p className="text-xs text-gray-400 mt-1">
                             {L("ಖಾಲಿ ಬಿಟ್ಟರೆ ಇಂದಿನ ದಿನಾಂಕ — leave blank to use today's date on the printed form")}
                         </p>
@@ -833,10 +839,15 @@ const NewApplication = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
                         <div className="grid grid-cols-3 gap-3 md:col-span-2">
-                            <InputField label="ಜನಿಸಿದ ದಿನಾಂಕ — DOB"
-                                register={register('dob')}
-                                placeholder="DD/MM/YYYY"
-                                inputProps={{ maxLength: 10, inputMode: 'numeric', onInput: dmyMask }} />
+                            <div className="group">
+                                <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5">
+                                    {L("ಜನಿಸಿದ ದಿನಾಂಕ — DOB")}
+                                </label>
+                                <Controller name="dob" control={control}
+                                    render={({ field }) => (
+                                        <DatePicker value={field.value || ''} onChange={field.onChange} />
+                                    )} />
+                            </div>
                             <InputField label="ವಯಸ್ಸು — Age *" type="number"
                                 register={register('age', { required: true })} />
                             <SelectField label="ಲಿಂಗ — Gender"
