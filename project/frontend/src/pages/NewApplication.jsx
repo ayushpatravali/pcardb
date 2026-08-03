@@ -333,15 +333,24 @@ const NewApplication = () => {
         sh_animal, sh_shed, sh_feed, sh_ins, sh_misc,
         bu_bullock, bu_cart, bu_loan, schemeType, setValue]);
         
+    // RHF's watch() returns the SAME array reference while typing inside rows
+    // (only append/remove makes a new array), so effects keyed on the array
+    // only fired when a row was added. Key on the serialized contents instead
+    // so locked/computed fields update on every keystroke.
+    const cropsKey = JSON.stringify(cropsData);
+    const landKey = JSON.stringify(landParcels);
+
     // Auto-calculate crop incomes
     React.useEffect(() => {
         calculateCropIncomes(cropsData);
-    }, [cropsData, calculateCropIncomes]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cropsKey, calculateCropIncomes]);
 
     // Auto-calculate total land area
     React.useEffect(() => {
         calculateLandTotals(landParcels, landValuationRate);
-    }, [landParcels, landValuationRate, calculateLandTotals]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [landKey, landValuationRate, calculateLandTotals]);
 
     // Auto-calculate age from dob
     const dob = watch('dob');
