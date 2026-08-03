@@ -158,7 +158,7 @@ const InputField = ({ label, register, type = 'text', placeholder, step, readOnl
         label = knLabel(label);
         if (placeholder === '10 digit number') placeholder = '10 ಅಂಕಿಗಳು';
         else if (placeholder === '12 digit number') placeholder = '12 ಅಂಕಿಗಳು';
-        else if (placeholder && !hasKannada(placeholder) && !/^₹/.test(placeholder)) placeholder = undefined;
+        else if (placeholder && !hasKannada(placeholder) && !/^₹|\//.test(placeholder)) placeholder = undefined;
     }
     const labelCls = (variant === 'dark' || variant === 'highlight')
         ? 'text-primary-200'
@@ -213,6 +213,29 @@ const SelectField = ({ label, register, options, className = '' }) => {
         </div>
     </div>
     );
+};
+
+// The browser's native date picker renders per-viewer locale (US machines
+// showed mm/dd/yyyy on the same deployed URL), so dates are typed as plain
+// DD/MM/YYYY text — identical on every machine. Converted to ISO for the API.
+const dmyToIso = (s) => {
+    const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec((s || '').trim());
+    if (!m) return null;
+    const [, d, mo, y] = m;
+    if (+mo < 1 || +mo > 12 || +d < 1 || +d > 31) return null;
+    return `${y}-${mo}-${d}`;
+};
+const isoToDmy = (s) => {
+    if (!s) return '';
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(s));
+    return m ? `${m[3]}/${m[2]}/${m[1]}` : String(s);
+};
+const dmyMask = (e) => {
+    const digits = e.target.value.replace(/\D/g, '').slice(0, 8);
+    let out = digits;
+    if (digits.length > 4) out = `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+    else if (digits.length > 2) out = `${digits.slice(0, 2)}/${digits.slice(2)}`;
+    e.target.value = out;
 };
 
 const getCropRate = (cropName) => {
@@ -443,9 +466,10 @@ const NewApplication = () => {
     // Auto-calculate age from dob
     const dob = watch('dob');
     React.useEffect(() => {
-        if (dob) {
+        const dobIso = dmyToIso(dob);
+        if (dobIso) {
             const today = new Date();
-            const birthDate = new Date(dob);
+            const birthDate = new Date(dobIso);
             let computedAge = today.getFullYear() - birthDate.getFullYear();
             const m = today.getMonth() - birthDate.getMonth();
             if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
@@ -472,7 +496,8 @@ const NewApplication = () => {
                 })();
                 const formData = {
                     ...app,
-                    application_date: typeof app.application_date === 'string' ? app.application_date.slice(0, 10) : '',
+                    application_date: isoToDmy(app.application_date),
+                    dob: isoToDmy(app.dob),
                     loan_duration_years: app.loan_duration_years || 7,
                     // caste: map legacy values to the chart list; unknown -> "other" + free text
                     ...(() => {
@@ -630,6 +655,10 @@ const NewApplication = () => {
             payload.caste = (data.caste_custom || '').trim() || 'ಇತರೆ';
         }
 
+        // Dates typed as DD/MM/YYYY -> ISO for the API (invalid/blank -> null)
+        payload.application_date = dmyToIso(data.application_date);
+        payload.dob = dmyToIso(data.dob);
+
         // Scheme-specific details
         if (currentScheme === 'TRACTOR') {
             payload.tractor_details = {
@@ -772,8 +801,10 @@ const NewApplication = () => {
                     <SectionHeader title="ಅರ್ಜಿದಾರ ವಿವರ — Applicant Details" color="blue" />
 
                     <div className="mb-6 max-w-xs">
-                        <InputField label="ಅರ್ಜಿ ದಿನಾಂಕ — Application Date" type="date"
-                            register={register('application_date')} />
+                        <InputField label="ಅರ್ಜಿ ದಿನಾಂಕ — Application Date"
+                            register={register('application_date')}
+                            placeholder="DD/MM/YYYY"
+                            inputProps={{ maxLength: 10, inputMode: 'numeric', onInput: dmyMask }} />
                         <p className="text-xs text-gray-400 mt-1">
                             {L("ಖಾಲಿ ಬಿಟ್ಟರೆ ಇಂದಿನ ದಿನಾಂಕ — leave blank to use today's date on the printed form")}
                         </p>
@@ -802,8 +833,10 @@ const NewApplication = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
                         <div className="grid grid-cols-3 gap-3 md:col-span-2">
-                            <InputField label="ಜನಿಸಿದ ದಿನಾಂಕ — DOB" type="date"
-                                register={register('dob')} />
+                            <InputField label="ಜನಿಸಿದ ದಿನಾಂಕ — DOB"
+                                register={register('dob')}
+                                placeholder="DD/MM/YYYY"
+                                inputProps={{ maxLength: 10, inputMode: 'numeric', onInput: dmyMask }} />
                             <InputField label="ವಯಸ್ಸು — Age *" type="number"
                                 register={register('age', { required: true })} />
                             <SelectField label="ಲಿಂಗ — Gender"
