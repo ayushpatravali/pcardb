@@ -47,7 +47,7 @@ const StatusDonut = ({ approved, pending }) => {
         { name: 'Approved', value: approved },
         { name: 'Pending', value: pending },
     ];
-    const COLORS = ['#2b6e4a', '#d4a53c'];
+    const COLORS = ['#367C2B', '#d4a53c'];
     const empty = approved + pending === 0;
     return (
         <motion.div
@@ -247,7 +247,7 @@ const Home = () => {
                                                 formatter={(v, n, { payload }) => [`${v} · ${inr(payload.amount)}`, 'Applications']}
                                                 cursor={{ fill: '#f5f5f4' }}
                                             />
-                                            <Bar dataKey="count" fill="#2b6e4a" radius={[6, 6, 0, 0]} maxBarSize={44} />
+                                            <Bar dataKey="count" fill="#367C2B" radius={[6, 6, 0, 0]} maxBarSize={44} />
                                         </BarChart>
                                     </ResponsiveContainer>
                                 </CardContent>

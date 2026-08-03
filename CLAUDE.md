@@ -112,6 +112,9 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 - **2026-08-03** — Formula map: all 489 cell formulas from the Vasant Malli
   Tractor workbook extracted to `legacy_assets/formula_maps/tractor_formulas.json`
   (gitignored) — reference for every computed figure in the packet.
+- **2026-08-03** — Palette: primary green rebased on John Deere green #367C2B
+  (owner request) — whole scale regenerated in tailwind.config.js; chart hexes
+  in Home.jsx updated to match. Accent gold unchanged.
 - **2026-08-03** — Caste list from CROP INCOME CHART.xlsx: dropdown now has the
   bank's 12 castes verbatim (knconverter-decoded, keeps their ಪರಿಶಿಷ್ಠ
   spelling): ಪರಿಶಿಷ್ಠ ಜಾತಿ/ಪಂಗಡ, ಅಲ್ಪ ಸಂಖ್ಯಾತರು, ಇತರೆ ಸಾಮಾನ್ಯ (default),

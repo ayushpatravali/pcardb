@@ -7,11 +7,11 @@ export default {
     theme: {
         extend: {
             colors: {
-                // Deep forest green — the bank's identity color
+                // John Deere green (#367C2B) — owner-requested identity color
                 primary: {
-                    50: '#f2f8f4', 100: '#e0efe5', 200: '#c2dfcc', 300: '#94c6a7',
-                    400: '#5fa67c', 500: '#3d8a5e', 600: '#2b6e4a', 700: '#23583d',
-                    800: '#1e4732', 900: '#193b2a', 950: '#0c2118',
+                    50: '#f2f9f0', 100: '#e2f1db', 200: '#c5e3ba', 300: '#9ace89',
+                    400: '#6cb156', 500: '#479434', 600: '#367C2B', 700: '#2c6323',
+                    800: '#264f20', 900: '#20421c', 950: '#0e240b',
                 },
                 // Harvest gold — highlights & computed totals
                 accent: {
