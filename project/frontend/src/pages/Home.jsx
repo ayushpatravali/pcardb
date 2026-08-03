@@ -408,7 +408,7 @@ const Home = () => {
                                                 </span>
                                             </td>
                                             <td className="p-4 text-gray-500 text-sm">
-                                                {new Date(app.created_at).toLocaleDateString()}
+                                                {new Date(app.created_at).toLocaleDateString('en-GB')}
                                             </td>
                                             {/* Approval Checkbox for Manager */}
                                             {isManager && (
