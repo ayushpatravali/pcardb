@@ -112,6 +112,13 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 - **2026-08-03** — Formula map: all 489 cell formulas from the Vasant Malli
   Tractor workbook extracted to `legacy_assets/formula_maps/tractor_formulas.json`
   (gitignored) — reference for every computed figure in the packet.
+- **2026-08-03** — Caste list from CROP INCOME CHART.xlsx: dropdown now has the
+  bank's 12 castes verbatim (knconverter-decoded, keeps their ಪರಿಶಿಷ್ಠ
+  spelling): ಪರಿಶಿಷ್ಠ ಜಾತಿ/ಪಂಗಡ, ಅಲ್ಪ ಸಂಖ್ಯಾತರು, ಇತರೆ ಸಾಮಾನ್ಯ (default),
+  ದಿಗಂಬರ ಜೈನ, ಮುಸ್ಲಿಂ, ಹಿಂದೂ ರಡ್ಡಿ/ಮಾಳಿ/ಬಣಜಿಗ/ಕುರಬರ/ಲಿಂಗವಂತ/ಉಪ್ಪಾರ + free-text
+  "other" option (chart note). Stored value prints verbatim on the packet
+  (verified: ಹಿಂದೂ ಕುರಬರ on page 1). Legacy General/SC/ST values map across;
+  unknown legacy castes open as "other" with the text preserved.
 - **2026-08-03** — Crop chart from bank's CROP INCOME CHART.xlsx: all 31 crops
   with authoritative per-acre rates (e.g. ಕಬ್ಬು 83000, ಭತ್ತ 17400, ದ್ರಾಕ್ಷಿ
   (ಬೀಜ ರಹಿತ) 172500). Stored crop value is now the exact Kannada chart name

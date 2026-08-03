@@ -106,7 +106,20 @@ const IRRIGATION_OPTIONS = [
     'ಮಳೆಯಾಶ್ರಿತ (Rain-fed)', 'ಇತರೆ (Other)'
 ];
 
-const CASTE_OPTIONS = ['General / ಸಾಮಾನ್ಯ', 'SC / ಪರಿಶಿಷ್ಟ ಜಾತಿ', 'ST / ಪರಿಶಿಷ್ಟ ಪಂಗಡ', 'OBC / ಹಿಂದುಳಿದ ವರ್ಗ', 'ಲಿಂಗಾಯತ', 'ವೀರಶೈವ', 'ಕುರುಬ', 'ಇತರೆ'];
+// Caste list transcribed exactly from CROP INCOME CHART.xlsx (bank's own
+// spellings, e.g. ಪರಿಶಿಷ್ಠ) — the stored value prints verbatim on the packet.
+const CASTE_OPTIONS = [
+    'ಪರಿಶಿಷ್ಠ ಜಾತಿ', 'ಪರಿಶಿಷ್ಠ ಪಂಗಡ', 'ಅಲ್ಪ ಸಂಖ್ಯಾತರು', 'ಇತರೆ ಸಾಮಾನ್ಯ',
+    'ದಿಗಂಬರ ಜೈನ', 'ಮುಸ್ಲಿಂ', 'ಹಿಂದೂ ರಡ್ಡಿ', 'ಹಿಂದೂ ಮಾಳಿ', 'ಹಿಂದೂ ಬಣಜಿಗ',
+    'ಹಿಂದೂ ಕುರಬರ', 'ಹಿಂದೂ ಲಿಂಗವಂತ', 'ಹಿಂದೂ ಉಪ್ಪಾರ',
+];
+const CASTE_OTHER = '__other__';
+// Legacy stored values from the old dropdown -> chart equivalents (exact only)
+const CASTE_LEGACY_MAP = {
+    'General / ಸಾಮಾನ್ಯ': 'ಇತರೆ ಸಾಮಾನ್ಯ',
+    'SC / ಪರಿಶಿಷ್ಟ ಜಾತಿ': 'ಪರಿಶಿಷ್ಠ ಜಾತಿ',
+    'ST / ಪರಿಶಿಷ್ಟ ಪಂಗಡ': 'ಪರಿಶಿಷ್ಠ ಪಂಗಡ',
+};
 const FARMER_OPTIONS = ['ಸಣ್ಣ ರೈತ (Small)', 'ದೊಡ್ಡ ರೈತ (Big)', 'ಅತಿ ಸಣ್ಣ ರೈತ (Marginal)'];
 const RELATION_OPTIONS = ['', 'ಪತ್ನಿ/ಪತಿ (Spouse)', 'ಮಗ (Son)', 'ಮಗಳು (Daughter)', 'ತಂದೆ (Father)', 'ತಾಯಿ (Mother)', 'ಸಹೋದರ (Brother)', 'ಇತರೆ (Other)'];
 
@@ -276,7 +289,7 @@ const NewApplication = () => {
         defaultValues: {
             scheme_type: schemeType,
             farmer_type: FARMER_OPTIONS[0],
-            caste: CASTE_OPTIONS[0],
+            caste: 'ಇತರೆ ಸಾಮಾನ್ಯ',
             land_parcels: [{ sl: '1', village: '', survey_no: '', acres: '', guntas: '', akaar: '' }],
             crops: [{ crop_name: '', acres: '', guntas: '', annual_income: '' }],
             irrigation_source: [],
@@ -461,6 +474,15 @@ const NewApplication = () => {
                     ...app,
                     application_date: typeof app.application_date === 'string' ? app.application_date.slice(0, 10) : '',
                     loan_duration_years: app.loan_duration_years || 7,
+                    // caste: map legacy values to the chart list; unknown -> "other" + free text
+                    ...(() => {
+                        const stored = (app.caste || '').trim();
+                        const mapped = CASTE_LEGACY_MAP[stored] || stored;
+                        if (!stored || CASTE_OPTIONS.includes(mapped)) {
+                            return { caste: mapped || 'ಇತರೆ ಸಾಮಾನ್ಯ', caste_custom: '' };
+                        }
+                        return { caste: CASTE_OTHER, caste_custom: stored };
+                    })(),
                     prev_purpose: prevLoans.purpose || '',
                     prev_total_loan: prevLoans.total_loan || '',
                     prev_outstanding: prevLoans.outstanding || '',
@@ -602,6 +624,11 @@ const NewApplication = () => {
         };
 
         headerFields.forEach(k => { if (data[k] !== undefined && k !== 'current_crop') payload[k] = data[k]; });
+
+        // "Other" caste: store the typed caste text itself (prints verbatim on the PDF)
+        if (payload.caste === CASTE_OTHER) {
+            payload.caste = (data.caste_custom || '').trim() || 'ಇತರೆ';
+        }
 
         // Scheme-specific details
         if (currentScheme === 'TRACTOR') {
@@ -793,9 +820,16 @@ const NewApplication = () => {
                             placeholder="12 digit number"
                             inputProps={{ maxLength: 12, inputMode: 'numeric', pattern: '[0-9]{12}', onInput: (e) => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 12); } }} />
 
-                        <SelectField label="ಜಾತಿ — Caste"
-                            register={register('caste')}
-                            options={CASTE_OPTIONS} />
+                        <div className="grid grid-cols-1 gap-3">
+                            <SelectField label="ಜಾತಿ — Caste"
+                                register={register('caste')}
+                                options={[...CASTE_OPTIONS, { value: CASTE_OTHER, label: 'ಇತರೆ — ಪಟ್ಟಿಯಲ್ಲಿ ಇಲ್ಲ (ಕೆಳಗೆ ನಮೂದಿಸಿ)' }]} />
+                            {watch('caste') === CASTE_OTHER && (
+                                <InputField label="ಬೇರೆ ಜಾತಿ ನಮೂದಿಸಿ — Enter caste"
+                                    register={register('caste_custom')}
+                                    placeholder="ಜಾತಿ (ಕನ್ನಡದಲ್ಲಿ)" />
+                            )}
+                        </div>
                         <div className="grid grid-cols-2 gap-3">
                             <SelectField label="ರೈತ ವರ್ಗ — Farmer Type"
                                 register={register('farmer_type')}
