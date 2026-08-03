@@ -7,10 +7,10 @@ export const hasKannada = (s) => /[ಀ-೿]/.test(s || '');
 // Fallbacks for English-only option words that have no Kannada half.
 const WORD_KN = {
     Other: 'ಇತರೆ', Male: 'ಪುರುಷ', Female: 'ಮಹಿಳೆ',
-    Sugarcane: 'ಕಬ್ಬು', Rice: 'ಭತ್ತ', Jowar: 'ಜೋಳ', Maize: 'ಮೆಕ್ಕೆ ಜೋಳ',
-    Wheat: 'ಗೋಧಿ', Cotton: 'ಹತ್ತಿ', Groundnut: 'ಶೇಂಗಾ', Sunflower: 'ಸೂರ್ಯಕಾಂತಿ',
+    Sugarcane: 'ಕಬ್ಬು', Rice: 'ಭತ್ತ', Jowar: 'ಹೈಬ್ರಿಡ್ ಜೋಳ', Maize: 'ಮುಸುಕಿನಜೋಳ',
+    Wheat: 'ಗೋಧಿ', Cotton: 'ಹೈಬ್ರಿಡ್ ಹತ್ತಿ', Groundnut: 'ಸೇಂಗಾ', Sunflower: 'ಸೂರ್ಯಕಾಂತಿ',
     Soybean: 'ಸೋಯಾಬೀನ್', Tomato: 'ಟೊಮ್ಯಾಟೋ', Onion: 'ಈರುಳ್ಳಿ', Chilli: 'ಮೆಣಸಿನಕಾಯಿ',
-    Banana: 'ಬಾಳೆ', Grapes: 'ದ್ರಾಕ್ಷಿ',
+    Banana: 'ಬಾಳೆ', Grapes: 'ದ್ರಾಕ್ಷಿ (ಬೀಜ ರಹಿತ)',
 };
 
 /**

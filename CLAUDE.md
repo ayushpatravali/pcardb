@@ -112,6 +112,15 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 - **2026-08-03** — Formula map: all 489 cell formulas from the Vasant Malli
   Tractor workbook extracted to `legacy_assets/formula_maps/tractor_formulas.json`
   (gitignored) — reference for every computed figure in the packet.
+- **2026-08-03** — Crop chart from bank's CROP INCOME CHART.xlsx: all 31 crops
+  with authoritative per-acre rates (e.g. ಕಬ್ಬು 83000, ಭತ್ತ 17400, ದ್ರಾಕ್ಷಿ
+  (ಬೀಜ ರಹಿತ) 172500). Stored crop value is now the exact Kannada chart name
+  (no English intermediary → no drift); legacy English values map via
+  CROP_LABEL_MAP for old rows (Soybean/Tomato/Chilli/Other have no chart entry:
+  kept as typed, stored income preserved). Verified 31/31 names+rates match the
+  xlsx byte-for-byte. Chart's embedded feature notes (caste list, female-loanee
+  dashboard, free-text caste, hobli/taluk dropdowns) recorded in
+  NEXT_SESSION_TASKS item 7 — not yet implemented.
 - **2026-08-03** — Kannada-only mode: ಕನ್ನಡಕ್ಕೆ ಬದಲಿಸಿ now makes the whole form
   pure Kannada (labels, section titles, dropdown/checkbox options, notes,
   buttons, placeholders, sidebar) via `src/lib/kannada.js` knLabel/knOption —

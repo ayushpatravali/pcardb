@@ -67,6 +67,17 @@ bilingual mix (owner's preference for testing). Original spec below.
 - Owner explicitly wants the bilingual UI KEPT for now (they read it during
   testing). Do this only as the final step before bank go-live.
 
+## 7. Feature requests embedded in CROP INCOME CHART.xlsx (found 2026-08-03, NOT yet implemented)
+The chart's side columns contain owner notes (Nudi-encoded, decoded here):
+- **Caste dropdown list** (per chart): 1) ಪರಿಶಿಷ್ಟ ಜಾತಿ 2) ಪರಿಶಿಷ್ಟ ಪಂಗಡ
+  3) ಅಲ್ಪಸಂಖ್ಯಾತರು 4) ಇತರೆ ಸಾಮಾನ್ಯ, plus: ದಿಗಂಬರ ಜೈನ, ಮುಸ್ಲಿಂ, ಹಿಂದೂ ರಡ್ಡಿ,
+  ಹಿಂದೂ ಮಾಳಿ, ಹಿಂದೂ ಬಣಜಿಗ, ಹಿಂದೂ ಕುರಬರ, ಹಿಂದೂ ಲಿಂಗವಂತ, ಹಿಂದೂ ಉಪ್ಪಾರ
+- "Add Female Loanees in Dashboard along with above caste (1 to 4)" —
+  dashboard card: female applicants count + caste categories 1–4
+- "Give option to Add Caste if not in the dropdown list" — free-text caste entry
+- "Also add after this Last Name next line" (clarify with owner)
+- **Hobli dropdown**: ಅರಬಾಂವಿ, ಕೌಜಲಗಿ, ಗೋಕಾಕ; **Taluk dropdown**: ಮೂಡಲಗಿ, ಗೋಕಾಕ
+
 ## Reminders carried over
 - After implementing: update CLAUDE.md Changelog (standing rule).
 - Owner still to: sync fork + redeploy Railway for land-valuation/previous-loans

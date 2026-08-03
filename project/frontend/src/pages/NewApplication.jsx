@@ -22,57 +22,82 @@ const SCHEME_CONFIG = {
 };
 
 // ── Dropdown Options ──────────────────────────────────────────────────────────
+// Authoritative per-acre annual income (Rs) - transcribed exactly from the
+// bank's "CROP INCOME CHART.xlsx" (31 crops). Stored crop value IS the Kannada
+// chart name, so names and rates can never drift apart.
 const CROP_CHART = {
-    Sugarcane: 78793,
-    Rice: 11882,
-    Jowar: 14914,
-    Maize: 13793,
-    Wheat: 9722,
-    Cotton: 13772,
-    Groundnut: 22120,
-    Sunflower: 9648,
-    Soybean: 7539,
-    Tomato: 78793,
-    Onion: 23800,
-    Chilli: 21000,
-    Banana: 79965,
-    Grapes: 165473,
-    Other: 20000,
+    'ಭತ್ತ': 17400,
+    'ಮುಸುಕಿನಜೋಳ': 19500,
+    'ಸೇಂಗಾ': 32550,
+    'ಹೈಬ್ರಿಡ್ ಹತ್ತಿ': 21900,
+    'ಸೂರ್ಯಕಾಂತಿ': 14800,
+    'ಹೈಬ್ರಿಡ್ ಜೋಳ': 29200,
+    'ಗೋಧಿ': 15790,
+    'ತಂಬಾಕು': 22400,
+    'ದ್ವಿದಳ ಧಾನ್ಯ': 15500,
+    'ಕಬ್ಬು': 83000,
+    'ರೇಷ್ಮೆ (ಸಾಂ)': 72500,
+    'ರೇಷ್ಮೆ (ಕಾಂ)': 121250,
+    'ತೆಂಗು (ಕಾಯಿ)': 24150,
+    'ಮಾವು': 50266,
+    'ಚಿಕ್ಕು': 31600,
+    'ಬಾಳೆ': 50200,
+    'ದಾಳಿಂಬೆ': 33400,
+    'ಪಪ್ಪಾಯ': 42400,
+    'ಲಿಂಬೆ': 23000,
+    'ದ್ರಾಕ್ಷಿ (ಬೀಜ ರಹಿತ)': 172500,
+    'ಬೋರೆ': 17600,
+    'ಗುಲಾಬಿ (ಸಂಖ್ಯೆ)': 54800,
+    'ವಿಳ್ಯದೆಲೆ': 46000,
+    'ಕಲ್ಲಂಗಡಿ': 46800,
+    'ತರಕಾರಿಗಳು': 31200,
+    'ಅರಿಷಿಣ': 52500,
+    'ಒಣ ಮೆಣಸಿನಕಾಯಿ': 25500,
+    'ಈರುಳ್ಳಿ': 29000,
+    'ಬೆಳ್ಳುಳ್ಳಿ': 27500,
+    'ಆಲೂಗಡ್ಡೆ': 40000,
+    'ಸೇವಂತಿಗೆ': 31000,
 };
+
+// English glosses for the bilingual (default) mode only; Kannada mode strips them.
+const CROP_EN_GLOSS = {
+    'ಭತ್ತ': 'Paddy', 'ಮುಸುಕಿನಜೋಳ': 'Maize', 'ಸೇಂಗಾ': 'Groundnut',
+    'ಹೈಬ್ರಿಡ್ ಹತ್ತಿ': 'Hybrid Cotton', 'ಸೂರ್ಯಕಾಂತಿ': 'Sunflower',
+    'ಹೈಬ್ರಿಡ್ ಜೋಳ': 'Hybrid Jowar', 'ಗೋಧಿ': 'Wheat', 'ತಂಬಾಕು': 'Tobacco',
+    'ದ್ವಿದಳ ಧಾನ್ಯ': 'Pulses', 'ಕಬ್ಬು': 'Sugarcane', 'ರೇಷ್ಮೆ (ಸಾಂ)': 'Silk',
+    'ರೇಷ್ಮೆ (ಕಾಂ)': 'Silk Hybrid', 'ತೆಂಗು (ಕಾಯಿ)': 'Coconut', 'ಮಾವು': 'Mango',
+    'ಚಿಕ್ಕು': 'Sapota', 'ಬಾಳೆ': 'Banana', 'ದಾಳಿಂಬೆ': 'Pomegranate',
+    'ಪಪ್ಪಾಯ': 'Papaya', 'ಲಿಂಬೆ': 'Lemon', 'ದ್ರಾಕ್ಷಿ (ಬೀಜ ರಹಿತ)': 'Seedless Grapes',
+    'ಬೋರೆ': 'Ber', 'ಗುಲಾಬಿ (ಸಂಖ್ಯೆ)': 'Rose', 'ವಿಳ್ಯದೆಲೆ': 'Betel Leaf',
+    'ಕಲ್ಲಂಗಡಿ': 'Watermelon', 'ತರಕಾರಿಗಳು': 'Vegetables', 'ಅರಿಷಿಣ': 'Turmeric',
+    'ಒಣ ಮೆಣಸಿನಕಾಯಿ': 'Dry Chilli', 'ಈರುಳ್ಳಿ': 'Onion', 'ಬೆಳ್ಳುಳ್ಳಿ': 'Garlic',
+    'ಆಲೂಗಡ್ಡೆ': 'Potato', 'ಸೇವಂತಿಗೆ': 'Chrysanthemum',
+};
+
 const CROP_OPTIONS = [
     { value: '', label: '' },
-    { value: 'Sugarcane', label: 'ಕಬ್ಬು (Sugarcane)' },
-    { value: 'Rice', label: 'ಭತ್ತ (Rice)' },
-    { value: 'Jowar', label: 'ಜೋಳ (Jowar)' },
-    { value: 'Maize', label: 'ಮೆಕ್ಕೆ ಜೋಳ (Maize)' },
-    { value: 'Wheat', label: 'ಗೋಧಿ (Wheat)' },
-    { value: 'Cotton', label: 'ಹತ್ತಿ (Cotton)' },
-    { value: 'Groundnut', label: 'ಶೇಂಗಾ (Groundnut)' },
-    { value: 'Sunflower', label: 'ಸೂರ್ಯಕಾಂತಿ (Sunflower)' },
-    { value: 'Soybean', label: 'ಸೋಯಾಬೀನ್ (Soybean)' },
-    { value: 'Tomato', label: 'ಟೊಮ್ಯಾಟೋ (Tomato)' },
-    { value: 'Onion', label: 'ಈರುಳ್ಳಿ (Onion)' },
-    { value: 'Chilli', label: 'ಮೆಣಸಿನಕಾಯಿ (Chilli)' },
-    { value: 'Banana', label: 'ಬಾಳೆ (Banana)' },
-    { value: 'Grapes', label: 'ದ್ರಾಕ್ಷಿ (Grapes)' },
-    { value: 'Other', label: 'ಇತರೆ (Other)' },
+    ...Object.keys(CROP_CHART).map(kn => ({
+        value: kn,
+        label: CROP_EN_GLOSS[kn] ? `${kn} (${CROP_EN_GLOSS[kn]})` : kn,
+    })),
 ];
+
+// Legacy compatibility: rows saved before 2026-08-03 stored English crop values
+// (and some stored the old bilingual labels). Map them to the chart names so
+// editing an old application still selects and rates correctly.
 const CROP_LABEL_MAP = {
-    'ಕಬ್ಬು (Sugarcane)': 'Sugarcane',
-    'ಭತ್ತ (Rice)': 'Rice',
-    'ಜೋಳ (Jowar)': 'Jowar',
-    'ಮೆಕ್ಕೆ ಜೋಳ (Maize)': 'Maize',
-    'ಗೋಧಿ (Wheat)': 'Wheat',
-    'ಹತ್ತಿ (Cotton)': 'Cotton',
-    'ಶೇಂಗಾ (Groundnut)': 'Groundnut',
-    'ಸೂರ್ಯಕಾಂತಿ (Sunflower)': 'Sunflower',
-    'ಸೋಯಾಬೀನ್ (Soybean)': 'Soybean',
-    'ಟೊಮ್ಯಾಟೋ (Tomato)': 'Tomato',
-    'ಈರುಳ್ಳಿ (Onion)': 'Onion',
-    'ಮೆಣಸಿನಕಾಯಿ (Chilli)': 'Chilli',
-    'ಬಾಳೆ (Banana)': 'Banana',
-    'ದ್ರಾಕ್ಷಿ (Grapes)': 'Grapes',
-    'ಇತರೆ (Other)': 'Other',
+    'Sugarcane': 'ಕಬ್ಬು', 'Rice': 'ಭತ್ತ', 'Jowar': 'ಹೈಬ್ರಿಡ್ ಜೋಳ',
+    'Maize': 'ಮುಸುಕಿನಜೋಳ', 'Wheat': 'ಗೋಧಿ', 'Cotton': 'ಹೈಬ್ರಿಡ್ ಹತ್ತಿ',
+    'Groundnut': 'ಸೇಂಗಾ', 'Sunflower': 'ಸೂರ್ಯಕಾಂತಿ', 'Onion': 'ಈರುಳ್ಳಿ',
+    'Banana': 'ಬಾಳೆ', 'Grapes': 'ದ್ರಾಕ್ಷಿ (ಬೀಜ ರಹಿತ)',
+    'ಕಬ್ಬು (Sugarcane)': 'ಕಬ್ಬು', 'ಭತ್ತ (Rice)': 'ಭತ್ತ',
+    'ಜೋಳ (Jowar)': 'ಹೈಬ್ರಿಡ್ ಜೋಳ', 'ಮೆಕ್ಕೆ ಜೋಳ (Maize)': 'ಮುಸುಕಿನಜೋಳ',
+    'ಗೋಧಿ (Wheat)': 'ಗೋಧಿ', 'ಹತ್ತಿ (Cotton)': 'ಹೈಬ್ರಿಡ್ ಹತ್ತಿ',
+    'ಶೇಂಗಾ (Groundnut)': 'ಸೇಂಗಾ', 'ಸೂರ್ಯಕಾಂತಿ (Sunflower)': 'ಸೂರ್ಯಕಾಂತಿ',
+    'ಈರುಳ್ಳಿ (Onion)': 'ಈರುಳ್ಳಿ', 'ಬಾಳೆ (Banana)': 'ಬಾಳೆ',
+    'ದ್ರಾಕ್ಷಿ (Grapes)': 'ದ್ರಾಕ್ಷಿ (ಬೀಜ ರಹಿತ)',
+    // Soybean / Tomato / Chilli / Other have no chart entry: kept as typed,
+    // their stored income is preserved (no rate available).
 };
 
 const IRRIGATION_OPTIONS = [
@@ -306,8 +331,12 @@ const NewApplication = () => {
             const guntas = parseFloat(crop?.guntas) || 0;
             const rate = getCropRate(cropName);
             const totalAcres = acres + (guntas / 40);
-            const income = rate > 0 ? Math.round(totalAcres * rate) : '';
-            setValue(`crops.${index}.annual_income`, income);
+            // No chart rate (legacy/unknown crop): keep the stored income as-is.
+            if (rate > 0) {
+                setValue(`crops.${index}.annual_income`, Math.round(totalAcres * rate));
+            } else if (!cropName) {
+                setValue(`crops.${index}.annual_income`, '');
+            }
         });
     }, [setValue]);
 

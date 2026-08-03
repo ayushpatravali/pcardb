@@ -36,14 +36,14 @@ FARMER_TYPE_KN = {
     "Marginal": "ಅತಿ ಸಣ್ಣ ರೈತರು",
     "Big": "ದೊಡ್ಡ ರೈತರು",
 }
-# The form stores crop values in English (its dropdown's value attribute);
-# the packet must print Kannada only.
+# Rows saved before 2026-08-03 stored crop values in English; newer rows store
+# the Kannada CROP INCOME CHART names directly (pass through unchanged).
 CROP_KN = {
-    "Sugarcane": "ಕಬ್ಬು", "Rice": "ಭತ್ತ", "Jowar": "ಜೋಳ", "Maize": "ಮೆಕ್ಕೆ ಜೋಳ",
-    "Wheat": "ಗೋಧಿ", "Cotton": "ಹತ್ತಿ", "Groundnut": "ಶೇಂಗಾ",
-    "Sunflower": "ಸೂರ್ಯಕಾಂತಿ", "Soybean": "ಸೋಯಾಬೀನ್", "Tomato": "ಟೊಮ್ಯಾಟೋ",
-    "Onion": "ಈರುಳ್ಳಿ", "Chilli": "ಮೆಣಸಿನಕಾಯಿ", "Banana": "ಬಾಳೆ",
-    "Grapes": "ದ್ರಾಕ್ಷಿ", "Other": "ಇತರೆ",
+    "Sugarcane": "ಕಬ್ಬು", "Rice": "ಭತ್ತ", "Jowar": "ಹೈಬ್ರಿಡ್ ಜೋಳ",
+    "Maize": "ಮುಸುಕಿನಜೋಳ", "Wheat": "ಗೋಧಿ", "Cotton": "ಹೈಬ್ರಿಡ್ ಹತ್ತಿ",
+    "Groundnut": "ಸೇಂಗಾ", "Sunflower": "ಸೂರ್ಯಕಾಂತಿ", "Soybean": "ಸೋಯಾಬೀನ್",
+    "Tomato": "ಟೊಮ್ಯಾಟೋ", "Onion": "ಈರುಳ್ಳಿ", "Chilli": "ಮೆಣಸಿನಕಾಯಿ",
+    "Banana": "ಬಾಳೆ", "Grapes": "ದ್ರಾಕ್ಷಿ (ಬೀಜ ರಹಿತ)", "Other": "ಇತರೆ",
 }
 
 _PAREN_RE = re.compile(r"\s*\(([^)]*)\)")
