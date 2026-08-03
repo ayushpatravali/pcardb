@@ -116,7 +116,8 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
   workbook's B4/T5 formula chain (mapped in `docs/formula_map_pages_9_10.md`):
   security = land_valuation_total; loan eligibility = 80% of it; net = − old
   outstanding; repayment eligibility = 75% of (30% × annual income); net = −
-  old installment (page 9 ಉ feeds page 10 ಊ); ಏ kantu = total loan ÷ duration.
+  old installment (page 9 ಉ feeds page 10 ಊ); ಏ = per half-yearly installment
+  = total loan ÷ (duration × 2), e.g. 11.2L over 7 yrs = 14 kantu of 80000.
   Also: b4 sanction line now prints "+ 100000" (workbook B4!F42 hardcodes it —
   5th insurance site); b3 item-5 dealer/ಸಮರ್ಪಕವಾಗಿದೆ values left-aligned.
 - **2026-08-03** — Loan duration + insurance: `loan_duration_years` field (form
