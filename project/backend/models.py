@@ -151,14 +151,14 @@ class LandDevDetails(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     application_id: Optional[int] = Field(default=None, foreign_key="application.id")
 
-    survey_no: Optional[str] = None
-    area_acres: Optional[float] = None
-    assessment: Optional[float] = None
-    land_type: Optional[str] = None  # Dry/Wet
+    land_type: Optional[str] = None  # ಖುಷ್ಕಿ (Dry) / ತರಿ (Wet)
 
-    pre_development_income: Optional[float] = None
-    post_development_income: Optional[float] = None
-    incremental_income: Optional[float] = None
+    # JSON-string columns, same convention as Application.land_parcels/current_crop.
+    pre_dev_crops: Optional[str] = None
+    post_dev_crops: Optional[str] = None
+    dev_work_items: Optional[str] = None
+
+    total_dev_cost: Optional[float] = None
 
 
 class SheepDetails(SQLModel, table=True):
