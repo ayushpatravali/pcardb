@@ -125,6 +125,11 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
   branch, showed ಕುಲಗೋಡ); b2 line is now fully static text
   "ಪ್ರಾ.ಸ.ಕೃ.ಗ್ರಾ.ಬ್ಯಾಂಕ್ ನಿ ಗೋಕಾಕ". (3) b1 item 5 label ಸದಸ್ಯ ಸಂಖ್ಯೆ →
   ನೀರಾವರಿ ಕ್ಷೇತ್ರ. Reminder: owner must Sync fork + redeploy for testers.
+- **2026-08-04** — b2 ಶಾಖಾ ಕಛೇರಿ section (page 8) prints fully blank per bank
+  review: box-5 pahani/MR/kraya page numbers (was survey_no + 0s), section-6
+  asset table (was total_extent + 0), both ಇಲ್ಲ answer boxes, ಉ) ಹೌದು box, and
+  all item-7 zeros — bank staff fill this section by hand. Item 8 and item 14
+  (below/above the reviewed area) unchanged.
 - **2026-08-04** — Removed 3 stray loan+insurance prints flagged by bank
   review: a3 beside ದೃಢೀಕರಣ heading, t2 heading line 5, valuation between the
   Sd/ signatures (the one in valuation's ಮಂಜೂರ column stays). 13 insurance

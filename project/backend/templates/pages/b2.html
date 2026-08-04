@@ -9,7 +9,7 @@
   .pg-b2 .yn { width: 24mm; flex: none; }
   .pg-b2 .box5 td { border: 1px solid #000; padding: 1mm 2mm; vertical-align: top; }
   .pg-b2 .assets th, .pg-b2 .assets td { border: 1px solid #000; height: 6mm; font-size: 9pt; }
-  .pg-b2 .ynbox { border: 1px solid #000; padding: 0.5mm 5mm; font-weight: bold; }
+  .pg-b2 .ynbox { border: 1px solid #000; padding: 0.5mm 5mm; font-weight: bold; min-width: 14mm; text-align: center; }
 </style>
 
 <div class="row"><span class="n">11)</span><span class="lbl">12 ವರ್ಷದ ಪರಭಾರ ದೃಢೀಕರಣ</span>
@@ -49,16 +49,16 @@
   </tr>
   <tr>
     <td>ಪಹಣಿ ಪತ್ರಿಕೆಗಳ ಪುಟ ಸಂಖ್ಯೆ :</td>
-    {% for p in parsed.land_parcels[:3] %}<td class="center value" style="width:26mm">{{ p.survey_no }}</td>{% endfor %}
-    {% for _ in range(3 - parsed.land_parcels[:3] | length) %}<td style="width:26mm"></td>{% endfor %}
+    {# handwritten — bank fills page numbers by hand (owner 2026-08-04) #}
+    <td style="width:26mm"></td><td style="width:26mm"></td><td style="width:26mm"></td>
   </tr>
   <tr>
     <td>ಹಕ್ಕಿನ ಪತ್ರಿಕೆ (ಎಂ.ಆರ್) ಪುಟ ಸಂಖ್ಯೆ :</td>
-    <td class="center value">0</td><td class="center value">0</td><td></td>
+    <td></td><td></td><td></td>
   </tr>
   <tr>
     <td>ಮೂಲ ಕ್ರಯ ಪತ್ರಗಳ ಪುಟ ಸಂಖ್ಯೆ :</td>
-    <td class="center value">0</td><td></td><td></td>
+    <td></td><td></td><td></td>
   </tr>
 </table>
 
@@ -73,32 +73,32 @@
     <th>ಪುಟ ಸಂಖ್ಯೆ</th>
   </tr>
   <tr class="center">
-    <td class="value" style="font-style:italic; font-size:11pt">{{ computed.total_extent }}</td>
+    <td></td>
     <td></td><td></td>
-    <td class="value">0</td>
+    <td></td>
     <td></td><td></td>
   </tr>
 </table>
 
 <div class="row" style="margin-top:1.5mm"><span class="n"></span>
   <span style="flex:1">ಆ) ನಿಯಮದಂತೆ – ಉಪನೋಂದಣಾಧಿಕಾರಿಗಳಲ್ಲಿನ ದಾಖಲೆಯನ್ವಯ ಹಾಗೂ<br>ಅಭಿಯಂತರರಿಂದ ದೃಢೀಕರಿಸಲಾಗಿದೆಯೇ ?</span>
-  <span class="yn">ಹೌದು / ಇಲ್ಲ</span><span class="ynbox">ಇಲ್ಲ</span></div>
+  <span class="yn">ಹೌದು / ಇಲ್ಲ</span><span class="ynbox">&nbsp;</span></div>
 
 <div class="row"><span class="n">7</span>
   <span style="flex:1">ಇತರೆ ಹಕ್ಕುಗಳ ಬಾಧ್ಯತೆ : ಬಾಧಕವಾಗಿಲ್ಲ / ಬಾಧಕವಾಗಿವೆ.</span>
-  <span class="yn">ಹೌದು / ಇಲ್ಲ</span><span class="ynbox">ಇಲ್ಲ</span></div>
+  <span class="yn">ಹೌದು / ಇಲ್ಲ</span><span class="ynbox">&nbsp;</span></div>
 <div style="margin-left:14mm">
-  <div>ಅ) ಪಹಣಿಯಂತೆ ಇರುವ ಋಣಗಳು &nbsp;<span class="fill" style="min-width:20mm">0</span></div>
-  <div>ಆ) ಪರಭಾರೆ ಪತ್ರದಂತೆ ಇರುವ ಋಣಗಳು &nbsp;<span class="fill" style="min-width:20mm">0</span></div>
-  <div>ಇ) ಸಾಲ ಇಲ್ಲದ / ಸುಸ್ತಿ ಇಲ್ಲದ ದೃಢೀಕರಣ ಪತ್ರ : &nbsp;<span class="fill" style="min-width:20mm">0</span></div>
+  <div>ಅ) ಪಹಣಿಯಂತೆ ಇರುವ ಋಣಗಳು &nbsp;<span class="fill" style="min-width:20mm"></span></div>
+  <div>ಆ) ಪರಭಾರೆ ಪತ್ರದಂತೆ ಇರುವ ಋಣಗಳು &nbsp;<span class="fill" style="min-width:20mm"></span></div>
+  <div>ಇ) ಸಾಲ ಇಲ್ಲದ / ಸುಸ್ತಿ ಇಲ್ಲದ ದೃಢೀಕರಣ ಪತ್ರ : &nbsp;<span class="fill" style="min-width:20mm"></span></div>
   <div style="margin-left:8mm">1) ವ್ಯವಸಾಯ ಸೇವಾ ಸಹಕಾರ ಸಂಘ</div>
-  <div style="margin-left:8mm">2) ವಾಣಿಜ್ಯ ಬ್ಯಾಂಕು &nbsp;<span class="fill" style="min-width:20mm">0</span></div>
-  <div style="margin-left:8mm">3) ಗ್ರಾಮೀಣ ಬ್ಯಾಂಕು &nbsp;<span class="fill" style="min-width:20mm">0</span></div>
-  <div style="margin-left:8mm">4) ಇತರೆ ಸಂಘ / ಸಂಸ್ಥೆ &nbsp;<span class="fill" style="min-width:20mm">0</span></div>
+  <div style="margin-left:8mm">2) ವಾಣಿಜ್ಯ ಬ್ಯಾಂಕು &nbsp;<span class="fill" style="min-width:20mm"></span></div>
+  <div style="margin-left:8mm">3) ಗ್ರಾಮೀಣ ಬ್ಯಾಂಕು &nbsp;<span class="fill" style="min-width:20mm"></span></div>
+  <div style="margin-left:8mm">4) ಇತರೆ ಸಂಘ / ಸಂಸ್ಥೆ &nbsp;<span class="fill" style="min-width:20mm"></span></div>
   <div>ಈ) ವ್ಯವಹಾರವೇನಾದರೂ ಇದೆಯೇ ? ವಿವರಿಸಿ</div>
   <div style="display:flex; justify-content:space-between; border-top:1px solid #000; margin-top:1mm; padding-top:0.5mm">
     <span>ಉ) ಈ ಬಗ್ಗೆ ಪೂರಕ ದಾಖಲೆಗಳು ಒದಗಿಸಲಾಗಿದೆಯೇ ?</span>
-    <span class="ynbox">ಹೌದು</span>
+    <span class="ynbox">&nbsp;</span>
   </div>
   <div class="right" style="border-top:1px solid #000; margin-top:0.5mm; padding-top:0.5mm">ಹೌದು / ಇಲ್ಲ</div>
 </div>
