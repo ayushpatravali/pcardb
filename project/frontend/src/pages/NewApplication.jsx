@@ -992,7 +992,8 @@ const NewApplication = () => {
                                 {L("ಜಮೀನಿನ ಮೌಲ್ಯ (ಪ್ರತಿ ಎಕರೆಗೆ) — Land Valuation per Acre (₹)")}
                             </label>
                             <input
-                                type="number" step="1"
+                                type="number" step="1" min="0"
+                                onWheel={(e) => e.target.blur()}
                                 {...register('land_valuation_per_acre')}
                                 placeholder="ಉದಾ: 500000"
                                 className="w-full px-3 py-2 text-sm border border-green-200 rounded-lg outline-none focus:border-green-400 focus:bg-green-50"
@@ -1039,7 +1040,8 @@ const NewApplication = () => {
                                         </td>
                                         <td className="border border-gray-200 px-1 py-1">
                                             <input
-                                                type="number" step="0.01"
+                                                type="number" step="0.01" min="0"
+                                                onWheel={(e) => e.target.blur()}
                                                 {...register(`land_parcels.${index}.acres`)}
                                                 placeholder="0"
                                                 className="w-full px-2 py-1.5 text-sm outline-none bg-transparent focus:bg-primary-50 rounded"
@@ -1048,7 +1050,8 @@ const NewApplication = () => {
                                         <td className="border border-gray-200 px-1 py-1">
                                             <input
                                                 type="number"
-                                                step="any"
+                                                step="any" min="0"
+                                                onWheel={(e) => e.target.blur()}
                                                 {...register(`land_parcels.${index}.guntas`)}
                                                 placeholder="0"
                                                 className="w-full px-2 py-1.5 text-sm outline-none bg-transparent focus:bg-primary-50 rounded"
@@ -1057,7 +1060,8 @@ const NewApplication = () => {
                                         <td className="border border-gray-200 px-1 py-1">
                                             <input
                                                 type="number"
-                                                step="any"
+                                                step="any" min="0"
+                                                onWheel={(e) => e.target.blur()}
                                                 {...register(`land_parcels.${index}.akaar`)}
                                                 placeholder="0.00"
                                                 className="w-full px-2 py-1.5 text-sm outline-none bg-transparent focus:bg-primary-50 rounded"

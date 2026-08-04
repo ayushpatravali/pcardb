@@ -125,6 +125,12 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
   branch, showed ಕುಲಗೋಡ); b2 line is now fully static text
   "ಪ್ರಾ.ಸ.ಕೃ.ಗ್ರಾ.ಬ್ಯಾಂಕ್ ನಿ ಗೋಕಾಕ". (3) b1 item 5 label ಸದಸ್ಯ ಸಂಖ್ಯೆ →
   ನೀರಾವರಿ ಕ್ಷೇತ್ರ. Reminder: owner must Sync fork + redeploy for testers.
+- **2026-08-04** — Number-input wheel bug: raw land-table inputs (acres/
+  guntas/akaar) + land_valuation_per_acre now blur on mouse wheel and have
+  min="0" (InputField already did both). Cause of the −4.09 akaar: operator
+  typed 14.91, then scrolled the page with the field still focused — Chrome
+  steps a focused number input by 1 per wheel tick (19 ticks down = −4.09).
+  Stored bad values must be re-edited; the mechanism is now blocked.
 - **2026-08-04** — t6 (page 16) bank review: (1) 10.3 + 10.4 print blank
   (was app.taluk ಗೋಕಾಕ — bank fills by hand); (2) 10.9 typo ಆಸ್ತಿ → ಆಸಕ್ತಿ;
   (3) bottom ವಾಸ್ತವ್ಯ now prints bank.place ಗೋಕಾಕ (was app.village ಕುಲಗೋಡ).
