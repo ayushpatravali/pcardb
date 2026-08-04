@@ -125,6 +125,9 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
   branch, showed ಕುಲಗೋಡ); b2 line is now fully static text
   "ಪ್ರಾ.ಸ.ಕೃ.ಗ್ರಾ.ಬ್ಯಾಂಕ್ ನಿ ಗೋಕಾಕ". (3) b1 item 5 label ಸದಸ್ಯ ಸಂಖ್ಯೆ →
   ನೀರಾವರಿ ಕ್ಷೇತ್ರ. Reminder: owner must Sync fork + redeploy for testers.
+- **2026-08-04** — t6 (page 16) bank review: (1) 10.3 + 10.4 print blank
+  (was app.taluk ಗೋಕಾಕ — bank fills by hand); (2) 10.9 typo ಆಸ್ತಿ → ಆಸಕ್ತಿ;
+  (3) bottom ವಾಸ್ತವ್ಯ now prints bank.place ಗೋಕಾಕ (was app.village ಕುಲಗೋಡ).
 - **2026-08-04** — t5 (page 15) bank review: (1) 8.7 REVERTED to workbook's
   "+ 1,00,960" (TRAILER_HIRE_INCOME constant; owner had called it stale on
   08-03 and switched to t4's net 2,00,000 — bank wants 1,00,960; t4's own

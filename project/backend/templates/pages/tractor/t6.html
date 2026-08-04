@@ -24,12 +24,13 @@
   <tr class="rule">
     <td class="n">10.3</td>
     <td>ಕೃಷಿ ಯಂತ್ರೋಪಕರಣ ಬಾಡಿಗೆ – ಸೇವಾ ಕೇಂದ್ರ ಸಂಸ್ಥೆಗಳಿದ್ದರೆ ವಿವರ :</td>
-    <td class="a"><span class="ans">{{ app.taluk }}</span></td>
+    {# handwritten — bank fills (review 2026-08-04) #}
+    <td class="a"><span class="ans">&nbsp;</span></td>
   </tr>
   <tr class="rule">
     <td class="n">10.4</td>
     <td>ಸಂಗೋಪನೆಗೆ ಸೇವಾ ಕೇಂದ್ರದ ಲಭ್ಯತೆ – ವಿವರ</td>
-    <td class="a"><span class="ans">{{ app.taluk }}</span></td>
+    <td class="a"><span class="ans">&nbsp;</span></td>
   </tr>
   <tr class="rule">
     <td class="n">10.5</td>
@@ -58,7 +59,7 @@
   <tr class="rule">
     <td class="n">10.9</td>
     <td>ಅರ್ಜಿದಾರರ ಕೃಷಿಯಂತ್ರ ಬಳಕೆಯ ಬಗ್ಗೆ ತರಬೇತಿ ನೈಪುಣ್ಯತೆ – ಸಂಗೋಪನೆ ಸಾಮರ್ಥ್ಯ : ಆಸ್ತಿ ಹೊಂದಿರುವ ಬಗ್ಗೆ</td>
-    <td class="a small bold">ಅರ್ಜಿದಾರರು ಕೃಷಿಯಂತ್ರ ಬಳಕೆಯ ಬಗ್ಗೆ ತರಬೇತಿ, ನೈಪುಣ್ಯತೆ, ಸಂಗೋಪನೆ ಸಾಮರ್ಥ್ಯ ಮತ್ತು ಆಸ್ತಿ ಹೊಂದಿದವರಾಗಿರುತ್ತಾರೆ.</td>
+    <td class="a small bold">ಅರ್ಜಿದಾರರು ಕೃಷಿಯಂತ್ರ ಬಳಕೆಯ ಬಗ್ಗೆ ತರಬೇತಿ, ನೈಪುಣ್ಯತೆ, ಸಂಗೋಪನೆ ಸಾಮರ್ಥ್ಯ ಮತ್ತು ಆಸಕ್ತಿ ಹೊಂದಿದವರಾಗಿರುತ್ತಾರೆ.</td>
   </tr>
   <tr class="rule">
     <td class="n">10.10</td>
@@ -81,7 +82,8 @@
 <table style="margin-top:8mm;">
   <tr>
     <td style="width:90mm;">
-      ವಾಸ್ತವ್ಯ : <span class="value">{{ app.village }}</span><br><br>
+      {# bank seat, not the applicant's village (review 2026-08-04) #}
+      ವಾಸ್ತವ್ಯ : <span class="value">{{ bank.place }}</span><br><br>
       ದಿನಾಂಕ : <span class="value">{{ computed.application_date }}</span>
     </td>
     <td style="vertical-align:bottom; text-align:right;">(ಅರ್ಜಿದಾರರ ಸಹಿ)</td>
