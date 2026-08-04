@@ -223,6 +223,24 @@ def build_context(app: Application, details, spec) -> dict:
         if isinstance(co, dict) and co.get("relation"):
             co["relation"] = kn_display(co["relation"])
 
+    # LAND_DEV: two crop lists (before/after development) + dev-work cost
+    # rows. Extra crop-row keys are set to None so templates using
+    # StrictUndefined don't fail on optional per-acre breakdown columns.
+    if app.scheme_type == SchemeType.LAND_DEV and details is not None:
+        parsed["pre_dev_crops"] = _parse_json_list(details.pre_dev_crops)
+        parsed["post_dev_crops"] = _parse_json_list(details.post_dev_crops)
+        parsed["dev_work_items"] = _parse_json_list(details.dev_work_items)
+        for c in parsed["pre_dev_crops"] + parsed["post_dev_crops"]:
+            if isinstance(c, dict):
+                c["crop_name"] = kn_display(c.get("crop_name"))
+                c["extent"] = extent_str(c.get("acres"), c.get("guntas"))
+                for key in ("cost_per_acre", "total_cost", "yield_per_acre", "total_yield", "rate", "total_income", "other_cost"):
+                    c.setdefault(key, None)
+    else:
+        parsed["pre_dev_crops"] = []
+        parsed["post_dev_crops"] = []
+        parsed["dev_work_items"] = []
+
     # Land valuation (TRACTOR): parcel value = per-acre rate x extent. The form
     # stores it per parcel; recompute here so API-created rows behave the same.
     rate = app.land_valuation_per_acre or 0
@@ -298,7 +316,7 @@ def build_context(app: Application, details, spec) -> dict:
         "hire_income_total": HIRE_INCOME_TOTAL,
         "hire_own_use_cost": HIRE_OWN_USE_COST,
         "prev_outstanding": prev_outstanding or None,
-        "installment_kantu": None,  # set below when scheme details carry the loan total
+        "installment_kantu": None,  # set below from app.loan_amount
         # Land Dev's reference packet has no insurance line at any of its
         # loan-amount print sites (confirmed 2026-08-04) — every other scheme
         # keeps the fixed constant.
@@ -317,15 +335,37 @@ def build_context(app: Application, details, spec) -> dict:
     }
 
     # Scheme-specific document figures derived from stored values.
+    # Page 10 ಏ) prints the YEARLY installment (bank review 2026-08-04: was
+    # half-yearly; matches t5 8.9's annual kantu). Generalized off the
+    # generic app.loan_amount (2026-08-04) so every scheme gets this for
+    # free instead of only Tractor — was keyed off details.total_loan_amount,
+    # a Tractor-only field name.
+    if app.loan_amount:
+        computed["installment_kantu"] = round(app.loan_amount / computed["loan_duration_years"])
+
     if details is not None and app.scheme_type == SchemeType.TRACTOR:
         computed["total_project_cost"] = details.total_quotation
         computed["margin_money"] = details.total_down_payment
-        # Page 10 ಏ) prints the YEARLY installment (bank review 2026-08-04:
-        # was half-yearly 80000; now matches t5 8.9's annual kantu).
-        if details.total_loan_amount:
-            computed["installment_kantu"] = round(
-                details.total_loan_amount / computed["loan_duration_years"]
-            )
+    elif details is not None and app.scheme_type == SchemeType.LAND_DEV:
+        # Real pre/post-development crop income (not Tractor's flat 30%
+        # heuristic) — confirmed against the Kallangouda reference PDF
+        # 2026-08-04. Overwrites the generic annual_income/post_dev_income/
+        # incremental_income keys set earlier in this dict.
+        pre_income = sum(
+            float(c.get("annual_income") or 0) for c in parsed["pre_dev_crops"] if isinstance(c, dict)
+        )
+        post_income = sum(
+            float(c.get("annual_income") or 0) for c in parsed["post_dev_crops"] if isinstance(c, dict)
+        )
+        dev_total = sum(
+            float(w.get("amount") or 0) for w in parsed["dev_work_items"] if isinstance(w, dict)
+        )
+        computed["annual_income"] = round(pre_income) if pre_income else None
+        computed["post_dev_income"] = round(post_income) if post_income else None
+        computed["incremental_income"] = (
+            round(post_income - pre_income) if (pre_income or post_income) else None
+        )
+        computed["total_dev_cost"] = round(dev_total) if dev_total else None
 
     context = {
         "bank": BANK,
