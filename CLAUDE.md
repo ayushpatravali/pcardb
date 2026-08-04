@@ -125,6 +125,10 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
   branch, showed ಕುಲಗೋಡ); b2 line is now fully static text
   "ಪ್ರಾ.ಸ.ಕೃ.ಗ್ರಾ.ಬ್ಯಾಂಕ್ ನಿ ಗೋಕಾಕ". (3) b1 item 5 label ಸದಸ್ಯ ಸಂಖ್ಯೆ →
   ನೀರಾವರಿ ಕ್ಷೇತ್ರ. Reminder: owner must Sync fork + redeploy for testers.
+- **2026-08-04** — Certification wording (bank review): t3 (p13) + pp (p20)
+  now say "ಘಟಪ್ರಭಾ / ಮಾರ್ಕಂಡೇಯ ಅಚ್ಚುಕಟ್ಟು"; pp's broken "ಇದ್ದು ___ ಮತ್ತು ___
+  ಯಿಂದ" line rewritten to t3's clean form "ಇದ್ದು, ಇವುಗಳಿಂದ
+  ನೀರಾವರಿಯಾಗುತ್ತದೆ ಅಂತಾ ದೃಢೀಕರಿಸಿದೆ."
 - **2026-08-04** — t1 (page 11) bank review: (1) 2.1 tractor make now prints
   beside its label (was centered far right); (2) removed the loan+insurance
   print on the ಅಶ್ವ ಶಕ್ತಿ line (12 insurance sites remain — the t1 totals-table
