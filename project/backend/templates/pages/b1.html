@@ -18,7 +18,8 @@
   <tr>
     <td class="n">1)</td>
     <td class="lbl">ಪ್ರಾ.ಸ.ಕೃ.ಗ್ರಾ.ಬ್ಯಾಂಕ್ ನಿ.,</td>
-    <td class="ct center value">{{ app.branch_name }}</td>
+    {# main bank's seat, not the operator-typed branch (owner 2026-08-04) #}
+    <td class="ct center value">{{ bank.place }}</td>
   </tr>
   <tr>
     <td class="n">2)</td>
@@ -45,7 +46,7 @@
     <td class="lbl">ಅರ್ಜಿದಾರರ ಒಟ್ಟು ಹಿಡುವಳಿ (ಎಕರೆ)</td>
     <td class="ct">
       <div class="rline"><span>ಖುಷ್ಕಿ <span class="fill blank" style="min-width:35mm"></span></span>
-        <span>ಸದಸ್ಯ ಸಂಖ್ಯೆ &nbsp;<span class="fill">{{ computed.total_extent }}</span></span></div>
+        <span>ನೀರಾವರಿ ಕ್ಷೇತ್ರ &nbsp;<span class="fill">{{ computed.total_extent }}</span></span></div>
       <div class="rline"><span>ತೋಟ <span class="fill blank" style="min-width:35mm"></span></span>
         <span>ಒಟ್ಟು ಕ್ಷೇತ್ರ &nbsp;<span class="fill">{{ computed.total_extent }}</span></span></div>
     </td>

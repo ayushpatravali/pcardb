@@ -22,7 +22,8 @@
   <span>ದಿನಾಂಕ : <span class="fill blank" style="min-width:40mm"></span> ಮೊತ್ತ &nbsp;<span class="fill">{{ app.loan_amount | num }} + {{ computed.insurance_amount | num }}</span></span></div>
 <div class="right" style="margin-top:2mm">
   ವ್ಯವಸ್ಥಾಪಕರು (ಹೆಸರು / ಸಹಿ)<br>
-  ಪ್ರಾ.ಸ.ಕೃ.ಗ್ರಾ.ಬ್ಯಾಂಕ್ ನಿ &nbsp;<span class="value">{{ app.branch_name }}</span>
+  {# main bank's seat, not the operator-typed branch (owner 2026-08-04) #}
+  ಪ್ರಾ.ಸ.ಕೃ.ಗ್ರಾ.ಬ್ಯಾಂಕ್ ನಿ &nbsp;<span class="value">{{ bank.place }}</span>
 </div>
 
 <div class="center bold" style="margin-top:3mm">ಶಾಖಾ ಕಛೇರಿ ಉಪಯೋಗಕ್ಕಾಗಿ<br>ದರಖಾಸ್ತಿನ / ಯೋಜನೆಯ ಕಾನೂನು / ತಾಂತ್ರಿಕಾರ್ಥಿಕ ವಿಶ್ಲೇಷಣಾ ವರದಿ</div>
