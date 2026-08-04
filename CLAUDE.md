@@ -117,6 +117,14 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 - **2026-08-03** — Formula map: all 489 cell formulas from the Vasant Malli
   Tractor workbook extracted to `legacy_assets/formula_maps/tractor_formulas.json`
   (gitignored) — reference for every computed figure in the packet.
+- **2026-08-04** — Bank-review round (tester feedback batch): (1) numeric
+  inputs now accept any decimal — `step="any"` default in InputField + raw
+  land-table inputs (akaar 14.91 was being rounded to 14 by browser number
+  validation; old rows have the truncated value STORED — re-edit to fix).
+  (2) b1 item 1 + b2 item 14 print bank.place ಗೋಕಾಕ (were operator-typed
+  branch, showed ಕುಲಗೋಡ); b2 line is now fully static text
+  "ಪ್ರಾ.ಸ.ಕೃ.ಗ್ರಾ.ಬ್ಯಾಂಕ್ ನಿ ಗೋಕಾಕ". (3) b1 item 5 label ಸದಸ್ಯ ಸಂಖ್ಯೆ →
+  ನೀರಾವರಿ ಕ್ಷೇತ್ರ. Reminder: owner must Sync fork + redeploy for testers.
 - **2026-08-04** — Removed 3 stray loan+insurance prints flagged by bank
   review: a3 beside ದೃಢೀಕರಣ heading, t2 heading line 5, valuation between the
   Sd/ signatures (the one in valuation's ಮಂಜೂರ column stays). 13 insurance
