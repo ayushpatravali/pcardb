@@ -8,9 +8,12 @@
 
 Digitizes loan applications for Gokak Taluka PCARD Bank (Karnataka). Operator
 fills a React form → FastAPI + SQLite stores it → the system generates the
-bank's standard **21-page Kannada print packet** as a PDF. **Tractor scheme is
-fully built**; the other 5 schemes (LAND_DEV, BULLOCK, SHEEP_40/20/10) are
-gated on bank sign-off of the Tractor pilot and will replicate its pattern.
+bank's standard Kannada print packet as a PDF (**21 pages for Tractor, 23 for
+LAND_DEV**). **Tractor and LAND_DEV schemes are built**; the remaining 3
+schemes (BULLOCK, SHEEP_40/20/10) are gated on bank sign-off of the Tractor
+pilot and will replicate the same pattern. LAND_DEV has not yet been through
+a bank-review correction round the way Tractor has — expect similar fix
+batches once reviewed.
 
 **Repo:** https://github.com/ayushpatravali/pcardb (owner's personal GitHub;
 a fork on a second account feeds the Railway demo — "Sync fork" after pushes).
@@ -70,7 +73,9 @@ Final deployment target: fully local on the bank manager's machine, bank LAN onl
 ## Testing
 
 From `backend/` with venv `/Users/ayush/project/.venv-mac`:
-- `python tools/render_test.py [--pages a1,b3]` — render fixture packet; must print `pages: 21 OK`
+- `python tools/render_test.py [--scheme LAND_DEV] [--pages a1,b3]` — render
+  fixture packet; must print `pages: 21 OK` (Tractor, default) or `pages: 23
+  OK` (`--scheme LAND_DEV`)
 - `python tools/render_highlight.py <id>` — packet with UI-input values highlighted yellow (bank review)
 - `python tools/compare_pdfs.py <pdf>` — page-count + side-by-side images vs reference
 - `python tools/seed_reference_apps.py` — seed Vasant Malli sample
@@ -90,12 +95,38 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 5. **Local schema changes**: `ALTER TABLE` the dev `database.db` in place
    (see git history for one-liners); Railway recreates its DB on redeploy.
 6. **Page-count fidelity**: any page edit must keep `render_test.py` at 21
-   pages — fixed-height pages, tighten spacing if content grows.
+   pages for Tractor / 23 for LAND_DEV (`--scheme LAND_DEV`) — fixed-height
+   pages, tighten spacing if content grows.
 7. Git identity/remote is repo-local only; never touch global git config
    (owner has separate org GitHub in other VS Code windows).
 
 ## Changelog
 
+- **2026-08-04** — LAND_DEV scheme built end-to-end (23-page packet, mirrors
+  Tractor's architecture): `schemas/land_dev.py` spec; `LandDevDetails`
+  model rewritten (land_type + JSON columns `pre_dev_crops`/`post_dev_crops`/
+  `dev_work_items` + `total_dev_cost`, replacing the pre-rebuild stub);
+  9 new page templates (`templates/pages/land_dev/ld1-9.html`) transcribed
+  from the Kallangouda V Patil reference PDF (23 pages: `legacy_assets/
+  pdfss/Kallangouda Patil Land Development Scheme.pdf`); real pre/post-
+  development crop-income computation (not Tractor's flat 30% heuristic) —
+  `computed.incremental_income` = post-dev crop income − pre-dev crop income,
+  feeding the *already-built* shared financial-capacity page (10) with no
+  template changes needed there. Two cross-scheme generalizations found by
+  reading the reference PDF: loan-eligibility percentage is scheme-specific
+  (`LOAN_ELIGIBILITY_PCT`: Tractor 80%, Land Dev 50% — was hardcoded 80% for
+  everyone) and `installment_kantu` now keys off the generic `app.loan_amount`
+  instead of Tractor-only `details.total_loan_amount`. Shared page 9
+  (`b3.html`) made scheme-aware — it hardcoded tractor make/HP/dealer and a
+  Tractor/Trailer cost table; Land Dev's reference shows that item blank and
+  a single "ಭೂ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆ" cost row instead. Frontend: land-type dropdown,
+  two crop tables (pre/post-dev, reusing the Tractor crop-row component +
+  crop-rate chart), 6-row development-cost table with per-acre rate inputs.
+  `render_test.py` gained a `--scheme` flag + Land Dev fixture (23 pages);
+  seeded a Kallangouda-pattern sample alongside Vasant Malli. Verified against
+  the reference PDF page-by-page and via a live API create→render round trip.
+  Design/plan docs: `docs/superpowers/specs/2026-08-04-land-dev-design.md`,
+  `docs/superpowers/plans/2026-08-04-land-dev-implementation.md`.
 - **2026-07-31** — Engine rebuild: retired generator.py/excel_service/
   pdf_service/win32com + excel router + nudi_converter. New schemas package,
   render_service (Jinja2+WeasyPrint), 21 Tractor page templates transcribed
@@ -288,9 +319,15 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 - **Owner actions:** Sync fork + redeploy Railway (demo is many commits
   behind: crop chart, caste list, Kannada mode, UI v2, page-10 calcs, extent
   fixes all not yet on demo); revoke the two GitHub PATs pasted in chat.
-- Bank sign-off on printed Tractor packet → then replicate templates+specs to
-  SHEEP_40/20/10 → BULLOCK → LAND_DEV (shared pages already built; their UI
-  forms don't exist yet and will copy the Tractor form pattern).
+- **LAND_DEV moratorium gap (2026-08-04, known, not fixed):** the reference
+  packet's page 10 shows a 2-year grace period before annual installments
+  start (7 yrs total, 5 yrs of repayment, installment = loan/5); the shared
+  `b4.html` template has no separate moratorium field and currently divides
+  evenly (loan/7). Needs a `moratorium_years` field + template update once
+  the bank confirms this is a real requirement (not just this one sample).
+- Bank sign-off on printed Tractor + LAND_DEV packets → then replicate
+  templates+specs to SHEEP_40/20/10 → BULLOCK (shared pages already built;
+  their UI forms don't exist yet and will copy the Tractor/LAND_DEV pattern).
 - Optional: Railway volume for persistent demo data; Windows-VM validation of
   the GTK runtime before bank install; frontend dead-code sweep (PDFOverlay,
   tractor_map.js, TractorApplicationForm.jsx) — needs owner approval.
