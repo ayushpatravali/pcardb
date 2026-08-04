@@ -37,6 +37,10 @@ HIRE_OWN_USE_COST = 20000
 HIRE_INCOME_GROSS = HIRE_HOURS * HIRE_RATE                    # col 3 = 1 x 2
 HIRE_INCOME_TOTAL = HIRE_INCOME_GROSS - HIRE_MAINTENANCE_COST  # col 5 = 3 - 4
 HIRE_INCOME_NET = HIRE_INCOME_TOTAL - HIRE_OWN_USE_COST        # col 7 = 5 - 6
+# T5 8.7's "+ ಅಂಶ 7:ಇ(7)" figure. Bank review 2026-08-04: keep the workbook's
+# 1,00,960 here (NOT the t4 net 2,00,000 — owner reverted the 08-03 change).
+# ssm2 item 13 follows via repayment_capacity.
+TRAILER_HIRE_INCOME = 100960
 DEFAULT_LOAN_DURATION_YEARS = 7
 DEFAULT_REGION_KN = "ಗೋಕಾಕ"
 
@@ -257,10 +261,10 @@ def build_context(app: Application, details, spec) -> dict:
     net_repayment_eligibility = (
         round(repayment_eligibility - prev_installment) if repayment_eligibility else None
     )
-    # T5 8.7 total = 75% of incremental income + net hire income (T4 col 7);
+    # T5 8.7 total = 75% of incremental income + workbook trailer-hire figure;
     # also prints as "expected income from the scheme" at page 6 item 13.
     repayment_capacity = (
-        repayment_eligibility + HIRE_INCOME_NET if repayment_eligibility else None
+        repayment_eligibility + TRAILER_HIRE_INCOME if repayment_eligibility else None
     )
 
     computed = {
@@ -274,6 +278,7 @@ def build_context(app: Application, details, spec) -> dict:
         "net_repayment_eligibility": net_repayment_eligibility,
         "repayment_capacity": repayment_capacity,
         "hire_income": HIRE_INCOME_NET,
+        "trailer_hire_income": TRAILER_HIRE_INCOME,
         "hire_rate": HIRE_RATE,
         "hire_hours": HIRE_HOURS,
         "hire_income_gross": HIRE_INCOME_GROSS,

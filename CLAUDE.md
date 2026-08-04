@@ -125,6 +125,14 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
   branch, showed ಕುಲಗೋಡ); b2 line is now fully static text
   "ಪ್ರಾ.ಸ.ಕೃ.ಗ್ರಾ.ಬ್ಯಾಂಕ್ ನಿ ಗೋಕಾಕ". (3) b1 item 5 label ಸದಸ್ಯ ಸಂಖ್ಯೆ →
   ನೀರಾವರಿ ಕ್ಷೇತ್ರ. Reminder: owner must Sync fork + redeploy for testers.
+- **2026-08-04** — t5 (page 15) bank review: (1) 8.7 REVERTED to workbook's
+  "+ 1,00,960" (TRAILER_HIRE_INCOME constant; owner had called it stale on
+  08-03 and switched to t4's net 2,00,000 — bank wants 1,00,960; t4's own
+  hire chain unchanged; ssm2 item 13 follows via repayment_capacity).
+  (2) 8.10 interest rate 12.50 → 12.00. (3) 9.1 table: hardcoded "ಯಾವದೇ ಸಾಲ
+  ಪಡೆದಿರುವದಿಲ್ಲ" removed + full column borders restored; row now binds
+  previous_loans (purpose/total/outstanding/installment/repaid_status) when
+  the applicant has old loans, blank otherwise.
 - **2026-08-04** — Certification wording (bank review): t3 (p13) + pp (p20)
   now say "ಘಟಪ್ರಭಾ / ಮಾರ್ಕಂಡೇಯ ಅಚ್ಚುಕಟ್ಟು"; pp's broken "ಇದ್ದು ___ ಮತ್ತು ___
   ಯಿಂದ" line rewritten to t3's clean form "ಇದ್ದು, ಇವುಗಳಿಂದ

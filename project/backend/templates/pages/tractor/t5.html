@@ -59,8 +59,8 @@
   <tr class="rule">
     <td class="n">8.7</td>
     <td>ಸಾಲದ ಮರುಪಾವತಿ<br>(ಅಂಶ 8:1 ರ ಶೇ. 75 + ಅಂಶ 7:ಇ(7))</td>
-    <td class="m"><span class="dash">{{ r75 | num }} + {{ computed.hire_income | num }}</span></td>
-    <td class="v"><span class="dash" style="min-width:26mm;">{{ (r75 + computed.hire_income) | num }}</span></td>
+    <td class="m"><span class="dash">{{ r75 | num }} + {{ computed.trailer_hire_income | num }}</span></td>
+    <td class="v"><span class="dash" style="min-width:26mm;">{{ (r75 + computed.trailer_hire_income) | num }}</span></td>
   </tr>
   <tr class="rule">
     <td class="n">8.8</td>
@@ -77,7 +77,7 @@
   <tr class="rule">
     <td class="n">8.10</td>
     <td>(1) ಮರುಪಾವತಿ ಅವಧಿ (ವರ್ಷಗಳು)<br>(2) ಬಡ್ಡಿ ದರ (ಶೇ)</td>
-    <td class="m"><span class="dash" style="min-width:24mm;">{{ computed.loan_duration_years }}</span><br><span class="dash" style="min-width:24mm;">12.50</span></td>
+    <td class="m"><span class="dash" style="min-width:24mm;">{{ computed.loan_duration_years }}</span><br><span class="dash" style="min-width:24mm;">12.00</span></td>
     <td class="v"></td>
   </tr>
 </table>
@@ -95,11 +95,24 @@
     <th>ಸಾಲ ಮರುಪಾವತಿ : ಕ್ರಮಬದ್ಧತೆ ಸಾಲ ಉಪಯುಕ್ತತೆ</th>
     <th style="width:20mm;">ಷರಾ</th>
   </tr>
+  {# old-borrower loans from page 9 section 9 (previous_loans); blank otherwise #}
+  {% set pl = parsed.previous_loans %}
+  {% if pl.total_loan or pl.outstanding %}
+  <tr>
+    <td style="height:34mm;">1</td>
+    <td class="value">{{ pl.purpose }}</td>
+    <td class="value">{{ pl.total_loan | num }}</td>
+    <td class="value">{{ pl.outstanding | num }}</td>
+    <td class="value">{{ pl.annual_installment | num }}</td>
+    <td class="value">{{ pl.repaid_status }}</td>
+    <td></td>
+  </tr>
+  {% else %}
   <tr>
     <td style="height:34mm;"></td>
-    <td colspan="3" style="vertical-align:middle;" class="value">ಯಾವದೇ ಸಾಲ ಪಡೆದಿರುವದಿಲ್ಲ</td>
-    <td></td><td></td><td></td>
+    <td></td><td></td><td></td><td></td><td></td><td></td>
   </tr>
+  {% endif %}
 </table>
 
 <div style="margin:2.5mm 0 1mm 0;"><span style="display:inline-block;width:10mm;">9.2</span>ಇತರೇ ಸಂಘ ಸಂಸ್ಥೆಗಳಲ್ಲಿ ಸಾಲ ಪಡೆದಿದ್ದಲ್ಲಿ – ವಿವರಗಳು :</div>
