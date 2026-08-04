@@ -5,10 +5,12 @@ every field's `source` path resolves against the ORM models.
 """
 from models import Application, SchemeType, DETAILS_MODEL
 from schemas.tractor import SPEC as TRACTOR_SPEC
+from schemas.land_dev import SPEC as LAND_DEV_SPEC
 
 SCHEMES = {
     SchemeType.TRACTOR: TRACTOR_SPEC,
-    # SchemeType.SHEEP_40/20/10, BULLOCK, LAND_DEV: added in Phase 4 rollout
+    SchemeType.LAND_DEV: LAND_DEV_SPEC,
+    # SchemeType.SHEEP_40/20/10, BULLOCK: added in Phase 4 rollout
 }
 
 # Context namespaces produced by render_service.build_context that are not
