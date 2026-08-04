@@ -1,0 +1,80 @@
+<!-- land_dev/ld3: reference PDF page 13 — ಕ್ಷೇತ್ರ ಆಯವ್ಯಯ ತ:ಖ್ತೆ (pre/post-dev crop income table) -->
+<div class="pg-ld3">
+<style>
+  .pg-ld3 { font-size: 7.5pt; }
+  .pg-ld3 .center-title { text-align: center; font-weight: bold; margin-bottom: 2mm; }
+  .pg-ld3 table.crops { width: 100%; table-layout: fixed; }
+  .pg-ld3 table.crops th, .pg-ld3 table.crops td { border: 1px solid #000; padding: 0.8mm; text-align: center; word-wrap: break-word; }
+  .pg-ld3 .section-lab { font-weight: bold; text-align: left; }
+</style>
+
+<div class="center-title">ಕ್ಷೇತ್ರ ಆಯವ್ಯಯ ತ:ಖ್ತೆ</div>
+<table class="crops">
+  <tr>
+    <th style="width:6%;">ಸರ್ವೆ<br>ನಂ</th>
+    <th style="width:6%;">ಕ್ರ<br>ಸಂ</th>
+    <th style="width:9%;">ಬೆಳೆಯ<br>ಹೆಸರು</th>
+    <th style="width:6%;">ಋತು</th>
+    <th style="width:7%;">ಖುಷ್ಕಿ /<br>ನೀರಾವರಿ</th>
+    <th style="width:8%;">ಕ್ಷೇತ್ರ<br>(ಎಕರೆ)</th>
+    <th style="width:8%;">ಎಕರೆಗೆ<br>ಖರ್ಚು</th>
+    <th style="width:8%;">ಒಟ್ಟು<br>ಖರ್ಚು</th>
+    <th style="width:8%;">ಎಕರೆಗೆ<br>ಇಳುವರಿ</th>
+    <th style="width:8%;">ಒಟ್ಟು<br>ಇಳುವರಿ</th>
+    <th style="width:7%;">ಪೇಟೆ<br>ಧಾರಣೆ</th>
+    <th style="width:8%;">ಒಟ್ಟು<br>ಆದಾಯ</th>
+    <th style="width:8%;">ಇತರೆ<br>ಖರ್ಚು</th>
+    <th style="width:8%;">ನಿವ್ವಳ<br>ಆದಾಯ</th>
+  </tr>
+  <tr>
+    <td colspan="14" class="section-lab">ಅಭಿವೃದ್ಧಿ ಪೂರ್ವದ ಆದಾಯ</td>
+  </tr>
+  {% for c in parsed.pre_dev_crops %}
+  <tr>
+    <td class="value">{% if loop.first %}{% for p in parsed.land_parcels %}{{ p.survey_no }}{% endfor %}{% endif %}</td>
+    <td>{{ loop.index }}</td>
+    <td class="value">{{ c.crop_name }}</td>
+    <td class="value">{{ c.season or '' }}</td>
+    <td class="value">{{ c.irrigated or '' }}</td>
+    <td class="value">{{ c.extent }}</td>
+    <td class="value">{{ c.cost_per_acre | num }}</td>
+    <td class="value">{{ c.total_cost | num }}</td>
+    <td class="value">{{ c.yield_per_acre | num }}</td>
+    <td class="value">{{ c.total_yield | num }}</td>
+    <td class="value">{{ c.rate | num }}</td>
+    <td class="value">{{ c.total_income | num }}</td>
+    <td class="value">{{ c.other_cost | num }}</td>
+    <td class="value">{{ c.annual_income | num }}</td>
+  </tr>
+  {% endfor %}
+  <tr>
+    <td colspan="13" class="section-lab" style="text-align:right;">ಒಟ್ಟು</td>
+    <td class="value bold">{{ computed.annual_income | num }}</td>
+  </tr>
+  <tr>
+    <td colspan="14" class="section-lab">ಅಭಿವೃದ್ಧಿ ನಂತರದ ಆದಾಯ</td>
+  </tr>
+  {% for c in parsed.post_dev_crops %}
+  <tr>
+    <td class="value">{% if loop.first %}{% for p in parsed.land_parcels %}{{ p.survey_no }}{% endfor %}{% endif %}</td>
+    <td>{{ loop.index }}</td>
+    <td class="value">{{ c.crop_name }}</td>
+    <td class="value">{{ c.season or '' }}</td>
+    <td class="value">{{ c.irrigated or '' }}</td>
+    <td class="value">{{ c.extent }}</td>
+    <td class="value">{{ c.cost_per_acre | num }}</td>
+    <td class="value">{{ c.total_cost | num }}</td>
+    <td class="value">{{ c.yield_per_acre | num }}</td>
+    <td class="value">{{ c.total_yield | num }}</td>
+    <td class="value">{{ c.rate | num }}</td>
+    <td class="value">{{ c.total_income | num }}</td>
+    <td class="value">{{ c.other_cost | num }}</td>
+    <td class="value">{{ c.annual_income | num }}</td>
+  </tr>
+  {% endfor %}
+  <tr>
+    <td colspan="13" class="section-lab" style="text-align:right;">ಒಟ್ಟು</td>
+    <td class="value bold">{{ computed.post_dev_income | num }}</td>
+  </tr>
+</table>
+</div>

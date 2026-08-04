@@ -362,10 +362,27 @@ def build_context(app: Application, details, spec) -> dict:
         )
         computed["annual_income"] = round(pre_income) if pre_income else None
         computed["post_dev_income"] = round(post_income) if post_income else None
-        computed["incremental_income"] = (
+        real_incremental_income = (
             round(post_income - pre_income) if (pre_income or post_income) else None
         )
+        computed["incremental_income"] = real_incremental_income
         computed["total_dev_cost"] = round(dev_total) if dev_total else None
+        # repayment_eligibility/net_repayment_eligibility/repayment_capacity
+        # were computed above from the flat-30% incremental_income (meant
+        # for Tractor) — redo them from the real crop-delta figure. No
+        # trailer-hire add-on for Land Dev (that's a Tractor-only concept);
+        # repayment_capacity equals repayment_eligibility here, since the
+        # shared page 6 (ssm2) prints it regardless of scheme.
+        real_repayment_eligibility = (
+            round(real_incremental_income * 0.75) if real_incremental_income else None
+        )
+        computed["repayment_eligibility"] = real_repayment_eligibility
+        computed["net_repayment_eligibility"] = (
+            round(real_repayment_eligibility - prev_installment)
+            if real_repayment_eligibility
+            else None
+        )
+        computed["repayment_capacity"] = real_repayment_eligibility
 
     context = {
         "bank": BANK,

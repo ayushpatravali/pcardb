@@ -1,0 +1,127 @@
+<!-- land_dev/ld1: reference PDF page 11 — ಭೂ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆ technical scrutiny header, items 1-8 -->
+<div class="pg-ld1">
+<style>
+  .pg-ld1 { font-size: 9.5pt; line-height: 1.4; }
+  .pg-ld1 .purpose-list { margin: 2mm 0; }
+  .pg-ld1 .purpose-list div { margin-top: 1mm; }
+  .pg-ld1 table.hd { width: 100%; border-collapse: collapse; }
+  .pg-ld1 table.hd td { border: 1px solid #000; padding: 1mm 2mm; vertical-align: top; }
+  .pg-ld1 .devcrop { width: 100%; margin-top: 1mm; }
+  .pg-ld1 .devcrop th, .pg-ld1 .devcrop td { border: 1px solid #000; padding: 1mm 2mm; text-align: center; }
+  .pg-ld1 .row { display: flex; margin-top: 1.5mm; }
+  .pg-ld1 .n { width: 8mm; flex: none; }
+</style>
+
+<div class="bank-header">{{ bank.name_line1 }}</div>
+<div class="center bold" style="margin-top:1mm;">ಭೂ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆಯ : ತಾಂತ್ರಿಕ ಗುಣ ವಿಮರ್ಶಣಾ ವರದಿ</div>
+
+<div class="purpose-list">
+  <div class="bold">ಯೋಜನೆ :</div>
+  <div>1&nbsp;&nbsp;ಖುಷ್ಕಿ : ನೀರಾವರಿ ಜಮೀನಿಗೆ ಭೂ ಅಭಿವೃದ್ಧಿ (ಸಮತಳ ಒಡ್ಡು)</div>
+  <div>2&nbsp;&nbsp;ಅಚ್ಚು ಕಟ್ಟು ಪ್ರದೇಶದ – ಭೂ ಅಭಿವೃದ್ಧಿ</div>
+  <div>3&nbsp;&nbsp;ತ್ರೀವ ಇಳಿಜಾರಿನ ಪ್ರದೇಶದ ಭೂ ಅಭಿವೃದ್ಧಿ (ಬೆಂಚ್ ಟೆರೇಸಿಂಗ್)</div>
+  <div>4&nbsp;&nbsp;ಹಣ್ಣಿನ / ತೆಂಗಿನ / ಅಡಿಕೆ ತೋಟಗಳಲ್ಲಿ ಭೂ ಅಭಿವೃದ್ಧಿ</div>
+  <div>5&nbsp;&nbsp;ಭೂ ಅಭಿವೃದ್ಧಿ ಮತ್ತು ಮುಳ್ಳು ತಂತಿಬೇಲಿ ಸಂಯುಕ್ತ ಯೋಜನೆ</div>
+  <div>6&nbsp;&nbsp;ವಿದ್ಯುತ ತಂತಿಬೇಲಿ / ಸೌರಶಕ್ತಿ</div>
+  <div class="center small" style="margin-top:1mm;">(ಈ ಉದ್ದೇಶಗಳಿಗೆ ಉಪಯೋಗಿಸುವುದು)</div>
+</div>
+
+<div class="center small" style="margin:2mm 0;">
+  (ಮೇಲ್ವಿಚಾರಕರು : ತಾಂತ್ರಿಕ ಮೇಲ್ವಿಚಾರಕರು-ಈ ವರದಿಯ ಸಂಬಂಧಿಸಿದ ಎಲ್ಲಾ ಅಂಶಗಳನ್ನು ಕೂಲಂಕುಶ<br>
+  ಸ್ಥಳಾಶದ್ಧ್ಯನಾಧರಿಸಿ ಸರಿಯಾಗಿ ಭರ್ತಿ ಮಾಡುವುದು)
+</div>
+
+<table class="hd">
+  <tr>
+    <td style="width:38%;">ಪ್ರಾ.ಸ.ಕೃ.ಗ್ರಾ.ಅ.ಬ್ಯಾಂಕ ನಿ<br><span class="value bold">{{ bank.place }}</span></td>
+    <td style="width:24%;">ಜಿಲ್ಲೆ<br><span class="value bold">{{ app.district }}</span></td>
+    <td>ಸಾಲದ ಅರ್ಜಿ ಸಂಖ್ಯೆ<span class="fill blank"></span><br>ಸಾಲದ ಅರ್ಜಿ ದಿನಾಂಕ<span class="fill blank"></span></td>
+  </tr>
+  <tr>
+    <td colspan="2">ಸಮೀಕ್ಷಣೆ ಕೈಗೊಂಡ ದಿನಾಂಕ:<span class="fill blank"></span></td>
+    <td>ವರದಿಯ ದಿನಾಂಕ:<span class="fill blank"></span></td>
+  </tr>
+</table>
+
+<div class="row"><span class="n">1</span>ಅರ್ಜಿದಾರರ ಹೆಸರು :
+  <span class="value bold" style="padding-left:4mm;">{{ app.applicant_name_kn }}</span></div>
+
+<table class="hd" style="margin-top:1mm;">
+  <tr>
+    <td style="width:25%;">ವಿಳಾಸ: ಗ್ರಾಮ<br><span class="value italic bold">{{ app.village }}</span></td>
+    <td style="width:25%;">ಅಂಚೆ<br><span class="value italic bold">{{ app.hobli }}</span></td>
+    <td style="width:25%;">ತಾಲ್ಲೂಕು<br><span class="value italic bold">{{ app.taluk }}</span></td>
+    <td>ಜಿಲ್ಲೆ<br><span class="value italic bold">{{ app.district }}</span></td>
+  </tr>
+</table>
+
+<div class="row"><span class="n">3</span>
+  ರೈತರ ವರ್ಗೀಕರಣ: ಸಣ್ಣ ರೈತರು /ದೊಡ್ಡ ರೈತರು/ಪರಿಶಿಷ್ಟಜಾತಿ :ಸಂಗಡ
+  <span class="value bold" style="padding-left:4mm;">{{ computed.farmer_type_kn }}</span></div>
+
+<table class="hd" style="margin-top:1.5mm;">
+  <tr>
+    <td rowspan="2" style="width:8%; vertical-align:middle;">4</td>
+    <td style="width:30%;">ಅರ್ಜಿದಾರನ ಒಟ್ಟು ಹಿಡುವಳಿ (ಎಕರೆ)</td>
+    <td style="width:20%;">ಖುಷ್ಕಿ</td>
+    <td style="width:20%;">ನೀರಾವರಿ</td>
+    <td>ಒಟ್ಟು ಕ್ಷೇತ್ರ</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td class="value bold">{{ computed.total_extent }}</td>
+    <td class="value bold">{{ computed.total_extent }}</td>
+  </tr>
+  <tr>
+    <td rowspan="2">5</td>
+    <td>ಅಭಿವೃದ್ಧಿ ಹೊಂದುವ ಜಮೀನು (ಸರ್ವೆ ನಂ)</td>
+    <td colspan="3" class="value bold">{% for p in parsed.land_parcels %}{{ p.survey_no }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
+  </tr>
+  <tr>
+    <td>ಕ್ಷೇತ್ರ</td>
+    <td colspan="3" class="value bold">{{ computed.total_extent }}</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td colspan="2">ಮಣ್ಣಿನ ವರ್ಗೀಕರಣ</td>
+    <td colspan="2">ಇಳಿಜಾರು ಪ್ರಮಾಣ :-ಶೇಕಡಾ <span class="fill blank"></span></td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>ನೀರಿನ ಮೂಲ<br>ಅಳತೆ</td>
+    <td colspan="2">ನೀರೆತ್ತುವ ಯಂತ್ರದ ವಿವರ<br>ಇಳುವರಿ<br>ನೀರಾವರಿ ವಿಧಾನ</td>
+    <td class="value">{{ computed.irrigation_kn }}</td>
+  </tr>
+</table>
+
+<div style="margin-top:1.5mm;">8&nbsp;&nbsp;ಬೆಳೆಗಳ ವಿವರಗಳು</div>
+<table class="devcrop">
+  <tr>
+    <th colspan="3">ಅಭಿವೃದ್ಧಿ ಪೂರ್ವ</th>
+    <th colspan="3">ಅಭಿವೃದ್ಧಿ ನಂತರ</th>
+  </tr>
+  <tr>
+    <th>ಖುತು</th><th>ಬೆಳೆ</th><th>ಕ್ಷೇತ್ರ</th>
+    <th>ಖುತು</th><th>ಬೆಳೆ</th><th>ಕ್ಷೇತ್ರ</th>
+  </tr>
+  {% for i in range(3) %}
+  <tr>
+    {% if i < parsed.pre_dev_crops | length %}
+    <td class="value">{{ parsed.pre_dev_crops[i].season or '' }}</td>
+    <td class="value">{{ parsed.pre_dev_crops[i].crop_name }}</td>
+    <td class="value">{{ parsed.pre_dev_crops[i].extent }}</td>
+    {% else %}
+    <td></td><td></td><td></td>
+    {% endif %}
+    {% if i < parsed.post_dev_crops | length %}
+    <td class="value">{{ parsed.post_dev_crops[i].season or '' }}</td>
+    <td class="value">{{ parsed.post_dev_crops[i].crop_name }}</td>
+    <td class="value">{{ parsed.post_dev_crops[i].extent }}</td>
+    {% else %}
+    <td></td><td></td><td></td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+</table>
+</div>

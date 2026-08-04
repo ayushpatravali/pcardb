@@ -1,0 +1,53 @@
+<!-- land_dev/ld2: reference PDF page 12 — dev-work cost table (item 9), own contribution (10), loan requirement (11), execution details (12) -->
+<div class="pg-ld2">
+<style>
+  .pg-ld2 { font-size: 9.5pt; line-height: 1.4; }
+  .pg-ld2 table.cost { width: 100%; margin-top: 1mm; }
+  .pg-ld2 table.cost th, .pg-ld2 table.cost td { border: 1px solid #000; padding: 1mm 2mm; }
+  .pg-ld2 table.cost th { text-align: center; }
+  .pg-ld2 .row { display: flex; margin-top: 1.5mm; }
+</style>
+
+<div style="margin-top:1mm;">9&nbsp;&nbsp;ಅಭಿವೃದ್ಧಿ ಕಾರ್ಯಗಳು : ಅಳತೆ ಗಾತ್ರ : ಯೋಜನಾ ವೆಚ್ಚಗಳು</div>
+<table class="cost">
+  <tr>
+    <th style="width:8%;">ಕ್ರ.ಸಂ</th>
+    <th style="width:46%;">ಕಾರ್ಯಗಳು</th>
+    <th style="width:16%;">ಅಳತೆ ಮತ್ತು ಗಾತ್ರ</th>
+    <th>ಯೋಜನಾ ವೆಚ್ಚ ರೂ.</th>
+  </tr>
+  {% for w in parsed.dev_work_items %}
+  <tr>
+    <td class="center">{{ loop.index }}</td>
+    <td>{{ w.description }}</td>
+    <td class="center value">{{ computed.total_extent }}</td>
+    <td class="right value">{{ '%.2f' | format(w.amount or 0) }}</td>
+  </tr>
+  {% endfor %}
+  {% for _ in range(10 - (parsed.dev_work_items | length)) %}
+  <tr><td></td><td></td><td></td><td></td></tr>
+  {% endfor %}
+  <tr>
+    <td colspan="3" class="right">ಒಟ್ಟು</td>
+    <td class="right value bold">{{ '%.2f' | format(computed.total_dev_cost or 0) }}</td>
+  </tr>
+</table>
+
+<div class="row"><span style="flex:1">10&nbsp;&nbsp;ಸ್ವಂತ ಕೊಡುಗೆ (ದೊಡ್ಡ ರೈತರಾಗಿದ್ದಲ್ಲಿ ಮಾತ್ರ ಶೇ. 10)</span>
+  <span class="value bold">{{ '%.2f' | format((computed.total_dev_cost or 0) * 0.1) if computed.farmer_type_kn == 'ದೊಡ್ಡ ರೈತರು' else '0.00' }}</span>&nbsp;ರೂ.</div>
+
+<div class="row"><span style="flex:1">11&nbsp;&nbsp;ಸಾಲದ ಅವಶ್ಯಕತೆ (ಮೊತ್ತ)</span>
+  <span class="value bold">{{ app.loan_amount | num }}</span>&nbsp;ರೂ.</div>
+
+<div style="margin-top:2mm;">12&nbsp;&nbsp;ಅಭಿವೃದ್ಧಿ ಕೈಗೊಳ್ಳುವ ವಿಧಾನ</div>
+<div style="margin-left:8mm; margin-top:1mm;">
+  <div>ಬ)&nbsp;ಭೂ ಅಭಿವೃದ್ಧಿಯನ್ನು ಮಾನ : ಎತ್ತುಗಳಿಂದ/ ಟ್ರ್ಯಾಕ್ಟರಿನಿಂದ /ಬುಲ್ಡೋಜರಿನಿಂದ ಮಾಡಲಾಗುವುದು</div>
+  <div>(ಅ)&nbsp;ಭೂ ಅಭಿವೃದ್ಧಿಯನ್ನು – ರೈತರ ಮಾಡಿಸುವರು /ಸಂಸ್ಥೆಯಿಂದ ಮಾಡಲಾಗುವುದ</div>
+  <div style="margin-top:1mm;">ಸಂಸ್ಥೆಯ ಹೆಸರು<span class="fill blank" style="min-width:60mm; margin-left:2mm;"></span></div>
+  <div style="margin-top:2mm;">(ಇ)&nbsp;ಕೆರೆ ಮುಚ್ಚು ಅಳವಡಿಸುವುದಾದಲ್ಲಿ :ಸೇರೆಯ ಹೆಸರು<span class="fill blank" style="min-width:40mm; margin-left:2mm;"></span></div>
+  <div style="margin-top:1mm;">ಜಮೀನಿಗಿರುವ ದೂರ<span class="fill blank" style="min-width:20mm; margin-left:2mm;"></span>ಕಿ.ಮೀ</div>
+  <div style="margin-top:2mm;">(ಈ)&nbsp;ಮುಳ್ಳು ತಂತಿ ಬೇಲಿಯ–ಜಮೀನು ನಕ್ಷೆ, ಮತ್ತು ಅಂದಾಜು ಪತ್ರಿಕೆ ಲಗತ್ತಿಸಿದೆ.</div>
+  <div style="margin-top:2mm;">(ಉ)&nbsp;ವಿದ್ಯುತ ತಂತಿ ಬೇಲಿಗಾಗಿ – ಜಮೀನಿನ ನಕ್ಷೆ ಮತ್ತು ಅಧಿಕೃತ ವಿತರಕರಿಂದ ದರಪಟ್ಟಿ ಲಗತ್ತಿಸಿದೆ ವಿತರಕರ</div>
+  <div style="margin-top:1mm;">ಹೆಸರು /ವಿಳಾಸ<span class="fill blank" style="min-width:60mm; margin-left:2mm;"></span></div>
+</div>
+</div>

@@ -1,0 +1,34 @@
+<!-- land_dev/ld4: reference PDF page 14 — valuation, loan/repayment eligibility (14-24) -->
+<div class="pg-ld4">
+<style>
+  .pg-ld4 { font-size: 9.5pt; line-height: 1.6; }
+  .pg-ld4 .row { display: flex; margin-top: 1.5mm; }
+  .pg-ld4 .n { width: 8mm; flex: none; }
+</style>
+
+<div class="row"><span class="n">14)</span><span style="flex:1">ಮೌಲ್ಯಮಾಪನ :ಉಪನೋಂದಣಾಧಿಕಾರಿಗಳಲ್ಲಿನ ಬೆಲೆಯನ್ವಯ ರೂ:</span>
+  <span class="value bold">{{ computed.land_valuation_total | num }}</span></div>
+<div class="row"><span class="n">15)</span><span style="flex:1">ಸಾಲದ ಅರ್ಹತೆ: ಮೌಲ್ಯಮಾಪನದ ಶೇಕಡಾ {{ computed.loan_eligibility_pct }} ({{ computed.loan_eligibility_pct }} X 14) ರೂ:</span>
+  <span class="value bold">{{ computed.loan_eligibility | num }}</span></div>
+<div class="row"><span class="n">16)</span><span style="flex:1">ಹಿಂದಿನ ಸಾಲಗಳ ಹೊರ ಬಾಕಿ (ಔಟ್ ಸ್ಟ್ಯಾಂಡಿಂಗ್) ರೂ:</span>
+  <span class="value">{{ computed.prev_outstanding | num }}</span></div>
+<div class="row"><span class="n">17)</span><span style="flex:1">ನಿವ್ವಳ ಸಾಲದ ಅರ್ಹತೆ</span>
+  <span>(15-16) ರೂ:&nbsp;<span class="value bold">{{ computed.net_loan_eligibility | num }}</span></span></div>
+<div class="row"><span class="n">18)</span><span style="flex:1">ಹೆಚ್ಚುವರಿ ನಿವ್ವಳ ಆದಾಯ</span></div>
+<div class="row"><span class="n"></span><span style="flex:1">= (ಅಭಿವೃದ್ಧಿ ನಂತರದ ನಿವ್ವಳ ಆದಾಯ–ಅಭಿವೃದ್ಧಿ ಪೂರ್ವದ ನಿವ್ವಳ ಆದಾಯ)</span></div>
+<div class="row"><span class="n"></span><span style="flex:1">=(ರೂ&nbsp;<span class="value bold">{{ computed.post_dev_income | num }}</span>&nbsp;−&nbsp;ರೂ&nbsp;<span class="value bold">{{ computed.annual_income | num }}</span>)</span></div>
+<div class="row"><span class="n"></span><span style="flex:1">=(ರೂ&nbsp;<span class="value bold">{{ computed.incremental_income | num }}</span></span></div>
+<div class="row"><span class="n">19)</span><span style="flex:1">ಉದ್ದೇಶಿತ ಸಾಲದ ಮರುಪಾವತಿ ಅವಧಿ:ಒಟ್ಟು <span class="fill short">{{ computed.loan_duration_years }}</span> ವರ್ಷಗಳಲ್ಲಿ, ಇದರಲ್ಲಿ <span class="fill blank" style="min-width:20mm"></span> ವರ್ಷ</span></div>
+<div class="row"><span class="n"></span><span style="flex:1">ಪ್ರಾರಂಭಿಕ ಅವಧಿ ಮತ್ತು <span class="fill short">&nbsp;</span> ವರ್ಷಗಳಲ್ಲಿ ಮಾಸಿಕ / ತ್ರೈಮಾಸಿಕ /ಅರ್ಧವಾರ್ಷಿಕ/<span class="bold italic">ವಾರ್ಷಿಕ</span> ಕಂತುಗಳು</span></div>
+<div class="row"><span class="n">20)</span><span style="flex:1">ಉದ್ದೇಶಿತ ಸಾಲದ ಮರುಪಾವತಿ ಕಂತಿನ ಮೊತ್ತ ರೂ.</span>
+  <span class="value bold">{{ computed.installment_kantu | num }}</span>&nbsp;+ ಬಡ್ಡಿ</div>
+<div class="row"><span class="n">21)</span><span style="flex:1">ಸಾಲದ ಮರುಪಾವತಿ ಅರ್ಹತೆ :ಉದ್ದೇಶಿತ ನಿವ್ವಳ ಆದಾಯದ ಶೇಕಡಾ</span></div>
+<div class="row"><span class="n"></span><span style="flex:1">= ರೂ:&nbsp;<span class="value bold">{{ computed.incremental_income | num }}</span>&nbsp;X&nbsp;75%&nbsp;% = ರೂ&nbsp;<span class="value bold">{{ computed.repayment_eligibility | num }}</span></span></div>
+<div class="row"><span class="n">22)</span><span style="flex:1">ಹಿಂದಿನ ಸಾಲಗಳ ಮರುಪಾವತಿ ಕಂತಿನ ಒಟ್ಟು ಮೊತ್ತ ರೂ</span>
+  <span class="value">{{ parsed.previous_loans.annual_installment | num }}</span></div>
+<div class="row"><span class="n">23)</span><span style="flex:1">ನಿವ್ವಳ ಮರುಪಾವತಿ ಅರ್ಹತೆ (21-22) ರೂ</span>
+  <span class="value bold">{{ computed.net_repayment_eligibility | num }}</span></div>
+<div class="row" style="margin-top:3mm;"><span class="n">24)</span><span style="flex:1">ಸಾಲದ ಮತ್ತು ಮರುಪಾವತಿ ಅರ್ಹತೆ ಬಗ್ಗೆ ಶಿಫಾರಸ್ಸು ಮತ್ತು ದೃಢೀಕರಣ</span></div>
+<div class="center italic" style="margin-top:1mm;">ಆರ್ಜಿದಾರರು ಒಳ್ಳೆಯ ಅನುಭವವುಳ್ಳವರಿದ್ದು ಸದರಿ ಯೋಜನೆಯಿಂದ ಲಾಭ ಪಡೆದು ಕಂತನ್ನು<br>
+ಸರಿಯಾಗಿ ತುಂಬುವ ಮನೋಭಾವ ಹೊಂದಿದ್ದಾರೆ.</div>
+</div>
