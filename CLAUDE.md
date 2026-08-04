@@ -125,6 +125,11 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
   branch, showed ಕುಲಗೋಡ); b2 line is now fully static text
   "ಪ್ರಾ.ಸ.ಕೃ.ಗ್ರಾ.ಬ್ಯಾಂಕ್ ನಿ ಗೋಕಾಕ". (3) b1 item 5 label ಸದಸ್ಯ ಸಂಖ್ಯೆ →
   ನೀರಾವರಿ ಕ್ಷೇತ್ರ. Reminder: owner must Sync fork + redeploy for testers.
+- **2026-08-04** — t1 (page 11) bank review: (1) 2.1 tractor make now prints
+  beside its label (was centered far right); (2) removed the loan+insurance
+  print on the ಅಶ್ವ ಶಕ್ತಿ line (12 insurance sites remain — the t1 totals-table
+  one stays); (3) 2.3 "(ಟನ್‌ಗಳು)" moved inline after the capacity value (was
+  orphaned at the left margin).
 - **2026-08-04** — b4 (page 10) bank review: (1) section 11 ಆ/ಇ now filled —
   post_dev_income (annual + 30%) and incremental_income (30%), were blank.
   (2) 12 ಅ) right label ಸದಸ್ಯ ಸಂಖ್ಯೆ → ದಾಖಲೆಯ ಪುಟ ಸಂಖ್ಯೆ. (3) ಏ) installment

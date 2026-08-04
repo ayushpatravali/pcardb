@@ -58,13 +58,15 @@
   </tr>
   <tr>
     <td></td>
-    <td style="border-bottom:1px solid #000;">ತಯಾರಿಕೆ ಯಂತ್ರ ವಿವರ</td>
-    <td colspan="2" class="center value" style="border-bottom:1px solid #000;">{{ details.tractor_make }}</td>
+    <td style="border-bottom:1px solid #000;">ತಯಾರಿಕೆ ಯಂತ್ರ ವಿವರ &nbsp;
+      <span class="value">{{ details.tractor_make }}</span></td>
+    <td colspan="2" style="border-bottom:1px solid #000;"></td>
   </tr>
   <tr>
     <td></td>
     <td style="border-bottom:1px solid #000;">ಅಶ್ವ ಶಕ್ತಿ : &nbsp;<span class="value">{{ details.tractor_hp }}</span></td>
-    <td class="center value" style="border-bottom:1px solid #000;">{{ app.loan_amount | num }} + {{ computed.insurance_amount | num }}</td>
+    {# loan+insurance print removed here per bank review 2026-08-04 #}
+    <td style="border-bottom:1px solid #000;"></td>
     <td style="border-bottom:1px solid #000;">ಮಾದರಿ &nbsp;<span class="value small">{{ details.tractor_model }}</span></td>
   </tr>
   <tr>
@@ -79,10 +81,10 @@
       <span style="padding-left:9mm;">(ತಯಾರಿಕೆ)</span>
       <span class="value" style="border-bottom:1px solid #000;">{{ details.trailer_dealer }}</span></td>
     <td style="border-bottom:1px solid #000;">ಸಾಮರ್ಥ್ಯ</td>
-    <td class="value" style="border-bottom:1px solid #000;">{{ details.trailer_capacity }}</td>
+    <td class="value" style="border-bottom:1px solid #000;">{{ details.trailer_capacity }} (ಟನ್‌ಗಳು)</td>
   </tr>
   <tr>
-    <td>(ಟನ್‌ಗಳು)</td>
+    <td></td>
     <td><span class="fill blank short">&nbsp;</span></td>
   </tr>
   <tr>
