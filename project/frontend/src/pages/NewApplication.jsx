@@ -154,6 +154,7 @@ const SectionHeader = ({ title, icon, color = 'gray' }) => {
 // variant: 'default' | 'dark' (on deep-green panels) | 'highlight' (key totals)
 // Wraps the shadcn Input primitive; register spread is passed through untouched.
 const InputField = ({ label, register, type = 'text', placeholder, step, readOnly, className = '', inputProps = {}, variant = 'default' }) => {
+    if (type === 'number' && step === undefined) step = 'any';
     const { language } = useLanguage();
     if (language === 'kn') {
         label = knLabel(label);
@@ -1047,6 +1048,7 @@ const NewApplication = () => {
                                         <td className="border border-gray-200 px-1 py-1">
                                             <input
                                                 type="number"
+                                                step="any"
                                                 {...register(`land_parcels.${index}.guntas`)}
                                                 placeholder="0"
                                                 className="w-full px-2 py-1.5 text-sm outline-none bg-transparent focus:bg-primary-50 rounded"
@@ -1055,6 +1057,7 @@ const NewApplication = () => {
                                         <td className="border border-gray-200 px-1 py-1">
                                             <input
                                                 type="number"
+                                                step="any"
                                                 {...register(`land_parcels.${index}.akaar`)}
                                                 placeholder="0.00"
                                                 className="w-full px-2 py-1.5 text-sm outline-none bg-transparent focus:bg-primary-50 rounded"
