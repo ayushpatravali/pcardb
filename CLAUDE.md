@@ -125,6 +125,9 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
   branch, showed ಕುಲಗೋಡ); b2 line is now fully static text
   "ಪ್ರಾ.ಸ.ಕೃ.ಗ್ರಾ.ಬ್ಯಾಂಕ್ ನಿ ಗೋಕಾಕ". (3) b1 item 5 label ಸದಸ್ಯ ಸಂಖ್ಯೆ →
   ನೀರಾವರಿ ಕ್ಷೇತ್ರ. Reminder: owner must Sync fork + redeploy for testers.
+- **2026-08-04** — b3 item 10: label ಒಪ್ಪಟ್ಟಿದೆ → ಒಪ್ಪಬಹುದೇ; removed stray
+  `details.tractor_make` binding there (printed ಜಾನ್ ಡೀಯರ್) — now a blank
+  line. Make still prints at its correct site, b3 item 5.
 - **2026-08-04** — b2 ಶಾಖಾ ಕಛೇರಿ section (page 8) prints fully blank per bank
   review: box-5 pahani/MR/kraya page numbers (was survey_no + 0s), section-6
   asset table (was total_extent + 0), both ಇಲ್ಲ answer boxes, ಉ) ಹೌದು box, and
