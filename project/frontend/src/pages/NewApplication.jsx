@@ -22,6 +22,18 @@ const SCHEME_CONFIG = {
     'BULLOCK':  { titleKey: 'bullockScheme', title: 'Bullock & Cart Scheme',      icon: <FileText size={32} />,  gradient: 'from-accent-600 to-accent-900',    color: 'orange' },
 };
 
+// Land Dev's 6 development-work line items are fixed (matches the bank's
+// reference packet); only the per-acre rate varies per application.
+const DEV_WORK_DESCRIPTIONS = [
+    'ಗಿಡಗಂಟೆ, ಕಲ್ಲು ಕಂಟಿಗಳನ್ನು ತೆಗೆದು ಜಮೀನು ಸ್ವಚ್ಛಗೊಳಿಸುವುದು ಮತ್ತು ಕೊರಕಲುಗಳನ್ನು ತುಂಬುವುದು',
+    'ಜಮೀನಿನ ವಿಂಗಡಣೆ, ಸಮತಳ ಮತ್ತು ಮಟ್ಟಿಗೊಳಿಸುವುದು',
+    'ಮೇರೆ / ಅಂಚುಗಳಿಗೆ ಒಡ್ಡುಗಳನ್ನು ಹಾಕುವುದು',
+    'ಹೆಚ್ಚಿನ ನೀರು ಹೊರಹೋಗಲು ಒಳಗಟ್ಟಿ ನಿರ್ಮಿಸುವುದು',
+    'ಫಲವತ್ತಾದ ಕೆರೆ ಮಣ್ಣು ಮತ್ತು ಕೊಟ್ಟಿಗೆ ಗೊಬ್ಬರ ಸಂಗ್ರಹಣೆ ಮತ್ತು ಹರಡುವುದು',
+    'ಕಾಣಬರದ ಇತರ ಕಾರ್ಯಗಳು',
+];
+const LAND_TYPE_OPTIONS = ['ಖುಷ್ಕಿ', 'ತರಿ'];
+
 // ── Dropdown Options ──────────────────────────────────────────────────────────
 // Authoritative per-acre annual income (Rs) - transcribed exactly from the
 // bank's "CROP INCOME CHART.xlsx" (31 crops). Stored crop value IS the Kannada
@@ -317,6 +329,10 @@ const NewApplication = () => {
             caste: 'ಇತರೆ ಸಾಮಾನ್ಯ',
             land_parcels: [{ sl: '1', village: '', survey_no: '', acres: '', guntas: '', akaar: '' }],
             crops: [{ crop_name: '', acres: '', guntas: '', annual_income: '' }],
+            pre_dev_crops: [{ crop_name: '', season: '', irrigated: '', acres: '', guntas: '', annual_income: '' }],
+            post_dev_crops: [{ crop_name: '', season: '', irrigated: '', acres: '', guntas: '', annual_income: '' }],
+            land_type: LAND_TYPE_OPTIONS[1],
+            dev_work_rates: DEV_WORK_DESCRIPTIONS.map(() => ''),
             irrigation_source: [],
             irrigation_hp: {},
             loan_duration_years: 7,
@@ -331,6 +347,14 @@ const NewApplication = () => {
     // Crops dynamic rows
     const { fields: cropsFields, append: cropsAppend, remove: cropsRemove } = useFieldArray({
         control, name: 'crops'
+    });
+
+    // LAND_DEV: two crop lists (before/after development)
+    const { fields: preDevCropsFields, append: preDevCropsAppend, remove: preDevCropsRemove } = useFieldArray({
+        control, name: 'pre_dev_crops'
+    });
+    const { fields: postDevCropsFields, append: postDevCropsAppend, remove: postDevCropsRemove } = useFieldArray({
+        control, name: 'post_dev_crops'
     });
 
     // Co-applicants dynamic rows
@@ -360,8 +384,11 @@ const NewApplication = () => {
     const isOldBorrower = typeof borrowerTypeSel === 'string' && borrowerTypeSel.includes('Old');
     const cropsData = watch('crops', []);
     const irrigationSource = watch('irrigation_source');
+    const preDevCropsData = watch('pre_dev_crops', []);
+    const postDevCropsData = watch('post_dev_crops', []);
+    const devWorkRates = watch('dev_work_rates', []);
 
-    const calculateCropIncomes = React.useCallback((rows = []) => {
+    const calculateCropIncomes = React.useCallback((rows = [], fieldArrayName = 'crops') => {
         if (!Array.isArray(rows)) return;
         rows.forEach((crop, index) => {
             const cropName = crop?.crop_name;
@@ -371,9 +398,9 @@ const NewApplication = () => {
             const totalAcres = acres + (guntas / 40);
             // No chart rate (legacy/unknown crop): keep the stored income as-is.
             if (rate > 0) {
-                setValue(`crops.${index}.annual_income`, Math.round(totalAcres * rate));
+                setValue(`${fieldArrayName}.${index}.annual_income`, Math.round(totalAcres * rate));
             } else if (!cropName) {
-                setValue(`crops.${index}.annual_income`, '');
+                setValue(`${fieldArrayName}.${index}.annual_income`, '');
             }
         });
     }, [setValue]);
@@ -452,12 +479,41 @@ const NewApplication = () => {
     // so locked/computed fields update on every keystroke.
     const cropsKey = JSON.stringify(cropsData);
     const landKey = JSON.stringify(landParcels);
+    const preDevCropsKey = JSON.stringify(preDevCropsData);
+    const postDevCropsKey = JSON.stringify(postDevCropsData);
+    const devWorkRatesKey = JSON.stringify(devWorkRates);
 
     // Auto-calculate crop incomes
     React.useEffect(() => {
         calculateCropIncomes(cropsData);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cropsKey, calculateCropIncomes]);
+
+    // LAND_DEV: pre/post-development crop incomes (same chart-rate lookup as
+    // the main crop table above, just two separate lists)
+    React.useEffect(() => {
+        calculateCropIncomes(preDevCropsData, 'pre_dev_crops');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [preDevCropsKey, calculateCropIncomes]);
+    React.useEffect(() => {
+        calculateCropIncomes(postDevCropsData, 'post_dev_crops');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [postDevCropsKey, calculateCropIncomes]);
+
+    // LAND_DEV: development-work amount = rate/acre x total extent (same
+    // extent formula as land valuation above), recomputed on every keystroke.
+    React.useEffect(() => {
+        if (schemeType !== 'LAND_DEV') return;
+        const totalExtentDecimal = (landParcels || []).reduce(
+            (sum, row) => sum + (parseFloat(row?.acres) || 0) + (parseFloat(row?.guntas) || 0) / 40,
+            0
+        );
+        (devWorkRates || []).forEach((rate, index) => {
+            const r = parseFloat(rate) || 0;
+            setValue(`dev_work_amounts.${index}`, r > 0 ? Math.round(r * totalExtentDecimal) : '');
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [devWorkRatesKey, landKey, schemeType, setValue]);
 
     // Auto-calculate total land area
     React.useEffect(() => {
@@ -562,10 +618,28 @@ const NewApplication = () => {
                     formData.total_loan_amount       = details.total_loan_amount ?? details.loan_amount;
                     formData.loan_amount             = details.total_loan_amount ?? details.loan_amount ?? app.loan_amount;
                 } else if (app.scheme_type === 'LAND_DEV' && details) {
-                    formData.land_survey_no           = details.survey_no;
-                    formData.land_area_acres          = details.area_acres;
-                    formData.land_assessment          = details.assessment;
-                    formData.land_type                = details.land_type;
+                    formData.land_type = details.land_type || LAND_TYPE_OPTIONS[1];
+                    formData.pre_dev_crops = parseJsonArray(details.pre_dev_crops).map((crop) => ({
+                        ...crop,
+                        crop_name: normalizeCropName(crop.crop_name),
+                        acres: crop.acres ?? '',
+                        guntas: crop.guntas ?? '',
+                        annual_income: crop.annual_income ?? '',
+                    }));
+                    formData.post_dev_crops = parseJsonArray(details.post_dev_crops).map((crop) => ({
+                        ...crop,
+                        crop_name: normalizeCropName(crop.crop_name),
+                        acres: crop.acres ?? '',
+                        guntas: crop.guntas ?? '',
+                        annual_income: crop.annual_income ?? '',
+                    }));
+                    const devWorkItems = parseJsonArray(details.dev_work_items);
+                    formData.dev_work_rates = DEV_WORK_DESCRIPTIONS.map(
+                        (_, i) => devWorkItems[i]?.rate_per_acre ?? ''
+                    );
+                    formData.dev_work_amounts = DEV_WORK_DESCRIPTIONS.map(
+                        (_, i) => devWorkItems[i]?.amount ?? ''
+                    );
                 } else if (app.scheme_type.includes('SHEEP') && details) {
                     formData.animal_cost   = details.animal_cost;
                     formData.shed_cost     = details.shed_cost;
@@ -689,11 +763,22 @@ const NewApplication = () => {
                 total_loan_amount:     data.total_loan_amount ? parseFloat(data.total_loan_amount) : null,
             };
         } else if (currentScheme === 'LAND_DEV') {
+            const totalExtentDecimal = (data.land_parcels || []).reduce(
+                (sum, row) => sum + (parseFloat(row?.acres) || 0) + (parseFloat(row?.guntas) || 0) / 40,
+                0
+            );
+            const devWorkItems = DEV_WORK_DESCRIPTIONS.map((description, i) => {
+                const rate = parseFloat(data.dev_work_rates?.[i]) || 0;
+                const amount = rate > 0 ? Math.round(rate * totalExtentDecimal) : 0;
+                return { description, rate_per_acre: rate, amount };
+            });
+            const totalDevCost = devWorkItems.reduce((sum, w) => sum + w.amount, 0);
             payload.land_details = {
-                survey_no:  data.land_survey_no || null,
-                area_acres: data.land_area_acres ? parseFloat(data.land_area_acres) : null,
-                assessment: data.land_assessment ? parseFloat(data.land_assessment) : null,
-                land_type:  data.land_type || null,
+                land_type: data.land_type || null,
+                pre_dev_crops: JSON.stringify(data.pre_dev_crops || []),
+                post_dev_crops: JSON.stringify(data.post_dev_crops || []),
+                dev_work_items: JSON.stringify(devWorkItems),
+                total_dev_cost: totalDevCost || null,
             };
         } else if (currentScheme.includes('SHEEP')) {
             payload.sheep_details = {
@@ -1300,6 +1385,151 @@ const NewApplication = () => {
                                 <InputField label="ಒಟ್ಟು ಕೋಟೇಶನ್ — Total Quotation (₹)" type="number" register={register('total_quotation')} readOnly variant="dark" />
                                 <InputField label="ಒಟ್ಟು ಮುಂಗಡ ಪಾವತಿ — Total Down Payment (₹)" type="number" register={register('total_down_payment')} readOnly variant="dark" />
                                 <InputField label="ಒಟ್ಟು ಸಾಲದ ಮೊತ್ತ — Total Loan Amount (₹)" type="number" register={register('total_loan_amount')} readOnly variant="highlight" />
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* LAND_DEV */}
+                {schemeType === 'LAND_DEV' && (
+                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-emerald-100">
+                        <SectionHeader title="ಭೂ ಅಭಿವೃದ್ಧಿ ವಿವರ — Land Development Details" icon={<Sprout size={18} />} color="green" />
+
+                        <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <SelectField label="ಜಮೀನಿನ ವಿಧ — Land Type"
+                                register={register('land_type')}
+                                options={LAND_TYPE_OPTIONS} />
+                        </div>
+
+                        {/* Pre-development crops */}
+                        <div className="mb-6">
+                            <div className="flex items-center justify-between mb-3">
+                                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                    {L("ಅಭಿವೃದ್ಧಿ ಪೂರ್ವ ಬೆಳೆಗಳು — Pre-Development Crops")}
+                                </label>
+                                <Button type="button" variant="secondary" size="sm"
+                                    onClick={() => preDevCropsAppend({ crop_name: '', season: '', irrigated: '', acres: '', guntas: '', annual_income: '' })}>
+                                    <Plus size={14} /> {L("ಬೆಳೆ ಸೇರಿಸಿ (Add Crop)")}
+                                </Button>
+                            </div>
+                            <div className="space-y-3">
+                                {preDevCropsFields.map((field, index) => (
+                                    <div key={field.id} className="grid grid-cols-12 gap-3 items-end bg-stone-50 p-3 rounded-xl border border-stone-200/70">
+                                        <div className="col-span-3">
+                                            <SelectField label={`ಬೆಳೆ ${index + 1} — Crop Name`}
+                                                register={register(`pre_dev_crops.${index}.crop_name`)}
+                                                options={CROP_OPTIONS} />
+                                        </div>
+                                        <div className="col-span-2">
+                                            <InputField label="ಋತು — Season"
+                                                register={register(`pre_dev_crops.${index}.season`)}
+                                                placeholder="ಮುಂ/ಹಿಂ" />
+                                        </div>
+                                        <div className="col-span-2">
+                                            <InputField label="ಎಕರೆ — Acres"
+                                                type="number" step="0.01"
+                                                register={register(`pre_dev_crops.${index}.acres`)}
+                                                placeholder="0" />
+                                        </div>
+                                        <div className="col-span-2">
+                                            <InputField label="ಗುಂಟೆ — Guntas"
+                                                type="number"
+                                                register={register(`pre_dev_crops.${index}.guntas`)}
+                                                placeholder="0" />
+                                        </div>
+                                        <div className="col-span-2">
+                                            <InputField label="ಆದಾಯ — Income (₹)"
+                                                type="number"
+                                                register={register(`pre_dev_crops.${index}.annual_income`)}
+                                                readOnly />
+                                        </div>
+                                        <div className="col-span-1 pb-2">
+                                            <button type="button" onClick={() => preDevCropsRemove(index)}
+                                                className="w-full h-10 flex items-center justify-center text-red-400 hover:text-red-600 bg-white border border-red-100 rounded-lg transition-colors">
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Post-development crops */}
+                        <div className="mb-6">
+                            <div className="flex items-center justify-between mb-3">
+                                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                    {L("ಅಭಿವೃದ್ಧಿ ನಂತರದ ಬೆಳೆಗಳು — Post-Development Crops")}
+                                </label>
+                                <Button type="button" variant="secondary" size="sm"
+                                    onClick={() => postDevCropsAppend({ crop_name: '', season: '', irrigated: '', acres: '', guntas: '', annual_income: '' })}>
+                                    <Plus size={14} /> {L("ಬೆಳೆ ಸೇರಿಸಿ (Add Crop)")}
+                                </Button>
+                            </div>
+                            <div className="space-y-3">
+                                {postDevCropsFields.map((field, index) => (
+                                    <div key={field.id} className="grid grid-cols-12 gap-3 items-end bg-stone-50 p-3 rounded-xl border border-stone-200/70">
+                                        <div className="col-span-3">
+                                            <SelectField label={`ಬೆಳೆ ${index + 1} — Crop Name`}
+                                                register={register(`post_dev_crops.${index}.crop_name`)}
+                                                options={CROP_OPTIONS} />
+                                        </div>
+                                        <div className="col-span-2">
+                                            <InputField label="ಋತು — Season"
+                                                register={register(`post_dev_crops.${index}.season`)}
+                                                placeholder="ವಾ" />
+                                        </div>
+                                        <div className="col-span-2">
+                                            <InputField label="ಎಕರೆ — Acres"
+                                                type="number" step="0.01"
+                                                register={register(`post_dev_crops.${index}.acres`)}
+                                                placeholder="0" />
+                                        </div>
+                                        <div className="col-span-2">
+                                            <InputField label="ಗುಂಟೆ — Guntas"
+                                                type="number"
+                                                register={register(`post_dev_crops.${index}.guntas`)}
+                                                placeholder="0" />
+                                        </div>
+                                        <div className="col-span-2">
+                                            <InputField label="ಆದಾಯ — Income (₹)"
+                                                type="number"
+                                                register={register(`post_dev_crops.${index}.annual_income`)}
+                                                readOnly />
+                                        </div>
+                                        <div className="col-span-1 pb-2">
+                                            <button type="button" onClick={() => postDevCropsRemove(index)}
+                                                className="w-full h-10 flex items-center justify-center text-red-400 hover:text-red-600 bg-white border border-red-100 rounded-lg transition-colors">
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Development-work cost table (6 fixed rows) */}
+                        <div>
+                            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                                {L("ಭೂ ಅಭಿವೃದ್ಧಿ ಕಾರ್ಯಗಳ ವೆಚ್ಚ — Development Work Cost")}
+                            </label>
+                            <div className="space-y-3">
+                                {DEV_WORK_DESCRIPTIONS.map((description, index) => (
+                                    <div key={index} className="grid grid-cols-12 gap-3 items-end bg-stone-50 p-3 rounded-xl border border-stone-200/70">
+                                        <div className="col-span-7 text-sm text-stone-600 pb-2">{index + 1}. {description}</div>
+                                        <div className="col-span-2">
+                                            <InputField label="ದರ/ಎಕರೆ — Rate/Acre (₹)"
+                                                type="number"
+                                                register={register(`dev_work_rates.${index}`)}
+                                                placeholder="0" />
+                                        </div>
+                                        <div className="col-span-3">
+                                            <InputField label="ಮೊತ್ತ — Amount (₹)"
+                                                type="number"
+                                                register={register(`dev_work_amounts.${index}`)}
+                                                readOnly />
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>

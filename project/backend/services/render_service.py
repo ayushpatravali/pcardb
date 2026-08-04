@@ -234,7 +234,7 @@ def build_context(app: Application, details, spec) -> dict:
             if isinstance(c, dict):
                 c["crop_name"] = kn_display(c.get("crop_name"))
                 c["extent"] = extent_str(c.get("acres"), c.get("guntas"))
-                for key in ("cost_per_acre", "total_cost", "yield_per_acre", "total_yield", "rate", "total_income", "other_cost"):
+                for key in ("season", "irrigated", "cost_per_acre", "total_cost", "yield_per_acre", "total_yield", "rate", "total_income", "other_cost"):
                     c.setdefault(key, None)
     else:
         parsed["pre_dev_crops"] = []
