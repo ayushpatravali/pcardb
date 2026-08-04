@@ -300,12 +300,11 @@ def build_context(app: Application, details, spec) -> dict:
     if details is not None and app.scheme_type == SchemeType.TRACTOR:
         computed["total_project_cost"] = details.total_quotation
         computed["margin_money"] = details.total_down_payment
-        # Page 10 ಏ) prints the PER-INSTALLMENT amount: installments are
-        # half-yearly, so N years = 2N kantu -> total loan / (years * 2).
-        # (t5's 8.9 stays annual — its label says ವಾರ್ಷಿಕ.)
+        # Page 10 ಏ) prints the YEARLY installment (bank review 2026-08-04:
+        # was half-yearly 80000; now matches t5 8.9's annual kantu).
         if details.total_loan_amount:
             computed["installment_kantu"] = round(
-                details.total_loan_amount / (computed["loan_duration_years"] * 2)
+                details.total_loan_amount / computed["loan_duration_years"]
             )
 
     context = {

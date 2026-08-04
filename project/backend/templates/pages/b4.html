@@ -41,9 +41,9 @@
     <div class="row"><span class="lab">ಅ) ಅಭಿವೃದ್ಧಿ ಪೂರ್ವದ ಆದಾಯ : ಉತ್ಪಾದನೆಗೆ ಖರ್ಚು</span>
       <span>ರೂ. <span class="fill">{{ computed.annual_income | num }}</span></span></div>
     <div class="row"><span class="lab">ಆ) ಅಭಿವೃದ್ಧಿ ನಂತರದ ಆದಾಯ / ಉತ್ಪಾದನೆಯಿಂದ ಆದಾಯ</span>
-      <span>ರೂ. <span class="fill blank">&nbsp;</span></span></div>
+      <span>ರೂ. <span class="fill blank">{{ computed.post_dev_income | num }}</span></span></div>
     <div class="row"><span class="lab">ಇ) ಹೆಚ್ಚುವರಿ ನಿವ್ವಳ ಆದಾಯ / ನಿವ್ವಳ ಉಳಿತಾಯ</span>
-      <span>ರೂ. <span class="fill blank">&nbsp;</span></span></div>
+      <span>ರೂ. <span class="fill blank">{{ computed.incremental_income | num }}</span></span></div>
   </div>
 </div>
 <div class="rule"></div>
@@ -54,7 +54,7 @@
     <div>ಆರ್ಥಿಕ ಸಕ್ಷಮತೆ :</div>
     {# Values follow the workbook's B4 formula chain — docs/formula_map_pages_9_10.md #}
     <div class="row"><span class="lab">ಅ) ಭದ್ರತೆ ಮೌಲ್ಯ : &nbsp; ರೂ. <span class="fill blank">{{ computed.land_valuation_total | num }}</span></span>
-      <span>ಸದಸ್ಯ ಸಂಖ್ಯೆ <span class="fill blank short">&nbsp;</span></span></div>
+      <span>ದಾಖಲೆಯ ಪುಟ ಸಂಖ್ಯೆ <span class="fill blank short">&nbsp;</span></span></div>
     <div class="row"><span class="lab">ಆ) ಸಾಲದ ಅರ್ಹತೆ : &nbsp; ರೂ. <span class="fill blank">{{ computed.loan_eligibility | num }}</span></span>
       <span>(ಮೌಲ್ಯ % <span class="fill short">80%</span> %)</span></div>
     <div class="row"><span class="lab">ಇ) ಹಿಂದಿನ ಸಾಲಗಳ ಹೊರೆಬಾಕಿ &nbsp; ರೂ. <span class="fill blank">{{ parsed.previous_loans.outstanding | num }}</span></span>
@@ -72,10 +72,10 @@
       <span class="lab">ಎ) ಉದ್ದೇಶಿತ ಸಾಲದ ಮರುಪಾವತಿ ಅವಧಿ : ಒಟ್ಟು <span class="fill short">{{ computed.loan_duration_years }}</span> ವರ್ಷಗಳು, ಇದರಲ್ಲಿ</span>
       <span><span class="fill blank short">&nbsp;</span> ತಿಂಗಳುಗಳು</span></div>
     <div class="row">
-      <span class="lab">ಪ್ರಾರಂಭಿಕ ವರದಿ, ನಂತರ <span class="fill">{{ computed.loan_duration_years }} ವರ್ಷ ({{ computed.loan_duration_years * 2 }} ಕಂತು)</span></span>
+      <span class="lab">ಪ್ರಾರಂಭಿಕ ವರದಿ, ನಂತರ <span class="fill">{{ computed.loan_duration_years }} ವರ್ಷ ({{ computed.loan_duration_years }} ಕಂತು)</span></span>
       <span class="small">ವರ್ಷಗಳಲ್ಲಿ ಮಾಸಿಕ / ತ್ರೈಮಾಸಿಕ / ಅರ್ಧವಾರ್ಷಿಕ / ವಾರ್ಷಿಕ ಕಂತುಗಳು</span></div>
     <div class="row"><span class="lab">ಏ) ಉದ್ದೇಶಿತ ಸಾಲದ ಮರುಪಾವತಿ ಕಂತಿನ ಮೊತ್ತ</span>
-      <span>ರೂ. <span class="fill blank">{{ computed.installment_kantu | num }}</span> + ಬಡ್ಡಿ</span></div>
+      <span>ರೂ. <span class="fill blank">{{ computed.installment_kantu | num }}</span> (ವಾರ್ಷಿಕ) + ಬಡ್ಡಿ</span></div>
   </div>
 </div>
 <div class="rule"></div>

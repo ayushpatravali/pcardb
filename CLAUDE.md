@@ -125,6 +125,13 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
   branch, showed ಕುಲಗೋಡ); b2 line is now fully static text
   "ಪ್ರಾ.ಸ.ಕೃ.ಗ್ರಾ.ಬ್ಯಾಂಕ್ ನಿ ಗೋಕಾಕ". (3) b1 item 5 label ಸದಸ್ಯ ಸಂಖ್ಯೆ →
   ನೀರಾವರಿ ಕ್ಷೇತ್ರ. Reminder: owner must Sync fork + redeploy for testers.
+- **2026-08-04** — b4 (page 10) bank review: (1) section 11 ಆ/ಇ now filled —
+  post_dev_income (annual + 30%) and incremental_income (30%), were blank.
+  (2) 12 ಅ) right label ಸದಸ್ಯ ಸಂಖ್ಯೆ → ದಾಖಲೆಯ ಪುಟ ಸಂಖ್ಯೆ. (3) ಏ) installment
+  is now YEARLY — installment_kantu = total_loan/years (was ÷2N half-yearly;
+  11.2L/7 = 1,60,000), prints "(ವಾರ್ಷಿಕ)" after the amount; period line now
+  "N ವರ್ಷ (N ಕಂತು)". Matches t5 8.9 which was already annual — no other
+  installment sites needed the ವಾರ್ಷಿಕ tag.
 - **2026-08-04** — b3 item 10: label ಒಪ್ಪಟ್ಟಿದೆ → ಒಪ್ಪಬಹುದೇ; removed stray
   `details.tractor_make` binding there (printed ಜಾನ್ ಡೀಯರ್) — now a blank
   line. Make still prints at its correct site, b3 item 5.
