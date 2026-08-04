@@ -56,7 +56,7 @@
     <div class="row"><span class="lab">ಅ) ಭದ್ರತೆ ಮೌಲ್ಯ : &nbsp; ರೂ. <span class="fill blank">{{ computed.land_valuation_total | num }}</span></span>
       <span>ದಾಖಲೆಯ ಪುಟ ಸಂಖ್ಯೆ <span class="fill blank short">&nbsp;</span></span></div>
     <div class="row"><span class="lab">ಆ) ಸಾಲದ ಅರ್ಹತೆ : &nbsp; ರೂ. <span class="fill blank">{{ computed.loan_eligibility | num }}</span></span>
-      <span>(ಮೌಲ್ಯ % <span class="fill short">80%</span> %)</span></div>
+      <span>(ಮೌಲ್ಯ % <span class="fill short">{{ computed.loan_eligibility_pct }}%</span> %)</span></div>
     <div class="row"><span class="lab">ಇ) ಹಿಂದಿನ ಸಾಲಗಳ ಹೊರೆಬಾಕಿ &nbsp; ರೂ. <span class="fill blank">{{ parsed.previous_loans.outstanding | num }}</span></span>
       <span>ದಾಖಲೆಯ ಹಾಳೆ ಸಂಖ್ಯೆ <span class="fill blank short">&nbsp;</span></span></div>
     <div class="row"><span class="lab">ಈ) ನಿವ್ವಳ ಸಾಲದ ಅರ್ಹತೆ &nbsp; ರೂ. <span class="fill blank">{{ computed.net_loan_eligibility | num }}</span></span>

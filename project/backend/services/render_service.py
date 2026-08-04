@@ -27,6 +27,14 @@ OUTPUT_DIR = Path(os.environ.get("OUTPUT_DIR", BASE_DIR / "assets" / "generated"
 # Fixed insurance component added on top of the final loan amount wherever it
 # prints (bank instruction 2026-08: show "+ 1 lakh", never the word insurance).
 INSURANCE_AMOUNT = 100000
+# Loan-eligibility percentage of land valuation — varies by scheme. Confirmed
+# by reading the Land Dev reference PDF (page 10 item ಆ prints 50%, not
+# Tractor's 80%). Add future schemes here as their reference packets confirm.
+LOAN_ELIGIBILITY_PCT = {
+    SchemeType.TRACTOR: 80,
+    SchemeType.LAND_DEV: 50,
+}
+DEFAULT_LOAN_ELIGIBILITY_PCT = 80
 # Tractor hire-income chain (packet page 14 section 7 -> feeds T5 8.7 as
 # "ಅಂಶ 7:ಇ(7)"). Bank set the hourly rate to 400 on 2026-08-03; the workbook's
 # stale figures (200/hr, +100960) were acknowledged as mistakes.
@@ -253,7 +261,10 @@ def build_context(app: Application, details, spec) -> dict:
     prev_installment = _to_float(previous_loans.get("annual_installment"))
     inc = float(annual_income or 0)
     incremental_income = round(inc * 0.30) if inc else None
-    loan_eligibility = round(valuation_total * 0.80) if valuation_total else None
+    loan_eligibility_pct = LOAN_ELIGIBILITY_PCT.get(app.scheme_type, DEFAULT_LOAN_ELIGIBILITY_PCT)
+    loan_eligibility = (
+        round(valuation_total * loan_eligibility_pct / 100) if valuation_total else None
+    )
     net_loan_eligibility = (
         round(loan_eligibility - prev_outstanding) if loan_eligibility else None
     )
@@ -273,6 +284,7 @@ def build_context(app: Application, details, spec) -> dict:
         "incremental_income": incremental_income,
         "post_dev_income": round(inc + inc * 0.30) if inc else None,
         "loan_eligibility": loan_eligibility,
+        "loan_eligibility_pct": loan_eligibility_pct,
         "net_loan_eligibility": net_loan_eligibility,
         "repayment_eligibility": repayment_eligibility,
         "net_repayment_eligibility": net_repayment_eligibility,
@@ -287,7 +299,10 @@ def build_context(app: Application, details, spec) -> dict:
         "hire_own_use_cost": HIRE_OWN_USE_COST,
         "prev_outstanding": prev_outstanding or None,
         "installment_kantu": None,  # set below when scheme details carry the loan total
-        "insurance_amount": INSURANCE_AMOUNT,
+        # Land Dev's reference packet has no insurance line at any of its
+        # loan-amount print sites (confirmed 2026-08-04) — every other scheme
+        # keeps the fixed constant.
+        "insurance_amount": INSURANCE_AMOUNT if app.scheme_type != SchemeType.LAND_DEV else 0,
         "loan_duration_years": int(app.loan_duration_years or DEFAULT_LOAN_DURATION_YEARS),
         "dob": _fmt_date(app.dob),
         "farmer_type_kn": _farmer_type_kn(app.farmer_type),
@@ -356,6 +371,12 @@ def _check_required(spec, context):
         raise MissingFieldsError(missing)
 
 
+def plus_insurance(amount):
+    """Render '+ N' only when N is nonzero — schemes with no insurance line
+    (e.g. LAND_DEV) print nothing instead of a stray '+ 0'."""
+    return f"+ {plain_number(amount)}" if amount else ""
+
+
 def _jinja_env() -> Environment:
     env = Environment(
         loader=FileSystemLoader(TEMPLATE_DIR),
@@ -365,6 +386,7 @@ def _jinja_env() -> Environment:
     env.filters["num"] = plain_number
     env.filters["kn_words"] = amount_in_words_kn
     env.filters["dmy"] = _fmt_date
+    env.filters["plus_insurance"] = plus_insurance
     return env
 
 
