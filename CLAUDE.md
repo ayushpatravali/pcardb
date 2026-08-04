@@ -117,6 +117,10 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 - **2026-08-03** — Formula map: all 489 cell formulas from the Vasant Malli
   Tractor workbook extracted to `legacy_assets/formula_maps/tractor_formulas.json`
   (gitignored) — reference for every computed figure in the packet.
+- **2026-08-04** — Removed 3 stray loan+insurance prints flagged by bank
+  review: a3 beside ದೃಢೀಕರಣ heading, t2 heading line 5, valuation between the
+  Sd/ signatures (the one in valuation's ಮಂಜೂರ column stays). 13 insurance
+  sites remain.
 - **2026-08-03** — Dates: dashboard table pinned to en-GB (was viewer-locale;
   US testers saw mm/dd on the same URL). Native date pickers REPLACED with
   DD/MM/YYYY masked text inputs (browser widget follows the viewer's OS
