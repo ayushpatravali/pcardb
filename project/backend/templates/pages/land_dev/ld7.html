@@ -1,0 +1,54 @@
+<!-- land_dev/ld7: reference PDF page 17 — LD2: ಅನುಬಂಧ-3ಕೆ technical description -->
+<div class="pg-ld7">
+<style>
+  .pg-ld7 { font-size: 9.5pt; line-height: 1.6; }
+  .pg-ld7 .row { display: flex; margin-top: 1.5mm; }
+  .pg-ld7 .n { width: 8mm; flex: none; }
+</style>
+
+<div class="bank-header">{{ bank.name_line1 }}</div>
+<div class="center bold" style="margin-top:1mm;">ಭೂ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆಯ ತಾಂತ್ರಿಕ ಗುಣವಿಮರ್ಷಣಾ ವಿವರ</div>
+<div class="center" style="margin-top:1mm;">ಅನುಬಂಧ - 3ಕೆ</div>
+
+<div class="row"><span class="n">1)</span><span>ಅರ್ಜಿದಾರನ ಹೆಸರು</span>
+  <span class="value bold" style="margin-left:4mm;">{{ app.applicant_name_kn }}</span></div>
+<div class="row"><span class="n"></span><span style="margin-left:8mm;">ಅ)&nbsp;ಗ್ರಾಮ</span>
+  <span class="value bold" style="margin-left:4mm;">{{ app.village }}</span></div>
+<div class="row"><span class="n"></span><span style="margin-left:8mm;">ಆ)&nbsp;ತಾಲೂಕು</span>
+  <span class="value bold" style="margin-left:4mm;">{{ app.taluk }}</span></div>
+<div class="row"><span class="n"></span><span style="margin-left:8mm;">ಇ)&nbsp;ಜಿಲ್ಲೆ</span>
+  <span class="value bold" style="margin-left:4mm;">{{ app.district }}</span></div>
+<div class="row"><span class="n">2)</span><span>ಅರ್ಜಿದಾರರ ಒಟ್ಟು ಹಿಡುವಳಿ</span></div>
+<div class="row"><span class="n"></span><span style="margin-left:8mm;">ಅ)&nbsp;ಖುಷ್ಕಿ</span></div>
+<div class="row"><span class="n"></span><span style="margin-left:8mm;">ಆ)&nbsp;ತರಿ (ನೀರಾವರಿ)</span>
+  <span class="value bold" style="margin-left:4mm;">{{ computed.total_extent }}</span></div>
+<div class="row"><span class="n"></span><span style="margin-left:8mm;">ಇ)&nbsp;ಸಣ್ಣ ರೈತರು / ದೊಡ್ಡ ರೈತರು</span>
+  <span class="value bold" style="margin-left:4mm;">{{ computed.farmer_type_kn }}</span></div>
+<div class="row"><span class="n">3)</span><span>ಅಭಿವೃದ್ಧಿ ಹೊಂದುವ ಹಿಡುವಳಿ (ಎಕರಗಳು) ಸರ್ವೆ ನಂ</span>
+  <span class="value bold" style="margin-left:4mm;">{% for p in parsed.land_parcels %}{{ p.survey_no }}{% if not loop.last %}, {% endif %}{% endfor %}</span></div>
+<div class="row"><span class="n">4)</span><span>ಮಣ್ಣಿನ ಮೇಲೆ ಲಕ್ಷಣ ಇಳಿಜಾರು</span></div>
+<div class="row"><span class="n">5)</span><span>ಅಭಿವೃದ್ಧಿ ಹೊಂದುವ ಜಮೀನಿನ ನಕ್ಷೆ</span>
+  <span style="margin-left:4mm;">ಭೂ ಅಭಿವೃದ್ಧಿ ಕಾರ್ಯಗಳ ವಿವರ ಗುರುತಿಸಿ ಪ್ರತ್ಯೇಕವಾಗಿ ಲಗತ್ತಿಸುವದು ತ:ಖೆ -1</span></div>
+<div class="row"><span class="n">6)</span><span>ಅವಶ್ಯಕ ಅಭಿವೃದ್ಧಿ ಕಾರ್ಯಗಳ ವಿವರ</span>
+  <span style="margin-left:4mm;">ಅಂದಾಜು ಪಟ್ಟಿ ವಿವರವಾಗಿ ತಯಾರಿಸಿ ಪ್ರತ್ಯೇಕವಾಗಿ ಲಗತ್ತಿಸುವದು ತ:ಖೆ -2</span></div>
+<div class="row"><span class="n">7)</span><span>1) ಅಭಿವೃದ್ಧಿ ಪೂರ್ವದಲ್ಲಿ ಬೆಳೆಯುವ ಬೆಳೆಗಳು</span>
+  <span class="value bold" style="margin-left:4mm;">{% for c in parsed.pre_dev_crops %}{{ c.crop_name }}{% if not loop.last %}, {% endif %}{% endfor %}</span></div>
+<div class="row"><span class="n"></span><span style="margin-left:8mm;">2) ಅಭಿವೃದ್ಧಿ ನಂತರ ಬೆಳೆಯುವ ಬೆಳೆಗಳು</span>
+  <span class="value bold" style="margin-left:4mm;">{% for c in parsed.post_dev_crops %}{{ c.crop_name }}{% if not loop.last %}, {% endif %}{% endfor %}</span></div>
+<div class="row"><span class="n"></span><span style="margin-left:8mm;">3) ಆಯವ್ಯಯ ತ:ಖೆ</span>
+  <span style="margin-left:4mm;">ತ:ಖೆ -3 ಲಗತ್ತಿಸುವದು</span></div>
+<div class="row"><span class="n">8)</span><span>ಅರ್ಜಿದಾರರು ಭೂ ಸಮತಳ ಮಾಡಲು ಉಪಯೋಗಿಸುವ ಸಾಧನ</span>
+  <span style="margin-left:4mm;">ಎತ್ತು : ಟ್ರಾಕ್ಟರ ಬೋಡೋಜರ</span></div>
+<div class="row"><span class="n">9)</span><span>ಯೋಜನೆಯ ಅಂದಾಜು ವೆಚ್ಚ ರೂ</span>
+  <span class="value bold" style="margin-left:4mm;">{{ computed.total_dev_cost | num }}</span></div>
+<div class="row"><span class="n">10)</span><span>ತಾಂತ್ರಿಕ ಮೇಲ್ವಿಚಾರಕರು ವಿಶೇಷ ಸ್ಥಳ ಪರಿಶೀಲನಾ ವರದಿ</span>
+  <span style="margin-left:4mm;">ತ:ಖೆ-4 ಆಗತ್ತಿಸುವದು</span></div>
+
+<div style="margin-top:6mm;">ಮೇಲ್ಕಂಡ ಅರ್ಜಿದಾರರ ಜಮೀನಿಗೆ ದಿನಾಂಕ <span class="fill blank" style="min-width:26mm;"></span> ರಂದು ಬೇಟಿ ನೀಡಿ</div>
+<div>ಸ್ಥಳ ಸಮೀಕ್ಷೆ ನಡೆಸಿ ತಾಂತ್ರಿಕ ಗುಣವಿಮರ್ಷಣಾ ವರದಿ ಲಗತ್ತಿಸಿದೆ.</div>
+
+<div style="display:flex; justify-content:space-between; margin-top:10mm; font-weight:bold;">
+  <div>ವಲಯ ಮೇಲ್ವಿಚಾರಕರು</div>
+  <div>ತಾಂತ್ರಿಕ ಮೇಲ್ವಿಚಾರಕರು</div>
+</div>
+</div>

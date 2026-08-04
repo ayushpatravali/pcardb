@@ -111,6 +111,7 @@
 <!-- 5) -->
 <div class="item"><span class="num-col">5)</span>
   <div class="body">
+    {% if app.scheme_type == "TRACTOR" %}
     <div class="row">
       <span>ಯಂತ್ರೋಪಕರಣಗಳ ತಯಾರಿಕೆ <span class="fill">{{ details.tractor_make }}</span></span>
       <span>ಅಶ್ವಶಕ್ತಿ <span class="fill short">{{ details.tractor_hp }}</span> ಹಂತ</span>
@@ -121,6 +122,20 @@
       <span>ದರಪಟ್ಟಿಗಳ ಹಾಳೆ ಸಂಖ್ಯೆ <span class="fill blank short">&nbsp;</span></span></div>
     <div class="row"><span class="lab">ಬೇಡಿಕೆಗನುಗುಣವಾಗಿ ಸಮರ್ಥನೆ ಸಮರ್ಪಕವಾಗಿದೆಯೇ ? &nbsp;<span class="fill">ಸಮರ್ಪಕವಾಗಿದೆ</span></span>
       <span></span></div>
+    {% else %}
+    {# LAND_DEV (and any other non-Tractor scheme): no tractor make/HP/dealer —
+       confirmed blank on the Land Dev reference PDF's page 9. #}
+    <div class="row">
+      <span>ಯಂತ್ರೋಪಕರಣಗಳ ತಯಾರಿಕೆ <span class="fill blank"></span></span>
+      <span>ಅಶ್ವಶಕ್ತಿ <span class="fill blank short"></span> ಹಂತ</span>
+    </div>
+    <div class="row"><span class="lab">ಮಾರಾಟಗಾರರ ಹೆಸರು : &nbsp;<span class="fill blank wide"></span></span>
+      <span></span></div>
+    <div class="row"><span class="lab">ಅಂಗೀಕೃತವಾಗಿದೆಯೇ ? <span class="fill blank short"></span></span>
+      <span>ದರಪಟ್ಟಿಗಳ ಹಾಳೆ ಸಂಖ್ಯೆ <span class="fill blank short">&nbsp;</span></span></div>
+    <div class="row"><span class="lab">ಬೇಡಿಕೆಗನುಗುಣವಾಗಿ ಸಮರ್ಥನೆ ಸಮರ್ಪಕವಾಗಿದೆಯೇ ? &nbsp;<span class="fill blank"></span></span>
+      <span></span></div>
+    {% endif %}
   </div>
 </div>
 <div class="rule"></div>
@@ -150,6 +165,7 @@
         <th class="center">ಸ್ವಂತ ಕೊಡುಗೆ</th>
         <th class="center">ಬ್ಯಾಂಕ್ ಸಾಲ</th>
       </tr>
+      {% if app.scheme_type == "TRACTOR" %}
       <tr>
         <td>ಅ)</td><td class="center value">ಟ್ರ್ಯಾಕ್ಟರ್</td>
         <td class="right value">{{ details.tractor_quotation | num }}</td>
@@ -173,6 +189,31 @@
       <tr><td></td><td></td><td></td><td></td>
         <td class="right value">+ {{ computed.insurance_amount | num }}</td></tr>
       <tr><td></td><td class="right">ಒಟ್ಟು</td><td></td><td></td><td></td></tr>
+      {% elif app.scheme_type == "LAND_DEV" %}
+      {# own contribution = total cost - sanctioned loan (self-consistent;
+         the reference PDF shows two different own-contribution figures on
+         different pages — this table keeps the three columns arithmetically
+         consistent rather than repeating either one). #}
+      <tr>
+        <td>ಅ)</td><td class="center value">ಭೂ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆ</td>
+        <td class="right value">{{ computed.total_dev_cost | num }}</td>
+        <td class="right value">{{ ((computed.total_dev_cost or 0) - (app.loan_amount or 0)) | num }}</td>
+        <td class="right value">{{ app.loan_amount | num }}</td>
+      </tr>
+      <tr><td>ಆ)</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>ಇ)</td><td></td><td></td><td></td><td></td></tr>
+      <tr>
+        <td>ಈ)</td><td class="right">ಒಟ್ಟು</td>
+        <td class="right value">{{ computed.total_dev_cost | num }}</td>
+        <td class="right value">{{ ((computed.total_dev_cost or 0) - (app.loan_amount or 0)) | num }}</td>
+        <td class="right value">{{ app.loan_amount | num }}</td>
+      </tr>
+      {% else %}
+      <tr><td>ಅ)</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>ಆ)</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>ಇ)</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>ಈ)</td><td class="right">ಒಟ್ಟು</td><td></td><td></td><td></td></tr>
+      {% endif %}
     </table>
   </div>
 </div>

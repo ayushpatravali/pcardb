@@ -1,0 +1,48 @@
+<!-- land_dev/ld6: reference PDF page 16 — LD1: dev-cost estimate sheet with applicant/survey header -->
+<div class="pg-ld6">
+<style>
+  .pg-ld6 { font-size: 9.5pt; line-height: 1.5; }
+  .pg-ld6 table.cost { width: 100%; margin-top: 2mm; }
+  .pg-ld6 table.cost th, .pg-ld6 table.cost td { border: 1px solid #000; padding: 1mm 2mm; }
+  .pg-ld6 table.cost th { text-align: center; }
+</style>
+
+<div class="bank-header">{{ bank.name_line1 }}</div>
+<div style="margin-top:3mm;">
+  ಶ್ರೀ&nbsp;&nbsp;<span class="value bold">{{ app.applicant_name_kn }}</span>
+  <span style="float:right;">ಸಾ: <span class="value bold">{{ bank.place }}</span></span>
+</div>
+<div style="margin-top:2mm;">
+  ಇವರು ಜಮೀನು ಸರ್ವೆ ನಂ.&nbsp;<span class="value">{% for p in parsed.land_parcels %}{{ p.survey_no }}{% if not loop.last %}, {% endif %}{% endfor %}</span>&nbsp;ನೇದ್ದರಲ್ಲಿ ಕೈಗೊಳ್ಳಬೇಕಾದ ಭೂ ಸುಧಾರಣಾ ಕಾರ್ಯಗಳಿಗೆ ತಗಲುವ
+</div>
+<div>ಖರ್ಚನ್ನು ತೋರಿಸುವ ಅಂದಾಜು ಪತ್ರಿಕೆ.</div>
+<div style="margin-top:2mm;">
+  ಜಮೀನು ಸರ್ವೆ ನಂ&nbsp;&nbsp;<span class="value bold">{% for p in parsed.land_parcels %}{{ p.survey_no }}{% if not loop.last %}, {% endif %}{% endfor %}</span>
+  <span style="margin-left:8mm;">ಒಟ್ಟು ಎಕರೆ&nbsp;<span class="value bold">{{ computed.total_extent }}</span></span>
+</div>
+
+<table class="cost">
+  <tr>
+    <th style="width:8%;">ಅ.ನಂ</th>
+    <th style="width:52%;">ಕಾರ್ಯಗಳ ವಿವರ</th>
+    <th style="width:14%;">ಎಕರೆ ಗುಂಟೆ</th>
+    <th style="width:12%;">ದರ</th>
+    <th>ಮೊತ್ತ</th>
+  </tr>
+  {% for w in parsed.dev_work_items %}
+  <tr>
+    <td class="center">{{ loop.index }}</td>
+    <td>{{ w.description }}</td>
+    <td class="center value">{{ computed.total_extent }}</td>
+    <td class="center value">{{ w.rate_per_acre | num }}</td>
+    <td class="right value">{{ '%.2f' | format(w.amount or 0) }}</td>
+  </tr>
+  {% endfor %}
+  <tr>
+    <td colspan="4" class="right">ಒಟ್ಟು</td>
+    <td class="right value bold">{{ '%.2f' | format(computed.total_dev_cost or 0) }}</td>
+  </tr>
+</table>
+
+<div class="right bold" style="margin-top:10mm;">ವಲಯ ಮೇಲ್ವಿಚಾರಕರು</div>
+</div>

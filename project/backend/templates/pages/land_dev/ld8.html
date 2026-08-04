@@ -1,0 +1,57 @@
+<!-- land_dev/ld8: reference PDF page 18 — LD3: ಅನುಬಂಧ-5 land leveling / bunding technical report -->
+<div class="pg-ld8">
+<style>
+  .pg-ld8 { font-size: 9.3pt; line-height: 1.6; }
+  .pg-ld8 .item { display: flex; margin-top: 1.5mm; }
+  .pg-ld8 .n { width: 8mm; flex: none; }
+  .pg-ld8 table.cost { width: 60%; margin-top: 3mm; }
+  .pg-ld8 table.cost th, .pg-ld8 table.cost td { border: 1px solid #000; padding: 1mm 2mm; }
+</style>
+
+<div class="center bold">ಅನುಬಂಧ - 5</div>
+<div class="center" style="margin-top:1mm;">ಸಾಮಾನ್ಯ ಯೋಜನೆಯಲ್ಲಿ ಭೂ ಸಮತಳ ಮತ್ತು ಒಡ್ಡುಗಳ ನಿರ್ಮಾಣಕ್ಕೆ ಸಂಬಂಧಿಸಿದಂತೆ ನೀಡಬೇಕಾದ<br>ತಾಂತ್ರಿಕ ವರದಿ ನಮೂನೆ</div>
+
+<div class="item" style="margin-top:2mm;"><span class="n">1)</span><span>ಭೂ ಅಭಿವೃದ್ಧಿ ಬ್ಯಾಂಕ ಹೆಸರು</span>
+  <span class="value bold" style="margin-left:4mm;">ಪ್ರಾಥಮಿಕ ಬ್ಯಾಂಕ ನಿ. {{ bank.place }}</span></div>
+<div class="item"><span class="n">2)</span><span>ಅ) ಅರ್ಜಿದಾರನ ಹೆಸರು</span>
+  <span class="value bold" style="margin-left:4mm;">{{ app.applicant_name_kn }}</span></div>
+<div class="item"><span class="n">3)</span><span>ಅ) ಹಳ್ಳಿಯ ಹೆಸರು</span>
+  <span class="value bold" style="margin-left:4mm;">{{ app.village }}</span></div>
+<div class="item"><span class="n"></span><span style="margin-left:8mm;">ಬ) ತಾಲೂಕಿನ ಹೆಸರು</span>
+  <span class="value bold" style="margin-left:4mm;">{{ app.taluk }}</span></div>
+<div class="item"><span class="n"></span><span style="margin-left:8mm;">ಕ) ಜಿಲ್ಲೆಯ ಹೆಸರು</span>
+  <span class="value bold" style="margin-left:4mm;">{{ app.district }}</span></div>
+<div class="item"><span class="n">4)</span><span>ಒಟ್ಟು ಸರ್ವೆ ನಂಬರ ವಿಸ್ತೀರ್ಣ</span>
+  <span class="value bold" style="margin-left:4mm;">{% for p in parsed.land_parcels %}{{ p.survey_no }}{% if not loop.last %}, {% endif %}{% endfor %} — {{ computed.total_extent }}</span></div>
+<div class="item"><span class="n">5)</span><span>ಭೂ ಅಭಿವೃದ್ಧಿಗೊಳಿಸುವ ವಿಸ್ತೀರ್ಣ</span>
+  <span class="value bold" style="margin-left:4mm;">{{ computed.total_extent }}</span></div>
+<div class="item"><span class="n">6)</span><span>ಶೇಕಡಾವಾರು ಇಳಿಜಾರು (ವಿಸ್ತೀರ್ಣ)</span></div>
+<div class="item"><span class="n">7)</span><span>ಅಭಿವೃದ್ಧಿಗೊಳಿಸುವ ಜಮೀನಿನಲ್ಲಿ</span></div>
+<div class="item"><span class="n">8)</span><span>ಭೂ ಅಭಿವೃದ್ಧಿ ಶಿಫಾರಸ್ಸು ಮಾಡಿದ ಒಟ್ಟು ಮೊತ್ತ ವಿವರ</span>
+  <span class="value bold" style="margin-left:4mm;">{{ computed.total_dev_cost | num }}</span></div>
+
+<table class="cost">
+  <tr>
+    <th>ಕಾರ್ಯಗಳ ವಿವರ</th>
+    <th>ಮೊತ್ತ (ರೂ.ಗಳಲ್ಲಿ)</th>
+  </tr>
+  {% for w in parsed.dev_work_items %}
+  {% if w.amount %}
+  <tr>
+    <td class="value">{{ loop.index }}. {{ w.description }}</td>
+    <td class="right value">{{ '%.2f' | format(w.amount) }}</td>
+  </tr>
+  {% endif %}
+  {% endfor %}
+  <tr>
+    <td class="right">ಒಟ್ಟು</td>
+    <td class="right value bold">{{ '%.2f' | format(computed.total_dev_cost or 0) }}</td>
+  </tr>
+</table>
+
+<div class="item" style="margin-top:2mm;"><span class="n">9)</span><span>ಭೂ ನಕಾಶೆ (ಜ್ಞಾನ) ಮತ್ತು ಅಭಿವೃದ್ಧಿ ಕಾರ್ಯಗಳ ನಕಾಶೆ ಪ್ರೊಜೆಕ್ಟರ ಪ್ಲಾನ</span></div>
+<div class="item" style="margin-top:2mm;"><span class="n">10)</span><span>ಇತಲೇ ವಿವರಗಳು ಮತ್ತು ವಿಶೇಷ ಮಾಹಿತಿಗಳು</span></div>
+
+<div style="margin-top:8mm;">ಸ್ಥಳ : <span class="value bold">{{ bank.place }}</span></div>
+<div style="margin-top:1mm;">ದಿನಾಂಕ :- <span class="fill blank" style="min-width:26mm;"></span></div>
+</div>
