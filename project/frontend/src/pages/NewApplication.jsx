@@ -804,11 +804,13 @@ const NewApplication = () => {
             if (id) {
                 await updateApplication(id, payload);
                 alert('Application Updated Successfully!');
+                navigate('/applications');
             } else {
-                await api.post('/applications/', payload);
-                alert('Application Submitted Successfully!');
+                const created = await api.post('/applications/', payload);
+                // Straight to the print/download screen for a freshly saved
+                // application (save-then-print), instead of the plain list.
+                navigate(`/applications/${created.data.id}/print`);
             }
-            navigate('/applications');
         } catch (err) {
             console.error('Save Error:', err);
             const detail = err?.response?.data?.detail;
