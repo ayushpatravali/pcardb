@@ -1574,21 +1574,6 @@ const NewApplication = () => {
                     </div>
                 )}
 
-                {/* LAND DEV */}
-                {schemeType === 'LAND_DEV' && (
-                    <div className="bg-white p-8 rounded-2xl shadow-card border border-stone-200/70">
-                        <SectionHeader title="ಭೂ ಅಭಿವೃದ್ಧಿ — Land Development Metrics" icon={<Sprout size={18} />} color="green" />
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                            <InputField label="ಸರ್ವೆ ಸಂಖ್ಯೆ — Survey Number" register={register('land_survey_no')} />
-                            <InputField label="ಪ್ರದೇಶ — Area (Acres)" type="number" step="0.01" register={register('land_area_acres')} />
-                            <InputField label="ಆಕಾರ — Assessment" type="number" register={register('land_assessment')} />
-                            <SelectField label="ಭೂ ವಿಧ — Land Type" register={register('land_type')} options={['ಖುಷ್ಕಿ (Dry)', 'ನೀರಾವರಿ (Wet)']} />
-                            <InputField label="ಅಭಿವೃದ್ಧಿ ಪೂರ್ವ ಆದಾಯ — Pre-Dev Income" type="number" register={register('land_pre_development_income')} />
-                            <InputField label="ಅಭಿವೃದ್ಧಿ ನಂತರ ಆದಾಯ — Post-Dev Income" type="number" register={register('land_post_development_income')} />
-                        </div>
-                    </div>
-                )}
-
                 {/* ── Overall Loan Amount ── */}
                 <div className="bg-primary-950 p-6 rounded-2xl border border-primary-900 shadow-card">
                     <div className="flex items-center gap-3 mb-4">
