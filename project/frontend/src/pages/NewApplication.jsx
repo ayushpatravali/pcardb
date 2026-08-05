@@ -877,7 +877,9 @@ const NewApplication = () => {
                                         <span>ಸಾಲ&nbsp;<b>₹{liveLoan.toLocaleString('en-IN')}</b></span>
                                     )}
                                     {liveLoan > 0 && (
-                                        <span className="text-primary-200">ಅವಧಿ {liveDuration} ವರ್ಷ · ಕಂತು ≈ ₹{Math.round(liveLoan / (liveDuration * 2)).toLocaleString('en-IN')} × {liveDuration * 2}</span>
+                                        // Yearly installment — matches the packet (bank review 2026-08-04:
+                                        // installments are annual, not half-yearly)
+                                        <span className="text-primary-200">ಅವಧಿ {liveDuration} ವರ್ಷ · ಕಂತು ≈ ₹{Math.round(liveLoan / liveDuration).toLocaleString('en-IN')} × {liveDuration} (ವಾರ್ಷಿಕ)</span>
                                     )}
                                 </motion.div>
                             )}

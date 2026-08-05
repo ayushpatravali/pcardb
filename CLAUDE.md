@@ -102,6 +102,16 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 
 ## Changelog
 
+- **2026-08-05** — Post-build audit fixes: (1) removed a dead duplicate
+  "Land Development Metrics" form card (pre-rebuild leftover — 5 fields
+  writing to payload keys nothing reads, plus a second land_type dropdown
+  colliding with the real one). (2) Live summary bar's installment updated
+  to the YEARLY formula (loan/duration, tagged ವಾರ್ಷಿಕ) — it still showed
+  the half-yearly loan/(2×duration) the 2026-08-04 bank review retired, so
+  the on-screen kantu contradicted the printed packet. (3) Verified the full
+  LAND_DEV lifecycle by test: create → read → edit → re-read → PDF (edited
+  values persist, no duplicate details row); empty crop lists correctly 422
+  with a field list at PDF time.
 - **2026-08-04** — LAND_DEV scheme built end-to-end (23-page packet, mirrors
   Tractor's architecture): `schemas/land_dev.py` spec; `LandDevDetails`
   model rewritten (land_type + JSON columns `pre_dev_crops`/`post_dev_crops`/
