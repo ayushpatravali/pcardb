@@ -102,6 +102,15 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 
 ## Changelog
 
+- **2026-08-06** — LAND_DEV form: generic Crop Details table hidden (owner —
+  duplicate of the pre/post-development crop tables; only irrigation sources
+  stay in Agriculture Details). Payload sends `current_crop: []` for LAND_DEV
+  (clears stale duplicates on edit); render_service falls back
+  `parsed.crops → pre_dev_crops` so the two shared pages that print the
+  currently-growing crop (ssm item 3, inspection crop column) still fill.
+  Verified on the fixture packet (both pages show the first pre-dev crop;
+  23 pages OK). Pending owner input: a restricted crop list for the
+  pre/post-dev dropdowns ("I'll give you the list later").
 - **2026-08-05** — Post-build audit fixes: (1) removed a dead duplicate
   "Land Development Metrics" form card (pre-rebuild leftover — 5 fields
   writing to payload keys nothing reads, plus a second land_type dropdown

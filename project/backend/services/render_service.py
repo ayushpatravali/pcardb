@@ -236,6 +236,11 @@ def build_context(app: Application, details, spec) -> dict:
                 c["extent"] = extent_str(c.get("acres"), c.get("guntas"))
                 for key in ("season", "irrigated", "cost_per_acre", "total_cost", "yield_per_acre", "total_yield", "rate", "total_income", "other_cost"):
                     c.setdefault(key, None)
+        # The form hides the generic crop-details table for LAND_DEV (the
+        # pre-dev list IS the currently-growing crop), so shared pages that
+        # print the current crop (ssm item 3, inspection table) read pre-dev.
+        if not parsed["crops"]:
+            parsed["crops"] = parsed["pre_dev_crops"]
     else:
         parsed["pre_dev_crops"] = []
         parsed["post_dev_crops"] = []

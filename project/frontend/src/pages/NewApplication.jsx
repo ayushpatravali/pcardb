@@ -714,7 +714,9 @@ const NewApplication = () => {
             }),
             co_applicants: JSON.stringify(data.co_applicants || []),
             land_parcels: JSON.stringify(data.land_parcels || []),
-            current_crop: JSON.stringify(data.crops || []),
+            // LAND_DEV keeps crops in pre/post-dev tables; the generic list
+            // is hidden there, and sending [] clears any stale duplicates on edit.
+            current_crop: JSON.stringify(currentScheme === 'LAND_DEV' ? [] : (data.crops || [])),
             irrigation_source: irrigationSources
                 .map((source) => {
                     const key = sanitizeIrrigationKey(source);
@@ -1216,6 +1218,10 @@ const NewApplication = () => {
                 <div className="bg-white p-8 rounded-2xl shadow-card border border-stone-200/70">
                     <SectionHeader title="ಕೃಷಿ ವಿವರ — Agriculture Details" icon={<Sprout size={18} />} color="orange" />
                     
+                    {/* LAND_DEV collects crops in the pre/post-development
+                        tables below — this generic list would be a duplicate,
+                        so only irrigation sources show for that scheme. */}
+                    {schemeType !== 'LAND_DEV' && (
                     <div className="mb-6">
                         <div className="flex items-center justify-between mb-3">
                             <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
@@ -1265,7 +1271,8 @@ const NewApplication = () => {
                             )}
                         </div>
                     </div>
-                    
+                    )}
+
                     {/* Irrigation Checkboxes */}
                     <div>
                         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
