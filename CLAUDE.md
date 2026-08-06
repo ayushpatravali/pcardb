@@ -102,6 +102,28 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 
 ## Changelog
 
+- **2026-08-06** — Full LAND_DEV verification vs both new Excel files + the
+  reference PDF (owner: "make sure you are completely right"). Machine-
+  checked all 31 CROP_ECON/CROP_CHART entries against the chart xlsx (exact
+  match), compared every generated ld page against the reference page-by-
+  page. Fixes: (1) **ld4 item 15 is 80%** of valuation (ref p14 + Ap4
+  formula), NOT the 50% used on b4 — the bank's own packet uses BOTH
+  percentages (p10=50 economic capacity, p14=80 appraisal); new computed
+  keys appraisal_loan_eligibility/appraisal_net_loan_eligibility.
+  (2) **Moratorium implemented** (closes the documented gap — confirmed by
+  ref p10+p14 AND Ap4): LAND_DEV repayment = 12-month initial period +
+  (N−2) equal YEARLY kantus, installment_kantu = loan/(N−2) (7yr/15L → 5
+  kantus of 3,00,000); b4 ಎ/ಏ lines scheme-branched, ld4 items 19/20
+  filled; Tractor untouched (loan/N ವಾರ್ಷಿಕ). (3) b4 sanction line "+ 0"
+  → blank via plus_insurance. (4) ld1 header = state bank (ಬೆಂಗಳೂರು-18)
+  per ref p11/Ap1. (5) ld2 works table gained the ದರ column + ಸಂಸ್ಥೆಯ
+  ಹೆಸರು prints "ರೈತರಿಂದ ಮಾಡಲಾಗುವದು" (Ap2 constant); dev_work_items rows
+  get setdefault guards. Pages 10/12/14 re-verified visually against the
+  reference; both packets 21/23 OK; API e2e passes. Crops dropdown: ALL 31
+  chart crops stay available for pre/post-dev (owner). Known acceptable
+  deviations from the ref sample: extent multiplies as acres+guntas/40
+  (24.5) not the ref's literal "24.2"; my 6-row works table = ref's 7 rows
+  (two zero-rate rows merged; totals identical).
 - **2026-08-06** — LAND_DEV corrections from owner's new Excel files
   (`CROP INCOME CHART for land dev.xlsx` + `Appraisal LD.xlsx`, both at repo
   root, NOT in git): (1) **ಕ್ಷೇತ್ರ ಆಯವ್ಯಯ ತಃಖ್ತೆ (ld3/Ap3) now fully computed**

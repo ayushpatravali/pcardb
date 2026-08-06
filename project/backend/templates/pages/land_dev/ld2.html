@@ -12,8 +12,10 @@
 <table class="cost">
   <tr>
     <th style="width:8%;">ಕ್ರ.ಸಂ</th>
-    <th style="width:46%;">ಕಾರ್ಯಗಳು</th>
-    <th style="width:16%;">ಅಳತೆ ಮತ್ತು ಗಾತ್ರ</th>
+    <th style="width:42%;">ಕಾರ್ಯಗಳು</th>
+    {# Reference p12 prints extent AND per-acre rate under ಅಳತೆ ಮತ್ತು ಗಾತ್ರ #}
+    <th style="width:10%;">ಅಳತೆ ಮತ್ತು<br>ಗಾತ್ರ</th>
+    <th style="width:10%;">ದರ</th>
     <th>ಯೋಜನಾ ವೆಚ್ಚ ರೂ.</th>
   </tr>
   {% for w in parsed.dev_work_items %}
@@ -21,14 +23,15 @@
     <td class="center">{{ loop.index }}</td>
     <td>{{ w.description }}</td>
     <td class="center value">{{ computed.total_extent }}</td>
+    <td class="center value">{{ w.rate_per_acre | num }}</td>
     <td class="right value">{{ '%.2f' | format(w.amount or 0) }}</td>
   </tr>
   {% endfor %}
   {% for _ in range(10 - (parsed.dev_work_items | length)) %}
-  <tr><td></td><td></td><td></td><td></td></tr>
+  <tr><td></td><td></td><td></td><td></td><td></td></tr>
   {% endfor %}
   <tr>
-    <td colspan="3" class="right">ಒಟ್ಟು</td>
+    <td colspan="4" class="right">ಒಟ್ಟು</td>
     <td class="right value bold">{{ '%.2f' | format(computed.total_dev_cost or 0) }}</td>
   </tr>
 </table>
@@ -43,7 +46,8 @@
 <div style="margin-left:8mm; margin-top:1mm;">
   <div>ಬ)&nbsp;ಭೂ ಅಭಿವೃದ್ಧಿಯನ್ನು ಮಾನ : ಎತ್ತುಗಳಿಂದ/ ಟ್ರ್ಯಾಕ್ಟರಿನಿಂದ /ಬುಲ್ಡೋಜರಿನಿಂದ ಮಾಡಲಾಗುವುದು</div>
   <div>(ಅ)&nbsp;ಭೂ ಅಭಿವೃದ್ಧಿಯನ್ನು – ರೈತರ ಮಾಡಿಸುವರು /ಸಂಸ್ಥೆಯಿಂದ ಮಾಡಲಾಗುವುದ</div>
-  <div style="margin-top:1mm;">ಸಂಸ್ಥೆಯ ಹೆಸರು<span class="fill blank" style="min-width:60mm; margin-left:2mm;"></span></div>
+  {# Constant per Ap2 D22 / reference p12 #}
+  <div style="margin-top:1mm;">ಸಂಸ್ಥೆಯ ಹೆಸರು<span class="fill bold" style="min-width:60mm; margin-left:2mm; text-align:center;">ರೈತರಿಂದ ಮಾಡಲಾಗುವದು</span></div>
   <div style="margin-top:2mm;">(ಇ)&nbsp;ಕೆರೆ ಮುಚ್ಚು ಅಳವಡಿಸುವುದಾದಲ್ಲಿ :ಸೇರೆಯ ಹೆಸರು<span class="fill blank" style="min-width:40mm; margin-left:2mm;"></span></div>
   <div style="margin-top:1mm;">ಜಮೀನಿಗಿರುವ ದೂರ<span class="fill blank" style="min-width:20mm; margin-left:2mm;"></span>ಕಿ.ಮೀ</div>
   <div style="margin-top:2mm;">(ಈ)&nbsp;ಮುಳ್ಳು ತಂತಿ ಬೇಲಿಯ–ಜಮೀನು ನಕ್ಷೆ, ಮತ್ತು ಅಂದಾಜು ಪತ್ರಿಕೆ ಲಗತ್ತಿಸಿದೆ.</div>

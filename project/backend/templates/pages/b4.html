@@ -68,6 +68,18 @@
       <span>ರೂ. <span class="fill blank">{{ parsed.previous_loans.annual_installment | num }}</span></span></div>
     <div class="row"><span class="lab">ಋ) ನಿವ್ವಳ ಮರುಪಾವತಿ ಅರ್ಹತೆ (ಅಂಶ ಉ–ಊ)</span>
       <span>ರೂ. <span class="fill blank">{{ computed.net_repayment_eligibility | num }}</span></span></div>
+    {% if app.scheme_type == "LAND_DEV" %}
+    {# Land Dev repayment per the reference packet p10: 12-month initial
+       period, then (N-2) equal yearly kantus; kantu = loan / (N-2). #}
+    <div class="row">
+      <span class="lab">ಎ) ಉದ್ದೇಶಿತ ಸಾಲದ ಮರುಪಾವತಿ ಅವಧಿ : ಒಟ್ಟು <span class="fill short">{{ computed.loan_duration_years }}</span> ವರ್ಷಗಳು, ಇದರಲ್ಲಿ</span>
+      <span><span class="fill short bold">{{ computed.ld_initial_period }}</span></span></div>
+    <div class="row">
+      <span class="lab">ಪ್ರಾರಂಭಿಕ ಅವಧಿ, ನಂತರ <span class="fill bold">{{ computed.ld_kantu_years }}</span></span>
+      <span class="small">ವರ್ಷಗಳಲ್ಲಿ ಮಾಸಿಕ / ತ್ರೈಮಾಸಿಕ / ಅರ್ಧವಾರ್ಷಿಕ / <span class="bold">ವಾರ್ಷಿಕ</span> ಕಂತುಗಳು</span></div>
+    <div class="row"><span class="lab">ಏ) ಉದ್ದೇಶಿತ ಸಾಲದ ಮರುಪಾವತಿ ಕಂತಿನ ಮೊತ್ತ</span>
+      <span>ರೂ. <span class="fill blank">{{ computed.installment_kantu | num }}</span> + ಬಡ್ಡಿ</span></div>
+    {% else %}
     <div class="row">
       <span class="lab">ಎ) ಉದ್ದೇಶಿತ ಸಾಲದ ಮರುಪಾವತಿ ಅವಧಿ : ಒಟ್ಟು <span class="fill short">{{ computed.loan_duration_years }}</span> ವರ್ಷಗಳು, ಇದರಲ್ಲಿ</span>
       <span><span class="fill blank short">&nbsp;</span> ತಿಂಗಳುಗಳು</span></div>
@@ -76,6 +88,7 @@
       <span class="small">ವರ್ಷಗಳಲ್ಲಿ ಮಾಸಿಕ / ತ್ರೈಮಾಸಿಕ / ಅರ್ಧವಾರ್ಷಿಕ / ವಾರ್ಷಿಕ ಕಂತುಗಳು</span></div>
     <div class="row"><span class="lab">ಏ) ಉದ್ದೇಶಿತ ಸಾಲದ ಮರುಪಾವತಿ ಕಂತಿನ ಮೊತ್ತ</span>
       <span>ರೂ. <span class="fill blank">{{ computed.installment_kantu | num }}</span> (ವಾರ್ಷಿಕ) + ಬಡ್ಡಿ</span></div>
+    {% endif %}
   </div>
 </div>
 <div class="rule"></div>
@@ -108,7 +121,7 @@
 <div class="row" style="margin-top:3mm;">
   {# workbook B4!F42 hardcodes ",+100000" beside the sanction amount #}
   <span>ಕೆಳಕಂಡ ಷರತ್ತುಗಳಿಗೆ ಒಳಪಟ್ಟು ರೂ. <span class="fill">{{ app.loan_amount | num }}</span>
-    <span class="fill short">+ {{ computed.insurance_amount | num }}</span></span>
+    <span class="fill short">{{ computed.insurance_amount | plus_insurance }}</span></span>
   <span>ಸಾಲ ಮಂಜೂರು ಮಾಡಬಹುದು</span>
 </div>
 

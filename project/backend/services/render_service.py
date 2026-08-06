@@ -244,6 +244,10 @@ def build_context(app: Application, details, spec) -> dict:
                 c["extent"] = extent_str(c.get("acres"), c.get("guntas"))
                 for key in ("season", "irrigated", "cost_per_acre", "total_cost", "yield_per_acre", "total_yield", "rate", "total_income", "other_cost"):
                     c.setdefault(key, None)
+        for w in parsed["dev_work_items"]:
+            if isinstance(w, dict):
+                for key in ("description", "rate_per_acre", "amount"):
+                    w.setdefault(key, None)
         # The form hides the generic crop-details table for LAND_DEV (the
         # pre-dev list IS the currently-growing crop), so shared pages that
         # print the current crop (ssm item 3, inspection table) read pre-dev.
@@ -396,6 +400,25 @@ def build_context(app: Application, details, spec) -> dict:
             else None
         )
         computed["repayment_capacity"] = real_repayment_eligibility
+        # Repayment structure per the bank's reference packet (pages 10+14)
+        # and Appraisal LD.xlsx Ap4: total N years = 12-month initial grace
+        # + (N-2) equal YEARLY kantus; kantu = loan / (N-2). Sample: 7 yrs,
+        # 5 kantus of 3,00,000 on a 15L loan. (b4's generic loan/N above is
+        # Tractor's convention — overridden here.)
+        years = computed["loan_duration_years"]
+        kantu_years = max(1, years - 2)
+        computed["ld_kantu_years"] = kantu_years
+        computed["ld_initial_period"] = "12 ತಿಂಗಳು"
+        if app.loan_amount:
+            computed["installment_kantu"] = round(app.loan_amount / kantu_years)
+        # The appraisal page (ld4 item 15) uses 80% of valuation — a DIFFERENT
+        # percentage from b4's 50% economic-capacity line; the bank's own
+        # sample prints both (ref pages 10 vs 14, and Ap4 H2=ROUND(H1*80%)).
+        valuation_total = computed.get("land_valuation_total") or 0
+        computed["appraisal_loan_eligibility"] = round(valuation_total * 0.80) if valuation_total else None
+        computed["appraisal_net_loan_eligibility"] = (
+            round(valuation_total * 0.80 - prev_outstanding) if valuation_total else None
+        )
 
     context = {
         "bank": BANK,

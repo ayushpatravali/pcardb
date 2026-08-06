@@ -12,7 +12,8 @@
   .pg-ld1 .n { width: 8mm; flex: none; }
 </style>
 
-<div class="bank-header">{{ bank.name_line1 }}</div>
+{# Reference p11 heads this report with the STATE bank, not the Gokak branch #}
+<div class="bank-header">{{ bank.state_bank_header }}</div>
 <div class="center bold" style="margin-top:1mm;">ಭೂ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆಯ : ತಾಂತ್ರಿಕ ಗುಣ ವಿಮರ್ಶಣಾ ವರದಿ</div>
 
 <div class="purpose-list">
