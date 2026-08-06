@@ -379,7 +379,7 @@ def generate_application_document(
     except MissingFieldsError as e:
         raise HTTPException(
             status_code=422,
-            detail={"error": "missing_fields", "missing": e.fields},
+            detail={"error": "missing_fields", "missing": e.fields, "fields": e.labels},
         )
     except FileNotFoundError as e:
         raise HTTPException(status_code=500, detail=str(e))

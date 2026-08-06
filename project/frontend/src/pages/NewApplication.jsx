@@ -32,6 +32,9 @@ const DEV_WORK_DESCRIPTIONS = [
     'ಫಲವತ್ತಾದ ಕೆರೆ ಮಣ್ಣು ಮತ್ತು ಕೊಟ್ಟಿಗೆ ಗೊಬ್ಬರ ಸಂಗ್ರಹಣೆ ಮತ್ತು ಹರಡುವುದು',
     'ಕಾಣಬರದ ಇತರ ಕಾರ್ಯಗಳು',
 ];
+// Bank-fixed per-acre rates for the six works (owner, 2026-08-06; matches
+// LD1 sheet of Appraisal LD.xlsx). Locked — operators cannot edit them.
+const DEV_WORK_RATES = [5336, 61714, 7807, 0, 3429, 1714];
 const LAND_TYPE_OPTIONS = ['ಖುಷ್ಕಿ', 'ತರಿ'];
 
 // ── Dropdown Options ──────────────────────────────────────────────────────────
@@ -70,6 +73,30 @@ const CROP_CHART = {
     'ಬೆಳ್ಳುಳ್ಳಿ': 27500,
     'ಆಲೂಗಡ್ಡೆ': 40000,
     'ಸೇವಂತಿಗೆ': 31000,
+};
+
+// Full per-crop economics from CROP INCOME CHART for land dev.xlsx
+// (2026-08-06): [yield quintals/acre, market rate ₹, cultivation expenditure
+// ₹/acre]. Net/acre = yield x rate - expenditure == CROP_CHART value above
+// (verified for all 31). Feeds the ಕ್ಷೇತ್ರ ಆಯವ್ಯಯ ತಃಖ್ತೆ (Ap3) columns for
+// LAND_DEV pre/post-development crop rows.
+const CROP_ECON = {
+    'ಭತ್ತ': [20, 2600, 34600], 'ಮುಸುಕಿನಜೋಳ': [20, 2025, 21000],
+    'ಸೇಂಗಾ': [11, 4750, 19700], 'ಹೈಬ್ರಿಡ್ ಹತ್ತಿ': [6.5, 7600, 27500],
+    'ಸೂರ್ಯಕಾಂತಿ': [7, 4500, 16700], 'ಹೈಬ್ರಿಡ್ ಜೋಳ': [15, 3100, 17300],
+    'ಗೋಧಿ': [10, 2800, 12210], 'ತಂಬಾಕು': [8, 7800, 40000],
+    'ದ್ವಿದಳ ಧಾನ್ಯ': [6, 6000, 20500], 'ಕಬ್ಬು': [500, 275, 54500],
+    'ರೇಷ್ಮೆ (ಸಾಂ)': [4.2, 37500, 85000], 'ರೇಷ್ಮೆ (ಕಾಂ)': [6.3, 37500, 115000],
+    'ತೆಂಗು (ಕಾಯಿ)': [4800, 15, 47850], 'ಮಾವು': [50, 2300, 64734],
+    'ಚಿಕ್ಕು': [35, 2200, 45400], 'ಬಾಳೆ': [96, 1200, 65000],
+    'ದಾಳಿಂಬೆ': [30, 2880, 53000], 'ಪಪ್ಪಾಯ': [120, 1000, 77600],
+    'ಲಿಂಬೆ': [42, 1500, 40000], 'ದ್ರಾಕ್ಷಿ (ಬೀಜ ರಹಿತ)': [115, 3100, 184000],
+    'ಬೋರೆ': [58, 1200, 52000], 'ಗುಲಾಬಿ (ಸಂಖ್ಯೆ)': [92000, 1.9, 120000],
+    'ವಿಳ್ಯದೆಲೆ': [12, 12000, 98000], 'ಕಲ್ಲಂಗಡಿ': [120, 1150, 91200],
+    'ತರಕಾರಿಗಳು': [68, 900, 30000], 'ಅರಿಷಿಣ': [25, 6000, 97500],
+    'ಒಣ ಮೆಣಸಿನಕಾಯಿ': [7.5, 15000, 87000], 'ಈರುಳ್ಳಿ': [60, 1350, 52000],
+    'ಬೆಳ್ಳುಳ್ಳಿ': [15, 3500, 25000], 'ಆಲೂಗಡ್ಡೆ': [60, 1800, 68000],
+    'ಸೇವಂತಿಗೆ': [40, 2900, 85000],
 };
 
 // English glosses for the bilingual (default) mode only; Kannada mode strips them.
@@ -260,6 +287,12 @@ const getCropRate = (cropName) => {
     return CROP_CHART[CROP_LABEL_MAP[normalized]] || 0;
 };
 
+const getCropEcon = (cropName) => {
+    const normalized = cropName?.toString().trim();
+    if (!normalized) return null;
+    return CROP_ECON[normalized] || CROP_ECON[CROP_LABEL_MAP[normalized]] || null;
+};
+
 const parseJsonArray = (value) => {
     if (!value) return [];
     if (Array.isArray(value)) return value;
@@ -332,7 +365,7 @@ const NewApplication = () => {
             pre_dev_crops: [{ crop_name: '', season: '', irrigated: '', acres: '', guntas: '', annual_income: '' }],
             post_dev_crops: [{ crop_name: '', season: '', irrigated: '', acres: '', guntas: '', annual_income: '' }],
             land_type: LAND_TYPE_OPTIONS[1],
-            dev_work_rates: DEV_WORK_DESCRIPTIONS.map(() => ''),
+            dev_work_rates: DEV_WORK_RATES,
             irrigation_source: [],
             irrigation_hp: {},
             loan_duration_years: 7,
@@ -424,6 +457,36 @@ const NewApplication = () => {
         });
     }, [setValue]);
 
+    // LAND_DEV pre/post-dev rows: fill every ಕ್ಷೇತ್ರ ಆಯವ್ಯಯ ತಃಖ್ತೆ column from
+    // the chart economics. Chain mirrors the bank's reference sheet: total
+    // cost = cost/acre x extent; total yield = round(yield x extent); total
+    // income = total yield x market rate; net = income - cost.
+    const calculateCropEconomics = React.useCallback((rows = [], fieldArrayName) => {
+        if (!Array.isArray(rows)) return;
+        rows.forEach((crop, index) => {
+            const econ = getCropEcon(crop?.crop_name);
+            const acres = parseFloat(crop?.acres) || 0;
+            const guntas = parseFloat(crop?.guntas) || 0;
+            const ext = acres + guntas / 40;
+            if (!econ) {
+                // No chart entry (legacy/free-text crop): keep stored values.
+                if (!crop?.crop_name) setValue(`${fieldArrayName}.${index}.annual_income`, '');
+                return;
+            }
+            const [yieldPerAcre, marketRate, costPerAcre] = econ;
+            const totalCost = Math.round(costPerAcre * ext);
+            const totalYield = Math.round(yieldPerAcre * ext);
+            const totalIncome = Math.round(totalYield * marketRate);
+            setValue(`${fieldArrayName}.${index}.cost_per_acre`, costPerAcre);
+            setValue(`${fieldArrayName}.${index}.total_cost`, ext > 0 ? totalCost : 0);
+            setValue(`${fieldArrayName}.${index}.yield_per_acre`, yieldPerAcre);
+            setValue(`${fieldArrayName}.${index}.total_yield`, ext > 0 ? totalYield : 0);
+            setValue(`${fieldArrayName}.${index}.rate`, marketRate);
+            setValue(`${fieldArrayName}.${index}.total_income`, ext > 0 ? totalIncome : 0);
+            setValue(`${fieldArrayName}.${index}.annual_income`, ext > 0 ? totalIncome - totalCost : 0);
+        });
+    }, [setValue]);
+
     const calculateLandTotals = React.useCallback((rows = [], valuationRate) => {
         if (!Array.isArray(rows)) return;
         const totalAcres = rows.reduce((sum, row) => sum + (parseFloat(row?.acres) || 0), 0);
@@ -508,31 +571,32 @@ const NewApplication = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cropsKey, calculateCropIncomes]);
 
-    // LAND_DEV: pre/post-development crop incomes (same chart-rate lookup as
-    // the main crop table above, just two separate lists)
+    // LAND_DEV: pre/post-development crop rows get the FULL chart economics
+    // (cost/yield/rate/income columns for the ಕ್ಷೇತ್ರ ಆಯವ್ಯಯ ತಃಖ್ತೆ page),
+    // not just the net income.
     React.useEffect(() => {
-        calculateCropIncomes(preDevCropsData, 'pre_dev_crops');
+        calculateCropEconomics(preDevCropsData, 'pre_dev_crops');
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [preDevCropsKey, calculateCropIncomes]);
+    }, [preDevCropsKey, calculateCropEconomics]);
     React.useEffect(() => {
-        calculateCropIncomes(postDevCropsData, 'post_dev_crops');
+        calculateCropEconomics(postDevCropsData, 'post_dev_crops');
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [postDevCropsKey, calculateCropIncomes]);
+    }, [postDevCropsKey, calculateCropEconomics]);
 
-    // LAND_DEV: development-work amount = rate/acre x total extent (same
-    // extent formula as land valuation above), recomputed on every keystroke.
+    // LAND_DEV: development-work amount = LOCKED bank rate/acre x total extent
+    // (same extent formula as land valuation above), recomputed as the land
+    // table changes. Rates are the DEV_WORK_RATES constants, never form input.
     React.useEffect(() => {
         if (schemeType !== 'LAND_DEV') return;
         const totalExtentDecimal = (landParcels || []).reduce(
             (sum, row) => sum + (parseFloat(row?.acres) || 0) + (parseFloat(row?.guntas) || 0) / 40,
             0
         );
-        (devWorkRates || []).forEach((rate, index) => {
-            const r = parseFloat(rate) || 0;
-            setValue(`dev_work_amounts.${index}`, r > 0 ? Math.round(r * totalExtentDecimal) : '');
+        DEV_WORK_RATES.forEach((rate, index) => {
+            setValue(`dev_work_amounts.${index}`, rate > 0 ? Math.round(rate * totalExtentDecimal) : 0);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [devWorkRatesKey, landKey, schemeType, setValue]);
+    }, [landKey, schemeType, setValue]);
 
     // Auto-calculate total land area
     React.useEffect(() => {
@@ -653,9 +717,9 @@ const NewApplication = () => {
                         annual_income: crop.annual_income ?? '',
                     }));
                     const devWorkItems = parseJsonArray(details.dev_work_items);
-                    formData.dev_work_rates = DEV_WORK_DESCRIPTIONS.map(
-                        (_, i) => devWorkItems[i]?.rate_per_acre ?? ''
-                    );
+                    // Rates are locked bank constants — old rows with typed
+                    // rates get corrected to the constants on the next save.
+                    formData.dev_work_rates = DEV_WORK_RATES;
                     formData.dev_work_amounts = DEV_WORK_DESCRIPTIONS.map(
                         (_, i) => devWorkItems[i]?.amount ?? ''
                     );
@@ -789,7 +853,7 @@ const NewApplication = () => {
                 0
             );
             const devWorkItems = DEV_WORK_DESCRIPTIONS.map((description, i) => {
-                const rate = parseFloat(data.dev_work_rates?.[i]) || 0;
+                const rate = DEV_WORK_RATES[i]; // locked bank rates, never form input
                 const amount = rate > 0 ? Math.round(rate * totalExtentDecimal) : 0;
                 return { description, rate_per_acre: rate, amount };
             });
@@ -1549,29 +1613,39 @@ const NewApplication = () => {
                             </div>
                         </div>
 
-                        {/* Development-work cost table (6 fixed rows) */}
+                        {/* Development-work cost table: 6 fixed works with
+                            LOCKED bank rates (owner 2026-08-06); amount =
+                            rate x total extent, all read-only. */}
                         <div>
-                            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
                                 {L("ಭೂ ಅಭಿವೃದ್ಧಿ ಕಾರ್ಯಗಳ ವೆಚ್ಚ — Development Work Cost")}
                             </label>
-                            <div className="space-y-3">
+                            <div className="rounded-xl border border-stone-200/70 overflow-hidden">
+                                <div className="grid grid-cols-12 gap-2 bg-stone-100 px-3 py-1.5 text-[10px] font-semibold text-stone-500 uppercase tracking-wider">
+                                    <div className="col-span-8">{L("ಕಾರ್ಯ — Work")}</div>
+                                    <div className="col-span-2 text-right">{L("ದರ/ಎಕರೆ — Rate (₹)")}</div>
+                                    <div className="col-span-2 text-right">{L("ಮೊತ್ತ — Amount (₹)")}</div>
+                                </div>
                                 {DEV_WORK_DESCRIPTIONS.map((description, index) => (
-                                    <div key={index} className="grid grid-cols-12 gap-3 items-end bg-stone-50 p-3 rounded-xl border border-stone-200/70">
-                                        <div className="col-span-7 text-sm text-stone-600 pb-2">{index + 1}. {description}</div>
-                                        <div className="col-span-2">
-                                            <InputField label="ದರ/ಎಕರೆ — Rate/Acre (₹)"
-                                                type="number"
-                                                register={register(`dev_work_rates.${index}`)}
-                                                placeholder="0" />
+                                    <div key={index} className="grid grid-cols-12 gap-2 items-center px-3 py-1.5 text-xs border-t border-stone-100 bg-white">
+                                        <div className="col-span-8 text-stone-600">{index + 1}. {description}</div>
+                                        <div className="col-span-2 text-right font-medium text-stone-500">
+                                            {DEV_WORK_RATES[index].toLocaleString('en-IN')}
+                                            <span className="ml-1 text-stone-300" title={L("ಬ್ಯಾಂಕ್ ನಿಗದಿತ ದರ — bank-fixed rate")}>🔒</span>
                                         </div>
-                                        <div className="col-span-3">
-                                            <InputField label="ಮೊತ್ತ — Amount (₹)"
-                                                type="number"
-                                                register={register(`dev_work_amounts.${index}`)}
-                                                readOnly />
+                                        <div className="col-span-2 text-right font-semibold text-stone-700">
+                                            {(parseFloat(watch(`dev_work_amounts.${index}`)) || 0).toLocaleString('en-IN')}
                                         </div>
                                     </div>
                                 ))}
+                                <div className="grid grid-cols-12 gap-2 px-3 py-1.5 text-xs border-t border-stone-200 bg-stone-50 font-bold text-stone-700">
+                                    <div className="col-span-10 text-right">{L("ಒಟ್ಟು — Total")}</div>
+                                    <div className="col-span-2 text-right">
+                                        {DEV_WORK_DESCRIPTIONS
+                                            .reduce((sum, _, i) => sum + (parseFloat(watch(`dev_work_amounts.${i}`)) || 0), 0)
+                                            .toLocaleString('en-IN')}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

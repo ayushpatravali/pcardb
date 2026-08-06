@@ -128,8 +128,11 @@ def borrower_type_kn(value):
 
 
 class MissingFieldsError(Exception):
-    def __init__(self, fields):
+    def __init__(self, fields, labels=None):
         self.fields = list(fields)
+        # [{key, label_kn, label_en}] so the UI can show operator-readable
+        # names instead of payload keys.
+        self.labels = labels or []
         super().__init__(f"Missing required fields: {', '.join(self.fields)}")
 
 
@@ -150,7 +153,12 @@ def plain_number(value):
 
 # Numeric fields inside the JSON-string columns. The React form submits these
 # as strings ("4.20", ""); templates do arithmetic on them, so coerce to float.
-_NUMERIC_JSON_FIELDS = {"acres", "guntas", "akaar", "annual_income", "sl", "valuation"}
+_NUMERIC_JSON_FIELDS = {
+    "acres", "guntas", "akaar", "annual_income", "sl", "valuation",
+    # LAND_DEV crop-economics columns (ಕ್ಷೇತ್ರ ಆಯವ್ಯಯ ತಃಖ್ತೆ)
+    "cost_per_acre", "total_cost", "yield_per_acre", "total_yield",
+    "rate", "total_income", "other_cost",
+}
 
 
 def _to_float(value):
@@ -421,6 +429,7 @@ def _resolve(context, source):
 
 def _check_required(spec, context):
     missing = []
+    labels = []
     for field in spec["fields"]:
         if field["tier"] in ("constant", "handwritten"):
             continue
@@ -429,8 +438,13 @@ def _check_required(spec, context):
         value = _resolve(context, field["source"])
         if value is None or value == "" or value == []:
             missing.append(field["key"])
+            labels.append({
+                "key": field["key"],
+                "label_kn": field.get("label_kn") or field["key"],
+                "label_en": field.get("label_en") or field["key"],
+            })
     if missing:
-        raise MissingFieldsError(missing)
+        raise MissingFieldsError(missing, labels)
 
 
 def plus_insurance(amount):

@@ -40,7 +40,8 @@ def download_pdf(application_id: int, session: Session = Depends(get_session)):
         output_path = render_packet(application, details)
     except MissingFieldsError as e:
         raise HTTPException(
-            status_code=422, detail={"error": "missing_fields", "missing": e.fields}
+            status_code=422,
+            detail={"error": "missing_fields", "missing": e.fields, "fields": e.labels},
         )
 
     application.generated_pdf_path = str(output_path)

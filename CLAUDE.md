@@ -102,6 +102,30 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 
 ## Changelog
 
+- **2026-08-06** — LAND_DEV corrections from owner's new Excel files
+  (`CROP INCOME CHART for land dev.xlsx` + `Appraisal LD.xlsx`, both at repo
+  root, NOT in git): (1) **ಕ್ಷೇತ್ರ ಆಯವ್ಯಯ ತಃಖ್ತೆ (ld3/Ap3) now fully computed**
+  — new `CROP_ECON` chart in the form ([yield/acre, market rate,
+  expenditure/acre] for all 31 crops; net = y×r−c matches the existing
+  CROP_CHART values exactly); pre/post-dev crop rows store
+  cost_per_acre/total_cost/yield_per_acre/total_yield/rate/total_income and
+  annual_income = income−cost (chain mirrors the reference sheet: totals from
+  ROUNDED total yield). Previously these columns printed blank for typed
+  applications ("something in the database not going properly"). ld3 also
+  gained the reference's 4-item other-costs box (ಭೂಕಂದಾಯ/ಬೆಳೆ ಸಾಲದ ಬಡ್ಡಿ/
+  ವಿದ್ಯುಚ್ಛಕ್ತಿ/ಇತರೆ) in col 13 with section totals in col 14. Legacy rows
+  without econ keys still render (setdefault None). (2) **Dev-work rates
+  locked** to bank constants [5336, 61714, 7807, 0, 3429, 1714] (owner +
+  LD1 sheet) — compact read-only table in the form (🔒, small font, total
+  row); operator cannot edit; old stored rates corrected on next save.
+  (3) **Print-page dead end fixed**: PDF now fetched via the API client;
+  422 shows an amber "Application #N is SAVED — nothing lost" panel with
+  the missing fields as Kannada+English LABELS (backend 422 now includes
+  `fields: [{key,label_kn,label_en}]`) and an "Edit & Fill" button to the
+  edit form (was: raw status-code JSON in a new tab, operator stranded).
+  **Flag for bank**: reference Ap3 multiplies 24ac20g as literal "24.2";
+  form uses correct 24.5 (matches valuation + dev-work pages). Pending:
+  owner will send a restricted crop list + "XYZ prices" discussion.
 - **2026-08-06** — Dead-session data loss fixed (tester lost a fully typed
   application to a 401 at save). Root cause: "logged in" was just a token
   string existing in localStorage — never validated — and the application

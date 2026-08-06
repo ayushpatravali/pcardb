@@ -6,6 +6,7 @@
   .pg-ld3 table.crops { width: 100%; table-layout: fixed; }
   .pg-ld3 table.crops th, .pg-ld3 table.crops td { border: 1px solid #000; padding: 0.8mm; text-align: center; word-wrap: break-word; }
   .pg-ld3 .section-lab { font-weight: bold; text-align: left; }
+  .pg-ld3 .othercost-box { text-align: left; vertical-align: top; font-size: 7pt; line-height: 2.1; }
 </style>
 
 <div class="center-title">ಕ್ಷೇತ್ರ ಆಯವ್ಯಯ ತ:ಖ್ತೆ</div>
@@ -43,12 +44,15 @@
     <td class="value">{{ c.total_yield | num }}</td>
     <td class="value">{{ c.rate | num }}</td>
     <td class="value">{{ c.total_income | num }}</td>
-    <td class="value">{{ c.other_cost | num }}</td>
+    {% if loop.first %}
+    <td class="othercost-box" rowspan="{{ parsed.pre_dev_crops | length }}">1 ಭೂಕಂದಾಯ ರೂ<br>2 ಬೆಳೆ ಸಾಲದ ಬಡ್ಡಿ<br>3 ವಿದ್ಯುಚ್ಛಕ್ತಿ ಖರ್ಚು<br>4 ಇತರೆ</td>
+    {% endif %}
     <td class="value">{{ c.annual_income | num }}</td>
   </tr>
   {% endfor %}
   <tr>
-    <td colspan="13" class="section-lab" style="text-align:right;">ಒಟ್ಟು</td>
+    <td colspan="12" style="border-right:none;"></td>
+    <td class="section-lab">ಒಟ್ಟು</td>
     <td class="value bold">{{ computed.annual_income | num }}</td>
   </tr>
   <tr>
@@ -68,12 +72,15 @@
     <td class="value">{{ c.total_yield | num }}</td>
     <td class="value">{{ c.rate | num }}</td>
     <td class="value">{{ c.total_income | num }}</td>
-    <td class="value">{{ c.other_cost | num }}</td>
+    {% if loop.first %}
+    <td class="othercost-box" rowspan="{{ parsed.post_dev_crops | length }}">1 ಭೂಕಂದಾಯ ರೂ<br>2 ಬೆಳೆ ಸಾಲದ ಬಡ್ಡಿ<br>3 ವಿದ್ಯುಚ್ಛಕ್ತಿ ಖರ್ಚು<br>4 ಇತರೆ</td>
+    {% endif %}
     <td class="value">{{ c.annual_income | num }}</td>
   </tr>
   {% endfor %}
   <tr>
-    <td colspan="13" class="section-lab" style="text-align:right;">ಒಟ್ಟು</td>
+    <td colspan="12" style="border-right:none;"></td>
+    <td class="section-lab">ಒಟ್ಟು</td>
     <td class="value bold">{{ computed.post_dev_income | num }}</td>
   </tr>
 </table>
