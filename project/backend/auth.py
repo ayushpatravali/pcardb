@@ -12,7 +12,9 @@ from models import User
 # Configuration via environment variables
 SECRET_KEY = os.environ.get("SECRET_KEY", "CHANGE_THIS_TO_A_REALLY_SECRET_KEY")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ.get("TOKEN_EXPIRE_MINUTES", "480"))
+# 7 days: operators keep tabs open across days and the form page makes no
+# API call until Save, so a short-lived token dies unnoticed mid-typing.
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.environ.get("TOKEN_EXPIRE_MINUTES", str(7 * 24 * 60)))
 
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")

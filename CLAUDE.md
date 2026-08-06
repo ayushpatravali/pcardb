@@ -102,6 +102,19 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 
 ## Changelog
 
+- **2026-08-06** — Dead-session data loss fixed (tester lost a fully typed
+  application to a 401 at save). Root cause: "logged in" was just a token
+  string existing in localStorage — never validated — and the application
+  form makes NO api call until Save, so an expired token surfaced only after
+  all the typing, and the form threw the work away. Four layers: (1) token
+  default 480min → 7 days (TOKEN_EXPIRE_MINUTES still overrides);
+  (2) AuthContext now verifies the stored token via GET /users/me on load —
+  dead sessions bounce to login BEFORE typing (network errors keep the
+  session); (3) form drafts autosave to localStorage per scheme on every
+  change, restore when the blank form reopens, clear on successful save;
+  (4) 401 at save → bilingual alert "log in in a new tab, come back, press
+  Save — nothing lost", stays on the page (works for edits too; the retried
+  request reads the fresh token). Needs Railway redeploy to reach testers.
 - **2026-08-06** — LAND_DEV form: generic Crop Details table hidden (owner —
   duplicate of the pre/post-development crop tables; only irrigation sources
   stay in Agriculture Details). Payload sends `current_crop: []` for LAND_DEV

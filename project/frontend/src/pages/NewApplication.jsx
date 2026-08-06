@@ -362,6 +362,25 @@ const NewApplication = () => {
         control, name: 'co_applicants'
     });
 
+    // ── Draft autosave (new applications only) ──────────────────────────────
+    // The save POST is this form's FIRST server contact, so a dead login used
+    // to surface only after all the typing — and lose it (bit a tester on
+    // 2026-08-06). Every change is snapshotted locally, restored when the
+    // same scheme's blank form reopens, and cleared on successful save.
+    const draftKey = `pcardb_draft_${schemeType}`;
+    React.useEffect(() => {
+        if (id) return; // edits load from the server, not from drafts
+        try {
+            const saved = localStorage.getItem(draftKey);
+            if (saved) reset({ ...JSON.parse(saved), scheme_type: schemeType });
+        } catch { /* corrupt draft — start blank */ }
+        const sub = watch((values) => {
+            try { localStorage.setItem(draftKey, JSON.stringify(values)); } catch { /* storage full */ }
+        });
+        return () => sub.unsubscribe();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id, draftKey]);
+
     // Watch for auto-calculations
     const tractor_q   = watch('tractor_quotation');
     const tractor_dp  = watch('tractor_down_payment');
@@ -809,12 +828,24 @@ const NewApplication = () => {
                 navigate('/applications');
             } else {
                 const created = await api.post('/applications/', payload);
+                localStorage.removeItem(draftKey);
                 // Straight to the print/download screen for a freshly saved
                 // application (save-then-print), instead of the plain list.
                 navigate(`/applications/${created.data.id}/print`);
             }
         } catch (err) {
             console.error('Save Error:', err);
+            if (err?.response?.status === 401) {
+                // Dead login discovered at save time. Stay on this page — the
+                // typed values are still in the form (and in the local draft);
+                // a fresh login in another tab refreshes the token this tab's
+                // requests read from localStorage.
+                alert(
+                    'ಲಾಗಿನ್ ಅವಧಿ ಮುಗಿದಿದೆ. ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ಮತ್ತೆ ಲಾಗಿನ್ ಮಾಡಿ, ನಂತರ ಇಲ್ಲಿಗೆ ಬಂದು ಮತ್ತೆ Save ಒತ್ತಿರಿ — ಟೈಪ್ ಮಾಡಿದ ಮಾಹಿತಿ ಕಳೆದುಹೋಗಿಲ್ಲ.\n\n'
+                    + 'Your login session expired. Open a NEW tab, log in again, then come back to this tab and press Save — nothing you typed is lost.'
+                );
+                return;
+            }
             const detail = err?.response?.data?.detail;
             let msg = detail;
             if (Array.isArray(detail)) {
