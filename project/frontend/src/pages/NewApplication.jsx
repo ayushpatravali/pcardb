@@ -164,7 +164,8 @@ const FARMER_OPTIONS = ['ಸಣ್ಣ ರೈತ (Small)', 'ದೊಡ್ಡ ರ�
 // LAND_DEV repayment terms are fixed by farmer type (bank corrections
 // 2026-08-07): small/marginal 7 years, big 6 years; 12-month initial period
 // then (years - 1) yearly kantus. Mirrors backend render_service.
-const isBigFarmer = (v) => (v || '').includes('(Big)') || (v || '').includes('ದೊಡ್ಡ');
+// matches backend _is_big_farmer: '(Big)' token, ದೊಡ್ಡ, or legacy plain 'Big'
+const isBigFarmer = (v) => /ದೊಡ್ಡ|\(\s*big\s*\)|^\s*big\s*$/i.test(v || '');
 const landDevYears = (farmerType) => (isBigFarmer(farmerType) ? 6 : 7);
 const RELATION_OPTIONS = ['', 'ಪತ್ನಿ/ಪತಿ (Spouse)', 'ಮಗ (Son)', 'ಮಗಳು (Daughter)', 'ತಂದೆ (Father)', 'ತಾಯಿ (Mother)', 'ಸಹೋದರ (Brother)', 'ಇತರೆ (Other)'];
 
