@@ -137,10 +137,13 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
   (7) Bank name: ld9 estimate header got the missing name_line2; ld5's two
   signature lines unified to "ಪಿಕಾರ್ಡ ಬ್ಯಾಂಕ ನಿ ಗೋಕಾಕ"; pp's ಮೇಲ್ವಿಚಾರಕರು
   centred over its bank line. Both packets 21/23 OK; API e2e (cap 400 →
-  create 200 → edit-cap 400 → PDF 200) passes. NOT done: the "remove this
-  Blank page" note on ld3's empty lower half (ambiguous — would change the
-  23-page count; ask owner), and the form's live-summary installment still
-  shows loan/duration for LAND_DEV (frontend untouched this round).
+  create 200 → edit-cap 400 → PDF 200) passes. Skipped per user: the
+  "remove this Blank page" note on ld3's empty lower half (likely an owner
+  mistake — would change the 23-page count). Follow-up same day: form now
+  matches — LAND_DEV's duration select is replaced by a locked farmer-type
+  display (small 7 / big 6; payload always sends the derived value, so old
+  rows self-correct on save) and the live-summary kantu uses
+  loan/(years−1) with the 12-month initial period noted.
 - **2026-08-06** — Full LAND_DEV verification vs both new Excel files + the
   reference PDF (owner: "make sure you are completely right"). Machine-
   checked all 31 CROP_ECON/CROP_CHART entries against the chart xlsx (exact

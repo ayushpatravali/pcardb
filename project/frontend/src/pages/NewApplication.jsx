@@ -161,6 +161,11 @@ const CASTE_LEGACY_MAP = {
     'ST / ಪರಿಶಿಷ್ಟ ಪಂಗಡ': 'ಪರಿಶಿಷ್ಠ ಪಂಗಡ',
 };
 const FARMER_OPTIONS = ['ಸಣ್ಣ ರೈತ (Small)', 'ದೊಡ್ಡ ರೈತ (Big)', 'ಅತಿ ಸಣ್ಣ ರೈತ (Marginal)'];
+// LAND_DEV repayment terms are fixed by farmer type (bank corrections
+// 2026-08-07): small/marginal 7 years, big 6 years; 12-month initial period
+// then (years - 1) yearly kantus. Mirrors backend render_service.
+const isBigFarmer = (v) => (v || '').includes('(Big)') || (v || '').includes('ದೊಡ್ಡ');
+const landDevYears = (farmerType) => (isBigFarmer(farmerType) ? 6 : 7);
 const RELATION_OPTIONS = ['', 'ಪತ್ನಿ/ಪತಿ (Spouse)', 'ಮಗ (Son)', 'ಮಗಳು (Daughter)', 'ತಂದೆ (Father)', 'ತಾಯಿ (Mother)', 'ಸಹೋದರ (Brother)', 'ಇತರೆ (Other)'];
 
 // ── Reusable Components ───────────────────────────────────────────────────────
@@ -811,6 +816,12 @@ const NewApplication = () => {
 
         headerFields.forEach(k => { if (data[k] !== undefined && k !== 'current_crop') payload[k] = data[k]; });
 
+        // LAND_DEV: the stored duration always mirrors the farmer-type rule
+        // (small 7 / big 6) — the select is hidden for this scheme.
+        if (currentScheme === 'LAND_DEV') {
+            payload.loan_duration_years = landDevYears(data.farmer_type);
+        }
+
         // "Other" caste: store the typed caste text itself (prints verbatim on the PDF)
         if (payload.caste === CASTE_OTHER) {
             payload.caste = (data.caste_custom || '').trim() || 'ಇತರೆ';
@@ -953,7 +964,13 @@ const NewApplication = () => {
                     const liveLoan = parseFloat(watch('loan_amount')) || 0;
                     const liveAcres = watch('total_area_acres');
                     const liveGuntas = watch('total_guntas');
-                    const liveDuration = watch('loan_duration_years') || 7;
+                    // LAND_DEV: years come from farmer type; kantu = loan / (years - 1)
+                    // after the 12-month initial period — matches the printed packet.
+                    const liveIsLandDev = schemeType === 'LAND_DEV';
+                    const liveDuration = liveIsLandDev
+                        ? landDevYears(watch('farmer_type'))
+                        : (watch('loan_duration_years') || 7);
+                    const liveKantus = liveIsLandDev ? liveDuration - 1 : liveDuration;
                     const extent = (parseFloat(liveAcres) || 0) > 0
                         ? `${parseInt(liveAcres, 10)}.${String(parseInt(liveGuntas, 10) || 0).padStart(2, '0')}`
                         : null;
@@ -976,7 +993,9 @@ const NewApplication = () => {
                                     {liveLoan > 0 && (
                                         // Yearly installment — matches the packet (bank review 2026-08-04:
                                         // installments are annual, not half-yearly)
-                                        <span className="text-primary-200">ಅವಧಿ {liveDuration} ವರ್ಷ · ಕಂತು ≈ ₹{Math.round(liveLoan / liveDuration).toLocaleString('en-IN')} × {liveDuration} (ವಾರ್ಷಿಕ)</span>
+                                        <span className="text-primary-200">
+                                            ಅವಧಿ {liveDuration} ವರ್ಷ{liveIsLandDev ? ' (12 ತಿಂಗಳು ಪ್ರಾರಂಭಿಕ)' : ''} · ಕಂತು ≈ ₹{Math.round(liveLoan / liveKantus).toLocaleString('en-IN')} × {liveKantus} (ವಾರ್ಷಿಕ)
+                                        </span>
                                     )}
                                 </motion.div>
                             )}
@@ -1074,17 +1093,32 @@ const NewApplication = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 {L("ಸಾಲದ ಅವಧಿ — Loan Duration (Years)")}
                             </label>
-                            <select
-                                {...register('loan_duration_years')}
-                                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-100 focus:border-primary-500 bg-white"
-                            >
-                                {Array.from({ length: 15 }, (_, i) => i + 1).map(y => (
-                                    <option key={y} value={y}>{y}</option>
-                                ))}
-                            </select>
-                            <p className="text-xs text-gray-400 mt-1">
-                                {L("ಮರುಪಾವತಿ ಅವಧಿ — repayment period printed on the packet (default 7)")}
-                            </p>
+                            {schemeType === 'LAND_DEV' ? (
+                                /* LAND_DEV: fixed by farmer type (small 7 / big 6) — matches
+                                   the packet, which derives the period server-side */
+                                <>
+                                    <div className="w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-gray-700">
+                                        🔒 {landDevYears(watch('farmer_type'))} {L("ವರ್ಷ — ರೈತ ವರ್ಗದಂತೆ ನಿಗದಿ")}
+                                    </div>
+                                    <p className="text-xs text-gray-400 mt-1">
+                                        {L("ಸಣ್ಣ ರೈತರು 7 ವರ್ಷ / ದೊಡ್ಡ ರೈತರು 6 ವರ್ಷ — 12 ತಿಂಗಳು ಪ್ರಾರಂಭಿಕ ಅವಧಿ + ವಾರ್ಷಿಕ ಕಂತುಗಳು")}
+                                    </p>
+                                </>
+                            ) : (
+                                <>
+                                    <select
+                                        {...register('loan_duration_years')}
+                                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-100 focus:border-primary-500 bg-white"
+                                    >
+                                        {Array.from({ length: 15 }, (_, i) => i + 1).map(y => (
+                                            <option key={y} value={y}>{y}</option>
+                                        ))}
+                                    </select>
+                                    <p className="text-xs text-gray-400 mt-1">
+                                        {L("ಮರುಪಾವತಿ ಅವಧಿ — repayment period printed on the packet (default 7)")}
+                                    </p>
+                                </>
+                            )}
                         </div>
 
                         {/* Previous-loan details: only for old borrowers; prints on PDF page 9 section 9) */}
