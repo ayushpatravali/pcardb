@@ -11,9 +11,10 @@ fills a React form → FastAPI + SQLite stores it → the system generates the
 bank's standard Kannada print packet as a PDF (**21 pages for Tractor, 23 for
 LAND_DEV**). **Tractor and LAND_DEV schemes are built**; the remaining 3
 schemes (BULLOCK, SHEEP_40/20/10) are gated on bank sign-off of the Tractor
-pilot and will replicate the same pattern. LAND_DEV has not yet been through
-a bank-review correction round the way Tractor has — expect similar fix
-batches once reviewed.
+pilot and will replicate the same pattern. LAND_DEV went through its first
+owner-driven correction round on 2026-08-06 (new crop chart + Appraisal
+LD.xlsx, verified page-by-page vs the reference PDF); the bank's own review
+round is still to come.
 
 **Repo:** https://github.com/ayushpatravali/pcardb (owner's personal GitHub;
 a fork on a second account feeds the Railway demo — "Sync fork" after pushes).
@@ -25,8 +26,11 @@ React form (frontend/src/pages/NewApplication.jsx)
   → POST/PUT /applications (routers/applications.py, exact SchemeType routing)
   → SQLite row (models.py; JSON-string columns for arrays)
   → GET /pdf/download/{id} or POST /applications/{id}/generate
-  → services/render_service.py: build_context() fills 21 Jinja2 HTML pages
-  → WeasyPrint → PDF (~1s). Missing required fields → 422 with field list.
+  → services/render_service.py: build_context() fills the scheme's Jinja2
+    HTML pages (21 Tractor / 23 LAND_DEV)
+  → WeasyPrint → PDF (~1s). Missing required fields → 422 with
+    {missing: [keys], fields: [{key, label_kn, label_en}]} — the print page
+    shows the labels with an Edit button (application stays saved).
 ```
 
 - **Templates:** `backend/templates/pages/*.html` (+ `pages/tractor/t1–t7`),
@@ -42,8 +46,14 @@ React form (frontend/src/pages/NewApplication.jsx)
 - **JSON-string columns on Application:** `co_applicants`, `land_parcels`
   (incl. per-parcel `valuation`), `current_crop`, `previous_loans`.
   Numeric fields inside them are coerced to float at render (form sends strings).
-- **Auth:** JWT; roles manager/field_officer; enums stored by VALUE
+- **Auth:** JWT, 7-day default (`TOKEN_EXPIRE_MINUTES` overrides); the SPA
+  verifies the stored token via GET /users/me on load (dead session →
+  login BEFORE typing); roles manager/field_officer; enums stored by VALUE
   (lowercase); signup is DISABLED unless `ALLOW_SIGNUP=1` (local scripts set it).
+- **Form drafts:** new-application form autosaves every change to
+  localStorage (`pcardb_draft_<scheme>`), restores on reopen, clears on
+  successful save — typed work survives dead sessions/crashes. 401 at save
+  keeps the form and instructs re-login in a new tab.
 
 ## Run
 
@@ -394,15 +404,21 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
   — make these read from branch config per the deployment plan,
   and "also add after this Last Name next line" (needs owner clarification).
   Note: form has no gender-independent "female loanee" flag beyond `gender`.
-- **Owner actions:** Sync fork + redeploy Railway (demo is many commits
-  behind: crop chart, caste list, Kannada mode, UI v2, page-10 calcs, extent
-  fixes all not yet on demo); revoke the two GitHub PATs pasted in chat.
-- **LAND_DEV moratorium gap (2026-08-04, known, not fixed):** the reference
-  packet's page 10 shows a 2-year grace period before annual installments
-  start (7 yrs total, 5 yrs of repayment, installment = loan/5); the shared
-  `b4.html` template has no separate moratorium field and currently divides
-  evenly (loan/7). Needs a `moratorium_years` field + template update once
-  the bank confirms this is a real requirement (not just this one sample).
+- **Owner actions (URGENT):** Sync fork + redeploy Railway — the demo lacks
+  the landdevdetails auto-migration (LAND_DEV apps 500 there), the
+  dead-session fixes (tester lost a typed application to this on
+  2026-08-06), and all LAND_DEV correction work. Verify the deployed hash
+  is ≥ 7bfae56 after redeploy. Also: revoke the two GitHub PATs pasted in
+  chat; tell the tester their lost application must be retyped AFTER the
+  redeploy.
+- **From owner, parked:** "XYZ prices" discussion (owner will explain);
+  a restricted crop list for the pre/post-dev dropdowns may come later
+  (for now ALL 31 chart crops show, per owner 2026-08-07); decision needed
+  if the bank objects to extent = acres+guntas/40 (24.5) vs their ಆಯವ್ಯಯ
+  sheet's literal acre.gunta decimal (24.2).
+- (done 2026-08-06) LAND_DEV moratorium: 12-month initial period + (N−2)
+  yearly kantus, kantu = loan/(N−2) — confirmed by reference p10+p14 and
+  Ap4, implemented in render_service + b4 + ld4.
 - Bank sign-off on printed Tractor + LAND_DEV packets → then replicate
   templates+specs to SHEEP_40/20/10 → BULLOCK (shared pages already built;
   their UI forms don't exist yet and will copy the Tractor/LAND_DEV pattern).
