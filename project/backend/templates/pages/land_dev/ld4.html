@@ -26,7 +26,7 @@
 <div class="row"><span class="n">20)</span><span style="flex:1">ಉದ್ದೇಶಿತ ಸಾಲದ ಮರುಪಾವತಿ ಕಂತಿನ ಮೊತ್ತ ರೂ.</span>
   <span class="value bold">{{ computed.installment_kantu | num }}</span>&nbsp;+ ಬಡ್ಡಿ</div>
 <div class="row"><span class="n">21)</span><span style="flex:1">ಸಾಲದ ಮರುಪಾವತಿ ಅರ್ಹತೆ :ಉದ್ದೇಶಿತ ನಿವ್ವಳ ಆದಾಯದ ಶೇಕಡಾ</span></div>
-<div class="row"><span class="n"></span><span style="flex:1">= ರೂ:&nbsp;<span class="value bold">{{ computed.incremental_income | num }}</span>&nbsp;X&nbsp;75%&nbsp;% = ರೂ&nbsp;<span class="value bold">{{ computed.repayment_eligibility | num }}</span></span></div>
+<div class="row"><span class="n"></span><span style="flex:1">= ರೂ:&nbsp;<span class="value bold">{{ computed.incremental_income | num }}</span>&nbsp;X&nbsp;<span class="value bold">{{ computed.repayment_pct }}</span>&nbsp;% = ರೂ&nbsp;<span class="value bold">{{ computed.repayment_eligibility | num }}</span></span></div>
 <div class="row"><span class="n">22)</span><span style="flex:1">ಹಿಂದಿನ ಸಾಲಗಳ ಮರುಪಾವತಿ ಕಂತಿನ ಒಟ್ಟು ಮೊತ್ತ ರೂ</span>
   <span class="value">{{ parsed.previous_loans.annual_installment | num }}</span></div>
 <div class="row"><span class="n">23)</span><span style="flex:1">ನಿವ್ವಳ ಮರುಪಾವತಿ ಅರ್ಹತೆ (21-22) ರೂ</span>

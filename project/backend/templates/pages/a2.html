@@ -42,7 +42,8 @@
       <td class="value">{{ p.village }}</td>
       <td class="value">{{ p.survey_no }}</td>
       <td class="value">{{ p.extent }}</td>
-      <td></td>
+      {# owner 2026-08-07: print the land's water source here (was blank) #}
+      <td class="value small">{% if loop.first %}{{ computed.irrigation_kn or '' }}{% endif %}</td>
       <td></td>
     </tr>
     {% endfor %}

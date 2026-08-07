@@ -36,7 +36,9 @@
     <td>{{ loop.index }}</td>
     <td class="value">{{ c.crop_name }}</td>
     <td class="value">{{ c.season or '' }}</td>
-    <td class="value">{{ c.irrigated or '' }}</td>
+    {# owner 2026-08-07: ಖುಷ್ಕಿ/ನೀರಾವರಿ shows the land's water source when the
+       crop row doesn't carry its own value #}
+    <td class="value small">{{ c.irrigated or computed.irrigation_kn or '' }}</td>
     <td class="value">{{ c.extent }}</td>
     <td class="value">{{ c.cost_per_acre | num }}</td>
     <td class="value">{{ c.total_cost | num }}</td>
@@ -64,7 +66,9 @@
     <td>{{ loop.index }}</td>
     <td class="value">{{ c.crop_name }}</td>
     <td class="value">{{ c.season or '' }}</td>
-    <td class="value">{{ c.irrigated or '' }}</td>
+    {# owner 2026-08-07: ಖುಷ್ಕಿ/ನೀರಾವರಿ shows the land's water source when the
+       crop row doesn't carry its own value #}
+    <td class="value small">{{ c.irrigated or computed.irrigation_kn or '' }}</td>
     <td class="value">{{ c.extent }}</td>
     <td class="value">{{ c.cost_per_acre | num }}</td>
     <td class="value">{{ c.total_cost | num }}</td>

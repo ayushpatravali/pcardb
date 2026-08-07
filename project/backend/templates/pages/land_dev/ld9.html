@@ -6,7 +6,8 @@
   .pg-ld9 table.cost th, .pg-ld9 table.cost td { border: 1px solid #000; padding: 1mm; text-align: center; }
 </style>
 
-<div class="bank-header">{{ bank.name_line1 }}</div>
+{# owner 2026-08-07: complete bank name (line 2 was missing) #}
+<div class="bank-header">{{ bank.name_line1 }}<br>{{ bank.name_line2 }}</div>
 <div style="margin-top:2mm;">ಯೋಜನೆ: ನೀರಾವರಿ ಜಮೀನಿಗೆ ಭೂ-ಅಭಿವೃದ್ಧಿ ಅಂದಾಜು ಪಟ್ಟಿ</div>
 <div style="display:flex; justify-content:space-between; margin-top:1mm;">
   <span>ಸಾಲಗಾರರ ಹೆಸರು :&nbsp;<span class="value bold">{{ app.applicant_name_kn }}</span></span>

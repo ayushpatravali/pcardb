@@ -187,26 +187,31 @@
       </tr>
       {# insurance component below the final loan amount — amount only, no label #}
       <tr><td></td><td></td><td></td><td></td>
-        <td class="right value">+ {{ computed.insurance_amount | num }}</td></tr>
+        <td class="right value">{{ computed.insurance_amount | plus_insurance }}</td></tr>
       <tr><td></td><td class="right">ಒಟ್ಟು</td><td></td><td></td><td></td></tr>
       {% elif app.scheme_type == "LAND_DEV" %}
       {# own contribution = total cost - sanctioned loan (self-consistent;
          the reference PDF shows two different own-contribution figures on
          different pages — this table keeps the three columns arithmetically
-         consistent rather than repeating either one). #}
+         consistent rather than repeating either one). Owner 2026-08-07: when
+         the stored loan exceeds the estimated cost (negative own
+         contribution — possible only on legacy rows now that saves are
+         capped), print all three figures blank instead. #}
+      {% set ld_own = (computed.total_dev_cost or 0) - (app.loan_amount or 0) %}
+      {% set ld_show = computed.total_dev_cost and ld_own >= 0 %}
       <tr>
         <td>ಅ)</td><td class="center value">ಭೂ ಅಭಿವೃದ್ಧಿ ಯೋಜನೆ</td>
-        <td class="right value">{{ computed.total_dev_cost | num }}</td>
-        <td class="right value">{{ ((computed.total_dev_cost or 0) - (app.loan_amount or 0)) | num }}</td>
-        <td class="right value">{{ app.loan_amount | num }}</td>
+        <td class="right value">{{ computed.total_dev_cost | num if ld_show else '' }}</td>
+        <td class="right value">{{ ld_own | num if ld_show else '' }}</td>
+        <td class="right value">{{ app.loan_amount | num if ld_show else '' }}</td>
       </tr>
       <tr><td>ಆ)</td><td></td><td></td><td></td><td></td></tr>
       <tr><td>ಇ)</td><td></td><td></td><td></td><td></td></tr>
       <tr>
         <td>ಈ)</td><td class="right">ಒಟ್ಟು</td>
-        <td class="right value">{{ computed.total_dev_cost | num }}</td>
-        <td class="right value">{{ ((computed.total_dev_cost or 0) - (app.loan_amount or 0)) | num }}</td>
-        <td class="right value">{{ app.loan_amount | num }}</td>
+        <td class="right value">{{ computed.total_dev_cost | num if ld_show else '' }}</td>
+        <td class="right value">{{ ld_own | num if ld_show else '' }}</td>
+        <td class="right value">{{ app.loan_amount | num if ld_show else '' }}</td>
       </tr>
       {% else %}
       <tr><td>ಅ)</td><td></td><td></td><td></td><td></td></tr>

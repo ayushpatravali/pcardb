@@ -61,7 +61,8 @@
       <span>ದಾಖಲೆಯ ಹಾಳೆ ಸಂಖ್ಯೆ <span class="fill blank short">&nbsp;</span></span></div>
     <div class="row"><span class="lab">ಈ) ನಿವ್ವಳ ಸಾಲದ ಅರ್ಹತೆ &nbsp; ರೂ. <span class="fill blank">{{ computed.net_loan_eligibility | num }}</span></span>
       <span>ದಾಖಲೆಯ ಹಾಳೆ ಸಂಖ್ಯೆ <span class="fill blank short">&nbsp;</span></span></div>
-    <div class="row"><span class="lab">ಉ) ಮರುಪಾವತಿ ಅರ್ಹತೆ (ಅಂಶ 11 ಇ &nbsp; <span class="fill short">75%</span> &nbsp;%)</span>
+    {# % is farmer-type/scheme dependent (LAND_DEV: small 50 / big 75; Tractor: 75) #}
+    <div class="row"><span class="lab">ಉ) ಮರುಪಾವತಿ ಅರ್ಹತೆ (ಅಂಶ 11 ಇ &nbsp; <span class="fill short">{{ computed.repayment_pct }}%</span> &nbsp;%)</span>
       <span>ರೂ. <span class="fill blank">{{ computed.repayment_eligibility | num }}</span></span></div>
     {# ಊ ← page 9 ಉ) ಒಟ್ಟು ವಾರ್ಷಿಕ ಕಂತಿನ ಮೊತ್ತ (old-borrower block) #}
     <div class="row"><span class="lab">ಊ) ಹಿಂದಿನ ಸಾಲಗಳ ಮರುಪಾವತಿ ಕಂತು</span>

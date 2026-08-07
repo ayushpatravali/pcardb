@@ -106,6 +106,17 @@ def extent_str(acres, guntas):
     return f"{a:.2f}" if a else ""
 
 
+def _is_big_farmer(value):
+    """Classification token from the form's 'ಸಣ್ಣ ರೈತ (Small)' style value.
+    Big farmers get different LAND_DEV repayment terms (owner 2026-08-07);
+    Small/Marginal (and anything unrecognized) take the small-farmer terms."""
+    if not value:
+        return False
+    m = _PAREN_RE.search(value)
+    token = (m.group(1).strip() if m else value.strip()).lower()
+    return token == "big" or "ದೊಡ್ಡ" in str(value)
+
+
 def _farmer_type_kn(value):
     """Form stores 'ಸಣ್ಣ ರೈತ (Small)' etc. — map the English token to the
     packet's canonical wording, else strip the English half."""
@@ -158,6 +169,8 @@ _NUMERIC_JSON_FIELDS = {
     # LAND_DEV crop-economics columns (ಕ್ಷೇತ್ರ ಆಯವ್ಯಯ ತಃಖ್ತೆ)
     "cost_per_acre", "total_cost", "yield_per_acre", "total_yield",
     "rate", "total_income", "other_cost",
+    # LAND_DEV dev-work rows (ld2 formats these with %.2f)
+    "rate_per_acre", "amount",
 }
 
 
@@ -242,6 +255,14 @@ def build_context(app: Application, details, spec) -> dict:
             if isinstance(c, dict):
                 c["crop_name"] = kn_display(c.get("crop_name"))
                 c["extent"] = extent_str(c.get("acres"), c.get("guntas"))
+                # The packet's ಖುತು/ನೀರಾವರಿ cells are Kannada; operators have
+                # typed stray Latin letters into the free-text season/irrigated
+                # inputs ("e", "f" — owner flagged 2026-08-07). Print blank
+                # rather than leaking the junk onto the packet.
+                for key in ("season", "irrigated"):
+                    val = c.get(key)
+                    if val and not _has_kannada(str(val)):
+                        c[key] = None
                 for key in ("season", "irrigated", "cost_per_acre", "total_cost", "yield_per_acre", "total_yield", "rate", "total_income", "other_cost"):
                     c.setdefault(key, None)
         for w in parsed["dev_work_items"]:
@@ -338,6 +359,9 @@ def build_context(app: Application, details, spec) -> dict:
         # loan-amount print sites (confirmed 2026-08-04) — every other scheme
         # keeps the fixed constant.
         "insurance_amount": INSURANCE_AMOUNT if app.scheme_type != SchemeType.LAND_DEV else 0,
+        # % applied to incremental income on b4 12 ಉ / ld4 21 — LAND_DEV
+        # overrides this per farmer type below; Tractor stays at 75.
+        "repayment_pct": 75,
         "loan_duration_years": int(app.loan_duration_years or DEFAULT_LOAN_DURATION_YEARS),
         "dob": _fmt_date(app.dob),
         "farmer_type_kn": _farmer_type_kn(app.farmer_type),
@@ -384,6 +408,13 @@ def build_context(app: Application, details, spec) -> dict:
         )
         computed["incremental_income"] = real_incremental_income
         computed["total_dev_cost"] = round(dev_total) if dev_total else None
+        # Farmer-type-dependent repayment terms (owner corrections 2026-08-07,
+        # from the bank's annotated packet): small farmers repay over 7 years
+        # at 50% of incremental income; big farmers over 6 years at 75%.
+        big_farmer = _is_big_farmer(app.farmer_type)
+        ld_years = 6 if big_farmer else 7
+        computed["repayment_pct"] = 75 if big_farmer else 50
+        computed["loan_duration_years"] = ld_years
         # repayment_eligibility/net_repayment_eligibility/repayment_capacity
         # were computed above from the flat-30% incremental_income (meant
         # for Tractor) — redo them from the real crop-delta figure. No
@@ -391,7 +422,9 @@ def build_context(app: Application, details, spec) -> dict:
         # repayment_capacity equals repayment_eligibility here, since the
         # shared page 6 (ssm2) prints it regardless of scheme.
         real_repayment_eligibility = (
-            round(real_incremental_income * 0.75) if real_incremental_income else None
+            round(real_incremental_income * computed["repayment_pct"] / 100)
+            if real_incremental_income
+            else None
         )
         computed["repayment_eligibility"] = real_repayment_eligibility
         computed["net_repayment_eligibility"] = (
@@ -400,13 +433,12 @@ def build_context(app: Application, details, spec) -> dict:
             else None
         )
         computed["repayment_capacity"] = real_repayment_eligibility
-        # Repayment structure per the bank's reference packet (pages 10+14)
-        # and Appraisal LD.xlsx Ap4: total N years = 12-month initial grace
-        # + (N-2) equal YEARLY kantus; kantu = loan / (N-2). Sample: 7 yrs,
-        # 5 kantus of 3,00,000 on a 15L loan. (b4's generic loan/N above is
-        # Tractor's convention — overridden here.)
-        years = computed["loan_duration_years"]
-        kantu_years = max(1, years - 2)
+        # Repayment structure: total N years = 12-month initial grace +
+        # (N-1) equal YEARLY kantus; kantu = loan / (N-1). Owner corrections
+        # 2026-08-07: small farmer 7 yrs -> 6 kantus, big farmer 6 yrs -> 5
+        # kantus (replaces the earlier N-2 reading of the reference packet).
+        # (b4's generic loan/N above is Tractor's convention — overridden.)
+        kantu_years = max(1, ld_years - 1)
         computed["ld_kantu_years"] = kantu_years
         computed["ld_initial_period"] = "12 ತಿಂಗಳು"
         if app.loan_amount:

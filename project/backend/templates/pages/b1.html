@@ -74,10 +74,10 @@
     <td class="n">8)</td>
     <td class="lbl">ಯೋಜನೆಯ ಆರ್ಥಿಕ ಕಾರ್ಯಕ್ರಮ</td>
     <td class="ct">
-      <div class="rline"><span>ಅರ್ಜಿದಾರರ ಬೇಡಿಕೆ ಮೊತ್ತ</span><span>ರೂ. <span class="fill">{{ app.loan_amount | num }} + {{ computed.insurance_amount | num }}</span></span></div>
+      <div class="rline"><span>ಅರ್ಜಿದಾರರ ಬೇಡಿಕೆ ಮೊತ್ತ</span><span>ರೂ. <span class="fill">{{ app.loan_amount | num }} {{ computed.insurance_amount | plus_insurance }}</span></span></div>
       <div class="rline"><span>ಯೋಜನಾ ವೆಚ್ಚ</span><span>ರೂ. <span class="fill">{{ computed.total_project_cost | num if computed.total_project_cost is defined else '' }}</span></span></div>
       <div class="rline"><span>ಸ್ವಂತ ಕೊಡುಗೆ</span><span>ರೂ. <span class="fill">{{ computed.margin_money | num if computed.margin_money is defined else '' }}</span></span></div>
-      <div class="rline"><span>ಸಾಲದ ಮೊತ್ತ</span><span>ರೂ. <span class="fill">{{ app.loan_amount | num }} + {{ computed.insurance_amount | num }}</span></span></div>
+      <div class="rline"><span>ಸಾಲದ ಮೊತ್ತ</span><span>ರೂ. <span class="fill">{{ app.loan_amount | num }} {{ computed.insurance_amount | plus_insurance }}</span></span></div>
     </td>
   </tr>
   <tr>

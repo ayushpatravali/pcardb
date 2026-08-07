@@ -50,7 +50,8 @@
 <table class="hd" style="margin-top:1mm;">
   <tr>
     <td style="width:25%;">ವಿಳಾಸ: ಗ್ರಾಮ<br><span class="value italic bold">{{ app.village }}</span></td>
-    <td style="width:25%;">ಅಂಚೆ<br><span class="value italic bold">{{ app.hobli }}</span></td>
+    {# owner 2026-08-07: ಅಂಚೆ = village (the hobli value only prints under ಹೋಬಳಿ labels) #}
+    <td style="width:25%;">ಅಂಚೆ<br><span class="value italic bold">{{ app.village }}</span></td>
     <td style="width:25%;">ತಾಲ್ಲೂಕು<br><span class="value italic bold">{{ app.taluk }}</span></td>
     <td>ಜಿಲ್ಲೆ<br><span class="value italic bold">{{ app.district }}</span></td>
   </tr>

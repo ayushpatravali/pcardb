@@ -112,6 +112,35 @@ From `backend/` with venv `/Users/ayush/project/.venv-mac`:
 
 ## Changelog
 
+- **2026-08-07** — LAND_DEV correction round 2, from the owner's annotated
+  `land_dev corrections.pdf` (repo root, NOT in git — 18 highlights + 12
+  comments, all mapped and fixed; backend/templates only, frontend untouched):
+  (1) **"+ 0" insurance suffix removed** at all 5 remaining sites (a1 request
+  line + scheme-table row, b1 ×2, b2 ×2, valuation/committee page) via the
+  existing `plus_insurance` filter; Tractor still prints "+ 1,00,000"
+  (verified 11 text sites, 21 pages). (2) **ಅಂಚೆ ≠ hobli**: a1/ld1/inspection
+  printed `app.hobli` under the ಅಂಚೆ label — now the village prints there
+  (right-aligned on a1) and the hobli value fills inspection's empty ಹೋಬಳಿ
+  slot. (3) a1 item 2: leftover "ಅ) ಸಣ್ಣ / ದೊಡ್ಡ ರೈತರು" option text removed.
+  (4) **Farmer-type repayment terms** (replaces the 08-06 N−2 reading):
+  small farmer 7 yrs / big farmer 6 yrs; yearly kantus = years−1 (small 6,
+  big 5) after the 12-month grace; repayment % of incremental income = 50
+  small / 75 big (new computed `repayment_pct`, b4 12 ಉ + ld4 21 bind it;
+  Tractor stays 75). LAND_DEV ignores the form's loan-duration select for
+  these prints. (5) **Loan cap**: create/update reject LAND_DEV loans above
+  the dev-works estimate (bilingual 400); b3's cost row prints blank when a
+  stored (legacy) loan still exceeds cost — no more negative ಸ್ವಂತ ಕೊಡುಗೆ.
+  (6) **Water source**: a2 item-5 land table + ld3 ಖುಷ್ಕಿ/ನೀರಾವರಿ column now
+  print the land's water source; season/irrigated crop-row values with no
+  Kannada (operator typed "e"/"f") print blank. `rate_per_acre`/`amount`
+  added to numeric JSON coercion (string amounts crashed ld2's %.2f).
+  (7) Bank name: ld9 estimate header got the missing name_line2; ld5's two
+  signature lines unified to "ಪಿಕಾರ್ಡ ಬ್ಯಾಂಕ ನಿ ಗೋಕಾಕ"; pp's ಮೇಲ್ವಿಚಾರಕರು
+  centred over its bank line. Both packets 21/23 OK; API e2e (cap 400 →
+  create 200 → edit-cap 400 → PDF 200) passes. NOT done: the "remove this
+  Blank page" note on ld3's empty lower half (ambiguous — would change the
+  23-page count; ask owner), and the form's live-summary installment still
+  shows loan/duration for LAND_DEV (frontend untouched this round).
 - **2026-08-06** — Full LAND_DEV verification vs both new Excel files + the
   reference PDF (owner: "make sure you are completely right"). Machine-
   checked all 31 CROP_ECON/CROP_CHART entries against the chart xlsx (exact

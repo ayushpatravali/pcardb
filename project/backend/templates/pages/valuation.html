@@ -31,7 +31,7 @@
       ಅಸಲಿನಂತೆ ನಕಲು ತಯಾರಿಸಿದೆ.
     </td>
     <td class="center bold" style="vertical-align:top; padding-top:4mm">
-      {{ app.loan_amount | num }} + {{ computed.insurance_amount | num }}<br><br>
+      {{ app.loan_amount | num }} {{ computed.insurance_amount | plus_insurance }}<br><br>
       &nbsp;
     </td>
   </tr>

@@ -22,8 +22,9 @@
 <div style="margin-top:4mm; text-align:justify">
   ಅರ್ಜಿದಾರರಾದ ಶ್ರೀ : ಶ್ರೀಮತಿ : <span class="fill wide">{{ app.applicant_name_kn }}</span><br>
   ಗ್ರಾಮ : <span class="fill">{{ app.village }}</span>
-  &nbsp;ಅಂಚೆ&nbsp; <span class="fill">{{ app.hobli }}</span>
-  &nbsp;ಹೋಬಳಿ&nbsp; <span class="fill" style="min-width:28mm">&nbsp;</span><br>
+  {# owner 2026-08-07: ಅಂಚೆ prints the village; the hobli value moves to its ಹೋಬಳಿ slot #}
+  &nbsp;ಅಂಚೆ&nbsp; <span class="fill">{{ app.village }}</span>
+  &nbsp;ಹೋಬಳಿ&nbsp; <span class="fill" style="min-width:28mm">{{ app.hobli }}</span><br>
   ತಾಲ್ಲೂಕ : <span class="fill">{{ app.taluk }}</span> ರವರ ಸಾಲಕ್ಕೆ ಕೆಳಕಂಡಂತೆ ಜಮೀನು ಆಧಾರಕ್ಕೆ ಒದಗಿಸಿದ್ದು, ಇವುಗಳ ಮೌಲ್ಯ<br>
   ರೂ. <span class="fill" style="min-width:30mm">{{ computed.land_valuation_total | num }}</span> ಗಳಷ್ಟಾಗಲಿದೆ.
 </div>

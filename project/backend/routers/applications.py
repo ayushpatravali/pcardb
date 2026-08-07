@@ -83,6 +83,42 @@ def reject_nudi_ascii(app_data: dict) -> None:
             )
 
 
+def validate_land_dev_loan_cap(payload: "ApplicationCreate") -> None:
+    """Owner instruction 2026-08-07 ("lock the loan limit not more than
+    estimated cost"): a LAND_DEV loan may not exceed the estimated total of
+    the development works — a larger loan makes the packet print a negative
+    own-contribution. Skipped when the works rows aren't filled yet (the
+    PDF-time missing-fields check owns that case)."""
+    if payload.scheme_type != SchemeType.LAND_DEV or not payload.loan_amount:
+        return
+    details = payload.land_details
+    if not details or not details.dev_work_items:
+        return
+    try:
+        items = json.loads(details.dev_work_items)
+    except (ValueError, TypeError):
+        return
+    if not isinstance(items, list):
+        return
+
+    def _num(v):
+        try:
+            return float(str(v).replace(",", "").strip())
+        except (TypeError, ValueError):
+            return 0.0
+
+    total_cost = sum(_num(i.get("amount")) for i in items if isinstance(i, dict))
+    if total_cost and payload.loan_amount > total_cost:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                f"ಸಾಲದ ಮೊತ್ತ ({payload.loan_amount:,.0f}) ಅಂದಾಜು ಅಭಿವೃದ್ಧಿ ವೆಚ್ಚಕ್ಕಿಂತ "
+                f"({total_cost:,.0f}) ಹೆಚ್ಚು ಇರಬಾರದು / Loan amount ({payload.loan_amount:,.0f}) "
+                f"cannot exceed the estimated development cost ({total_cost:,.0f})."
+            ),
+        )
+
+
 def validate_identifiers(mobile_no: str, aadhaar_no: str) -> None:
     m = re.sub(r"\D", "", mobile_no or "")
     a = re.sub(r"\D", "", aadhaar_no or "")
@@ -206,6 +242,7 @@ def create_application(
     app_data = payload.dict(exclude=DETAIL_PAYLOAD_KEYS)
     validate_identifiers(app_data.get("mobile_no"), app_data.get("aadhaar_no"))
     reject_nudi_ascii(app_data)
+    validate_land_dev_loan_cap(payload)
 
     application = Application(**app_data)
     application.applicant_id = current_user.id
@@ -315,6 +352,7 @@ def update_application(
     app_data = payload.dict(exclude=DETAIL_PAYLOAD_KEYS)
     validate_identifiers(app_data.get("mobile_no"), app_data.get("aadhaar_no"))
     reject_nudi_ascii(app_data)
+    validate_land_dev_loan_cap(payload)
 
     # Delete old details BEFORE applying the (possibly changed) scheme_type,
     # so the lookup targets the previous scheme's table.
